@@ -4,6 +4,11 @@
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>Lash Marii - Reservas</title>
+  
+  <!-- Firebase SDKs -->
+  <script src="https://www.gstatic.com/firebasejs/9.22.2/firebase-app-compat.js"></script>
+  <script src="https://www.gstatic.com/firebasejs/9.22.2/firebase-database-compat.js"></script>
+
   <style>
     :root {
       --bg-color: #fff4f6;
@@ -15,12 +20,17 @@
       --subtext: #786267;
     }
 
+    * {
+      box-sizing: border-box;
+      margin: 0;
+      padding: 0;
+    }
+
     body {
       font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Helvetica, Arial, sans-serif;
       background-color: var(--bg-color);
       color: var(--text-dark);
-      margin: 0;
-      padding: 20px 15px 100px 15px;
+      padding: 20px 15px 120px 15px;
       display: flex;
       justify-content: center;
     }
@@ -28,24 +38,35 @@
     .container {
       width: 100%;
       max-width: 420px;
-      display: flex;
-      flex-direction: column;
-      gap: 20px;
     }
 
-    .header {
+    .tab-content {
+      display: none;
+      animation: fadeIn 0.3s ease-in-out;
+    }
+
+    .tab-content.active {
+      display: block;
+    }
+
+    @keyframes fadeIn {
+      from { opacity: 0; transform: translateY(6px); }
+      to { opacity: 1; transform: translateY(0); }
+    }
+
+    .hero-header {
       text-align: center;
-      padding: 10px 0;
+      padding: 20px 0 10px 0;
     }
 
     .logo-container {
-      width: 140px;
-      height: 140px;
+      width: 150px;
+      height: 150px;
       margin: 0 auto 15px auto;
       border-radius: 50%;
       padding: 4px;
       background: linear-gradient(135deg, #f7d6e0, #e63974);
-      box-shadow: 0 4px 15px rgba(230, 57, 116, 0.15);
+      box-shadow: 0 6px 20px rgba(230, 57, 116, 0.2);
     }
 
     .logo-img {
@@ -53,32 +74,30 @@
       height: 100%;
       border-radius: 50%;
       object-fit: cover;
-      object-position: center;
       display: block;
     }
 
     .welcome-text {
-      font-size: 0.85rem;
-      font-weight: 700;
-      letter-spacing: 1.5px;
+      font-size: 0.9rem;
+      font-weight: 800;
+      letter-spacing: 2px;
       color: var(--primary);
       text-transform: uppercase;
-      margin-bottom: 4px;
+      margin-bottom: 5px;
     }
 
     .brand-title {
-      font-size: 1.8rem;
+      font-size: 2rem;
       font-weight: 800;
       color: var(--text-dark);
-      margin: 0 0 10px 0;
+      margin-bottom: 12px;
     }
 
     .brand-desc {
-      font-size: 0.9rem;
+      font-size: 0.95rem;
       color: var(--subtext);
-      line-height: 1.4;
-      margin: 0 auto 15px auto;
-      max-width: 320px;
+      line-height: 1.5;
+      margin: 0 auto 18px auto;
     }
 
     .location-badge {
@@ -88,79 +107,169 @@
       background-color: #ffe6ee;
       color: var(--primary);
       font-size: 0.85rem;
-      font-weight: 600;
-      padding: 6px 14px;
+      font-weight: 700;
+      padding: 8px 16px;
       border-radius: 20px;
-      margin-bottom: 10px;
+      margin-bottom: 25px;
+    }
+
+    .btn-main {
+      width: 100%;
+      background: linear-gradient(135deg, #e63974, #d62862);
+      color: white;
+      border: none;
+      border-radius: 16px;
+      padding: 16px;
+      font-size: 1rem;
+      font-weight: 700;
+      cursor: pointer;
+      box-shadow: 0 4px 15px rgba(230, 57, 116, 0.3);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      gap: 8px;
+      text-decoration: none;
+      margin-bottom: 15px;
+    }
+
+    .sub-note {
+      text-align: center;
+      font-size: 0.85rem;
+      color: var(--subtext);
+      margin-bottom: 20px;
+    }
+
+    .btn-secondary {
+      width: 100%;
+      background: #ffffff;
+      color: var(--text-dark);
+      border: 1px solid var(--border-color);
+      border-radius: 16px;
+      padding: 14px;
+      font-size: 0.95rem;
+      font-weight: 700;
+      cursor: pointer;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      gap: 8px;
+      text-decoration: none;
+      box-shadow: 0 2px 8px rgba(0, 0, 0, 0.03);
     }
 
     .card {
       background: var(--card-bg);
       border-radius: 20px;
-      padding: 20px;
-      box-shadow: 0 4px 15px rgba(230, 57, 116, 0.05);
+      padding: 22px;
+      box-shadow: 0 4px 18px rgba(230, 57, 116, 0.06);
+      margin-bottom: 20px;
     }
 
     .card-title {
       display: flex;
       align-items: center;
-      gap: 8px;
-      font-size: 1.2rem;
-      font-weight: 700;
-      margin-bottom: 15px;
+      gap: 10px;
+      font-size: 1.25rem;
+      font-weight: 800;
+      margin-bottom: 18px;
+      color: var(--text-dark);
     }
 
     .card-title::before {
       content: "";
       display: inline-block;
       width: 4px;
-      height: 20px;
+      height: 22px;
       background-color: var(--primary);
       border-radius: 2px;
     }
 
     .form-group {
-      margin-bottom: 15px;
+      margin-bottom: 16px;
     }
 
     label {
       display: block;
-      font-weight: 600;
+      font-weight: 700;
       font-size: 0.9rem;
       margin-bottom: 8px;
     }
 
-    input[type="text"], input[type="date"], select {
+    input[type="text"], input[type="date"], input[type="password"] {
       width: 100%;
-      padding: 12px 15px;
+      padding: 14px;
       border: 1.5px solid var(--border-color);
-      border-radius: 12px;
+      border-radius: 14px;
       font-size: 0.95rem;
       outline: none;
-      box-sizing: border-box;
       color: var(--text-dark);
       background-color: #fff;
       font-family: inherit;
     }
 
-    input[type="text"]:focus, input[type="date"]:focus, select:focus {
-      border-color: var(--primary);
+    .service-category {
+      font-size: 0.85rem;
+      font-weight: 800;
+      color: var(--primary);
+      text-transform: uppercase;
+      letter-spacing: 0.5px;
+      margin: 15px 0 8px 0;
     }
 
-    .info-note {
-      font-size: 0.8rem;
-      color: var(--subtext);
-      margin-top: 8px;
-      line-height: 1.4;
+    .service-category:first-of-type {
+      margin-top: 5px;
+    }
+
+    .service-option {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      padding: 12px 14px;
+      border: 1.5px solid var(--border-color);
+      border-radius: 14px;
+      margin-bottom: 8px;
+      cursor: pointer;
+      transition: all 0.2s ease;
+      background-color: #fff;
+    }
+
+    .service-option.selected {
+      border-color: var(--primary);
+      background-color: #fff8f9;
+    }
+
+    .service-info {
+      display: flex;
+      align-items: center;
+      gap: 10px;
+    }
+
+    .service-checkbox {
+      width: 18px;
+      height: 18px;
+      accent-color: var(--primary);
+      cursor: pointer;
+    }
+
+    .service-name {
+      font-size: 0.9rem;
+      font-weight: 600;
+      color: var(--text-dark);
+    }
+
+    .service-price {
+      font-size: 0.9rem;
+      font-weight: 700;
+      color: var(--primary);
     }
 
     .total-box {
       border: 1.5px dashed var(--primary);
-      border-radius: 12px;
-      padding: 12px;
+      border-radius: 14px;
+      padding: 14px;
       text-align: center;
       font-weight: 700;
-      font-size: 1.05rem;
+      font-size: 1rem;
       color: var(--text-dark);
       margin-top: 15px;
       background-color: #fff8f9;
@@ -168,6 +277,56 @@
 
     .total-amount {
       color: var(--primary);
+      font-size: 1.2rem;
+    }
+
+    .abono-amount {
+      color: #2e7d32;
+      font-size: 1.1rem;
+      font-weight: 800;
+    }
+
+    .payment-box {
+      background-color: #f0f7ff;
+      border: 1.5px solid #009ee3;
+      border-radius: 16px;
+      padding: 16px;
+      margin-top: 15px;
+      text-align: center;
+    }
+
+    .payment-title {
+      font-size: 0.95rem;
+      font-weight: 800;
+      color: #009ee3;
+      margin-bottom: 6px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      gap: 6px;
+    }
+
+    .payment-desc {
+      font-size: 0.85rem;
+      color: #4a5568;
+      line-height: 1.4;
+      margin-bottom: 12px;
+    }
+
+    .btn-mercadopago {
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      gap: 8px;
+      background-color: #009ee3;
+      color: white;
+      text-decoration: none;
+      font-weight: 700;
+      font-size: 0.9rem;
+      padding: 12px 20px;
+      border-radius: 12px;
+      box-shadow: 0 4px 10px rgba(0, 158, 227, 0.25);
+      width: 100%;
     }
 
     .time-grid {
@@ -181,17 +340,12 @@
       background-color: #fff;
       border: 1.5px solid var(--border-color);
       border-radius: 12px;
-      padding: 10px 5px;
+      padding: 12px 5px;
       font-size: 0.95rem;
-      font-weight: 600;
+      font-weight: 700;
       color: var(--text-dark);
       cursor: pointer;
       transition: all 0.2s ease;
-    }
-
-    .time-btn:hover {
-      border-color: var(--primary);
-      color: var(--primary);
     }
 
     .time-btn.selected {
@@ -200,110 +354,469 @@
       border-color: var(--primary);
     }
 
+    .time-btn.occupied {
+      background-color: #e2e8f0;
+      color: #a0aec0;
+      border-color: #cbd5e0;
+      cursor: not-allowed;
+      text-decoration: line-through;
+    }
+
+    .admin-time-btn {
+      background-color: #fff;
+      border: 1.5px solid var(--border-color);
+      border-radius: 12px;
+      padding: 12px 5px;
+      font-size: 0.85rem;
+      font-weight: 700;
+      cursor: pointer;
+    }
+
+    .admin-time-btn.is-blocked {
+      background-color: #e63974;
+      color: white;
+      border-color: #e63974;
+    }
+
     .placeholder-text {
-      color: #999;
+      color: var(--subtext);
       font-size: 0.9rem;
       text-align: center;
       margin-top: 10px;
       grid-column: span 3;
+    }
+
+    .care-item {
+      display: flex;
+      align-items: flex-start;
+      gap: 14px;
+      padding: 14px 0;
+      border-bottom: 1px solid #f2e6ea;
+    }
+
+    .care-item:last-child {
+      border-bottom: none;
+    }
+
+    .care-icon {
+      font-size: 1.5rem;
+      line-height: 1;
+      margin-top: 2px;
+    }
+
+    .care-text {
+      font-size: 0.9rem;
+      color: var(--subtext);
+      line-height: 1.45;
+    }
+
+    .care-text strong {
+      color: var(--text-dark);
+    }
+
+    .bottom-nav {
+      position: fixed;
+      bottom: 20px;
+      left: 50%;
+      transform: translateX(-50%);
+      width: calc(100% - 30px);
+      max-width: 390px;
+      background: rgba(255, 255, 255, 0.92);
+      backdrop-filter: blur(12px);
+      border-radius: 25px;
+      display: flex;
+      justify-content: space-around;
+      padding: 10px 6px;
+      box-shadow: 0 10px 30px rgba(0, 0, 0, 0.08);
+      border: 1px solid rgba(247, 214, 224, 0.6);
+      z-index: 1000;
+    }
+
+    .nav-item {
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      gap: 4px;
+      background: none;
+      border: none;
+      color: #a08c90;
+      font-size: 0.75rem;
+      font-weight: 700;
+      cursor: pointer;
+      width: 20%;
+      transition: all 0.2s ease;
+    }
+
+    .nav-item .icon {
+      font-size: 1.25rem;
+    }
+
+    .nav-item.active {
+      color: var(--primary);
     }
   </style>
 </head>
 <body>
 
   <div class="container">
-    
-    <!-- HEADER CON FOTO Y BIENVENIDA -->
-    <header class="header">
-      <div class="logo-container">
-        <img src="https://i.postimg.cc/9fsRY43k/IMG-0086.jpg" alt="Lash Marii" class="logo-img">
-      </div>
-      <div class="welcome-text">Bienvenida a</div>
-      <h1 class="brand-title">Lash Marii</h1>
-      <p class="brand-desc">Extensiones de pestañas y lifting con atención completamente personalizada. Diseños únicos para resaltar tu mirada.</p>
-      <div class="location-badge">📍 Los Andes, Chile</div>
-    </header>
 
-    <!-- DATOS PERSONALES Y SERVICIOS -->
-    <div class="card">
-      <div class="card-title">Datos Personales</div>
-
-      <div class="form-group">
-        <label for="nombre">Nombre Completo</label>
-        <input type="text" id="nombre" placeholder="Ej. María González">
-      </div>
-
-      <div class="form-group">
-        <label for="servicio">Servicio de Interés</label>
-        <select id="servicio" onchange="calcularTotal()">
-          <optgroup label="Extensiones de Pestañas">
-            <option value="27000">Clásicas — $27.000</option>
-            <option value="25000">Rímel — $25.000</option>
-            <option value="25000">Hawaianas — $25.000</option>
-            <option value="30000">Griego 3D — $30.000</option>
-            <option value="35000">5D — $35.000</option>
-          </optgroup>
-          <optgroup label="Lifting de Pestañas">
-            <option value="20000">Lifting (Queratina + Bótox) — $20.000</option>
-          </optgroup>
-          <optgroup label="Cejas">
-            <option value="15000">Laminado de Cejas — $15.000</option>
-            <option value="20000">Henna (Incluye laminado) — $20.000</option>
-            <option value="7000">Depilación de Cejas — $7.000</option>
-            <option value="5000">Perfilado de Cejas — $5.000</option>
-          </optgroup>
-          <optgroup label="Tratamientos Especiales">
-            <option value="20000">Hydra Gloss (Labios) — $20.000</option>
-          </optgroup>
-        </select>
-        <div class="info-note">
-          • <strong>Lifting:</strong> Incluye queratina y bótox (no incluye tinte).<br>
-          • <strong>Diseños personalizados:</strong> Consulta otros modelos en Instagram <strong>@Lash.marii</strong>.
+    <!-- INICIO -->
+    <div id="tab-inicio" class="tab-content active">
+      <div class="hero-header">
+        <div class="logo-container">
+          <img src="https://i.postimg.cc/9fsRY43k/IMG-0086.jpg" alt="Lash Marii" class="logo-img">
         </div>
-      </div>
+        <div class="welcome-text">Bienvenida a</div>
+        <h1 class="brand-title">Lash Marii</h1>
+        <p class="brand-desc">Extensiones de pestañas y lifting con atención completamente personalizada. Diseños únicos para resaltar tu mirada.</p>
+        <div class="location-badge">📍 Los Andes, Chile</div>
 
-      <div class="total-box">
-        Total Estimado: <span class="total-amount" id="precio-total">$27.000</span>
+        <button class="btn-main" onclick="switchTab('reservar')">
+          💖 Agenda tu cita aquí
+        </button>
+        <div class="sub-note">Atención personalizada · Solo con reserva previa</div>
+
+        <a href="https://instagram.com/Lash.marii" target="_blank" class="btn-secondary">
+          📸 Sígueme en Instagram: @Lash.marii
+        </a>
       </div>
     </div>
 
-    <!-- FECHA Y HORA -->
-    <div class="card">
-      <div class="card-title">Fecha y Hora</div>
+    <!-- RESERVAR -->
+    <div id="tab-reservar" class="tab-content">
+      <div class="card">
+        <div class="card-title">Datos Personales</div>
 
-      <div class="form-group">
-        <label for="fecha">Selecciona el Día</label>
-        <input type="date" id="fecha" onchange="actualizarHoras()">
+        <div class="form-group">
+          <label for="nombre">Nombre Completo</label>
+          <input type="text" id="nombre" placeholder="Ej. María González">
+        </div>
+
+        <div class="form-group">
+          <label>Selecciona los Servicios</label>
+          
+          <div class="service-category">Extensiones de Pestañas</div>
+
+          <label class="service-option" onclick="toggleService(this)">
+            <div class="service-info">
+              <input type="checkbox" class="service-checkbox" value="27000" data-name="Pestañas Clásicas" onchange="calcularTotal()">
+              <span class="service-name">Clásicas</span>
+            </div>
+            <span class="service-price">$27.000</span>
+          </label>
+
+          <label class="service-option" onclick="toggleService(this)">
+            <div class="service-info">
+              <input type="checkbox" class="service-checkbox" value="25000" data-name="Pestañas Rímel" onchange="calcularTotal()">
+              <span class="service-name">Rímel</span>
+            </div>
+            <span class="service-price">$25.000</span>
+          </label>
+
+          <label class="service-option" onclick="toggleService(this)">
+            <div class="service-info">
+              <input type="checkbox" class="service-checkbox" value="25000" data-name="Pestañas Hawaianas" onchange="calcularTotal()">
+              <span class="service-name">Hawaianas</span>
+            </div>
+            <span class="service-price">$25.000</span>
+          </label>
+
+          <label class="service-option" onclick="toggleService(this)">
+            <div class="service-info">
+              <input type="checkbox" class="service-checkbox" value="30000" data-name="Pestañas Griego 3D" onchange="calcularTotal()">
+              <span class="service-name">Griego 3D</span>
+            </div>
+            <span class="service-price">$30.000</span>
+          </label>
+
+          <label class="service-option" onclick="toggleService(this)">
+            <div class="service-info">
+              <input type="checkbox" class="service-checkbox" value="35000" data-name="Pestañas 5D" onchange="calcularTotal()">
+              <span class="service-name">5D</span>
+            </div>
+            <span class="service-price">$35.000</span>
+          </label>
+
+          <div class="service-category">Lifting</div>
+
+          <label class="service-option" onclick="toggleService(this)">
+            <div class="service-info">
+              <input type="checkbox" class="service-checkbox" value="20000" data-name="Lifting (Queratina + Bótox)" onchange="calcularTotal()">
+              <span class="service-name">Lifting (Queratina + Bótox)</span>
+            </div>
+            <span class="service-price">$20.000</span>
+          </label>
+
+          <div class="service-category">Cejas</div>
+
+          <label class="service-option" onclick="toggleService(this)">
+            <div class="service-info">
+              <input type="checkbox" class="service-checkbox" value="15000" data-name="Laminado de Cejas" onchange="calcularTotal()">
+              <span class="service-name">Laminado de Cejas</span>
+            </div>
+            <span class="service-price">$15.000</span>
+          </label>
+
+          <label class="service-option" onclick="toggleService(this)">
+            <div class="service-info">
+              <input type="checkbox" class="service-checkbox" value="20000" data-name="Henna (Incluye laminado)" onchange="calcularTotal()">
+              <span class="service-name">Henna (Incluye laminado)</span>
+            </div>
+            <span class="service-price">$20.000</span>
+          </label>
+
+          <label class="service-option" onclick="toggleService(this)">
+            <div class="service-info">
+              <input type="checkbox" class="service-checkbox" value="7000" data-name="Depilación de Cejas" onchange="calcularTotal()">
+              <span class="service-name">Depilación de Cejas</span>
+            </div>
+            <span class="service-price">$7.000</span>
+          </label>
+
+          <label class="service-option" onclick="toggleService(this)">
+            <div class="service-info">
+              <input type="checkbox" class="service-checkbox" value="5000" data-name="Perfilado de Cejas" onchange="calcularTotal()">
+              <span class="service-name">Perfilado de Cejas</span>
+            </div>
+            <span class="service-price">$5.000</span>
+          </label>
+
+          <div class="service-category">Tratamientos Especiales</div>
+
+          <label class="service-option" onclick="toggleService(this)">
+            <div class="service-info">
+              <input type="checkbox" class="service-checkbox" value="20000" data-name="Hydra Gloss (Labios)" onchange="calcularTotal()">
+              <span class="service-name">Hydra Gloss (Labios)</span>
+            </div>
+            <span class="service-price">$20.000</span>
+          </label>
+
+        </div>
+
+        <div class="total-box">
+          <div>Total Estimado: <span class="total-amount" id="precio-total">$0</span></div>
+          <div style="margin-top: 6px;">Abono requerido para agendar: <span class="abono-amount" id="precio-abono">$0</span></div>
+        </div>
+
+        <div class="payment-box">
+          <div class="payment-title">💳 Paga tu abono con Mercado Pago</div>
+          <div class="payment-desc">Para asegurar tu cita, transfiere o paga el abono a través del siguiente botón o directamente a mi cuenta.</div>
+          <a href="https://mpago.la/tu-link-aqui" target="_blank" class="btn-mercadopago">
+            Pagar Abono con Mercado Pago
+          </a>
+        </div>
+
       </div>
 
-      <div class="form-group">
-        <label>Horas Disponibles</label>
-        <div id="grid-horas" class="time-grid">
-          <div class="placeholder-text">Selecciona un día primero</div>
+      <div class="card">
+        <div class="card-title">Fecha y Hora</div>
+
+        <div class="form-group">
+          <label for="fecha">Selecciona el Día</label>
+          <input type="date" id="fecha" onchange="actualizarHoras()">
         </div>
+
+        <div class="form-group">
+          <label>Horas Disponibles</label>
+          <div id="grid-horas" class="time-grid">
+            <div class="placeholder-text">Selecciona un día primero</div>
+          </div>
+        </div>
+
+        <button class="btn-main" style="margin-top: 15px; margin-bottom: 0;" onclick="enviarWhatsApp()">
+          Confirmar Reserva por WhatsApp
+        </button>
+      </div>
+    </div>
+
+    <!-- GALERÍA -->
+    <div id="tab-galeria" class="tab-content">
+      <div class="card" style="text-align: center;">
+        <div class="card-title" style="justify-content: flex-start;">Mi Trabajo</div>
+        <p class="brand-desc" style="margin-bottom: 20px;">
+          ¡Mira mis últimos diseños y sets directamente en mi cuenta oficial de Instagram!
+        </p>
+        <a href="https://instagram.com/Lash.marii" target="_blank" class="btn-main" style="margin-bottom: 0; text-decoration: none;">
+          Ver Fotos en @Lash.marii
+        </a>
+      </div>
+    </div>
+
+    <!-- CUIDADOS -->
+    <div id="tab-cuidados" class="tab-content">
+      <div class="card">
+        <div class="card-title">Cuidados Posteriores</div>
+
+        <div class="care-item">
+          <div class="care-icon">💧</div>
+          <div class="care-text">
+            <strong>Primeras 24 horas:</strong> Evita mojar tus pestañas, el vapor, saunas o lágrimas para garantizar la máxima retención del adhesivo.
+          </div>
+        </div>
+
+        <div class="care-item">
+          <div class="care-icon">🧴</div>
+          <div class="care-text">
+            <strong>Productos oleosos:</strong> No utilices desmaquillantes, cremas o aceites cerca de los ojos. Usa siempre productos a base de agua.
+          </div>
+        </div>
+
+        <div class="care-item">
+          <div class="care-icon">🧹</div>
+          <div class="care-text">
+            <strong>Cepillado diario:</strong> Peina tus pestañas delicadamente una o dos veces al día con el cepillo limpio que te entregaré en tu cita.
+          </div>
+        </div>
+
+        <div class="care-item">
+          <div class="care-icon">🙈</div>
+          <div class="care-text">
+            <strong>Evita frotar:</strong> No tires ni juegues con las extensiones. Si deseas retirarlas, asiste conmigo para un retiro profesional.
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- PANEL ADMIN (SOLO PARA TI) -->
+    <div id="tab-admin" class="tab-content">
+      <div class="card">
+        <div class="card-title">Panel de Administración</div>
+        
+        <div id="login-form">
+          <div class="form-group">
+            <label>Contraseña de Administración</label>
+            <input type="password" id="admin-pass" placeholder="Ingresa tu clave">
+          </div>
+          <button class="btn-main" onclick="validarAdmin()">Ingresar</button>
+        </div>
+
+        <div id="admin-panel" style="display: none;">
+          <p style="font-size: 0.9rem; color: var(--subtext); margin-bottom: 15px;">
+            Selecciona un día y haz clic en la hora para <strong>bloquearla (rosa)</strong> o <strong>desbloquearla (blanco)</strong> en tiempo real.
+          </p>
+
+          <div class="form-group">
+            <label for="fecha-admin">Selecciona el Día a Gestionar</label>
+            <input type="date" id="fecha-admin" onchange="cargarHorasAdmin()">
+          </div>
+
+          <div class="form-group">
+            <label>Gestión de Horarios</label>
+            <div id="grid-horas-admin" class="time-grid">
+              <div class="placeholder-text">Selecciona un día primero</div>
+            </div>
+          </div>
+        </div>
+
       </div>
     </div>
 
   </div>
 
+  <!-- NAVEGACIÓN INFERIOR -->
+  <nav class="bottom-nav">
+    <button class="nav-item active" onclick="switchTab('inicio')">
+      <span class="icon">🏠</span>
+      <span>Inicio</span>
+    </button>
+    <button class="nav-item" onclick="switchTab('reservar')">
+      <span class="icon">💖</span>
+      <span>Reservar</span>
+    </button>
+    <button class="nav-item" onclick="switchTab('galeria')">
+      <span class="icon">🖼️</span>
+      <span>Galería</span>
+    </button>
+    <button class="nav-item" onclick="switchTab('cuidados')">
+      <span class="icon">✨</span>
+      <span>Cuidados</span>
+    </button>
+    <button class="nav-item" onclick="switchTab('admin')">
+      <span class="icon">🔒</span>
+      <span>Admin</span>
+    </button>
+  </nav>
+
   <script>
-    // Horarios militares por día (0 = Domingo, 1 = Lunes, ...)
+    // Configuración con tus credenciales reales de Firebase
+    const firebaseConfig = {
+      apiKey: "AIzaSyDvc97mEgmRfBOFcBcBdPFHkAAoEOy-9VM",
+      authDomain: "lash-marii.firebaseapp.com",
+      projectId: "lash-marii",
+      storageBucket: "lash-marii.firebasestorage.app",
+      messagingSenderId: "764630588595",
+      appId: "1:764630588595:web:76f7d0fb3d9963dcdf64c6"
+    };
+
+    // Inicializar Firebase
+    firebase.initializeApp(firebaseConfig);
+    const db = firebase.database();
+
+    // Tu clave para ingresar al panel administrador
+    const CLAVE_ADMIN = "marii123"; 
+
     const horarios = {
       0: ["10:00", "12:00", "14:00", "16:00", "18:00", "20:00"], // Domingo
-      1: ["14:00", "16:00", "18:00", "20:00"],                   // Lunes
-      2: ["16:00", "18:00", "20:00"],                            // Martes
-      3: ["14:00", "16:00", "18:00", "20:00"],                   // Miércoles
-      4: ["14:00", "16:00", "18:00", "20:00"],                   // Jueves
-      5: ["16:00", "18:00", "20:00"],                            // Viernes
-      6: ["10:00", "12:00", "14:00", "16:00", "18:00", "20:00"]  // Sábado
+      1: ["10:00", "18:00", "20:00"],                            // Lunes
+      2: ["18:00", "20:00"],                                     // Martes
+      3: ["10:00", "12:00", "14:00", "16:00", "18:00", "20:00"], // Miércoles
+      4: ["10:00", "12:00", "20:00"],                            // Jueves
+      5: ["14:00", "16:00", "18:00", "20:00"],                   // Viernes
+      6: ["16:00", "18:00", "20:00"]                            // Sábado
     };
 
     let horaSeleccionada = "";
+    let montoAbono = 0;
+    let horasOcupadasBaseDatos = {};
+
+    // Escuchar cambios de la base de datos en tiempo real
+    db.ref('horas_bloqueadas').on('value', (snapshot) => {
+      horasOcupadasBaseDatos = snapshot.val() || {};
+      actualizarHoras();
+      if (document.getElementById('admin-panel').style.display === 'block') {
+        cargarHorasAdmin();
+      }
+    });
+
+    function switchTab(tabId) {
+      document.querySelectorAll('.tab-content').forEach(tab => tab.classList.remove('active'));
+      document.querySelectorAll('.nav-item').forEach(btn => btn.classList.remove('active'));
+
+      document.getElementById('tab-' + tabId).classList.add('active');
+      
+      const tabIndex = { 'inicio': 0, 'reservar': 1, 'galeria': 2, 'cuidados': 3, 'admin': 4 };
+      document.querySelectorAll('.nav-item')[tabIndex[tabId]].classList.add('active');
+      window.scrollTo(0, 0);
+    }
+
+    function toggleService(label) {
+      const checkbox = label.querySelector('.service-checkbox');
+      if (checkbox.checked) {
+        label.classList.add('selected');
+      } else {
+        label.classList.remove('selected');
+      }
+    }
 
     function calcularTotal() {
-      const selectServicio = document.getElementById('servicio');
-      const precio = parseInt(selectServicio.value, 10);
-      document.getElementById('precio-total').textContent = "$" + precio.toLocaleString('es-CL');
+      const checkboxes = document.querySelectorAll('.service-checkbox:checked');
+      let total = 0;
+      const cantidadServicios = checkboxes.length;
+
+      checkboxes.forEach(cb => {
+        total += parseInt(cb.value, 10);
+      });
+
+      if (cantidadServicios === 1) {
+        montoAbono = 5000;
+      } else if (cantidadServicios >= 2) {
+        montoAbono = 10000;
+      } else {
+        montoAbono = 0;
+      }
+
+      document.getElementById('precio-total').textContent = "$" + total.toLocaleString('es-CL');
+      document.getElementById('precio-abono').textContent = "$" + montoAbono.toLocaleString('es-CL');
     }
 
     function actualizarHoras() {
@@ -333,20 +846,143 @@
         const btn = document.createElement('button');
         btn.type = 'button';
         btn.className = 'time-btn';
-        btn.textContent = hora;
-        btn.onclick = () => seleccionarHora(btn, hora);
+        
+        const horaLimpia = hora.replace(':', '');
+        const claveHora = `${inputFecha}_${horaLimpia}`;
+
+        if (horasOcupadasBaseDatos[claveHora]) {
+          btn.classList.add('occupied');
+          btn.textContent = `${hora} (Ocupada)`;
+          btn.disabled = true;
+        } else {
+          btn.textContent = hora;
+          btn.onclick = () => seleccionarHora(btn, hora);
+        }
+
         gridHoras.appendChild(btn);
       });
     }
 
     function seleccionarHora(boton, hora) {
-      document.querySelectorAll('.time-btn').forEach(b => b.classList.remove('selected'));
+      document.querySelectorAll('.time-btn:not(.occupied)').forEach(b => b.classList.remove('selected'));
       boton.classList.add('selected');
       horaSeleccionada = hora;
     }
 
-    // Configurar fecha mínima a la fecha de hoy
+    function enviarWhatsApp() {
+      const nombre = document.getElementById('nombre').value.trim();
+      const checkboxes = document.querySelectorAll('.service-checkbox:checked');
+      const precioTotal = document.getElementById('precio-total').textContent;
+      const precioAbono = document.getElementById('precio-abono').textContent;
+      const fecha = document.getElementById('fecha').value;
+
+      if (!nombre) {
+        alert("Por favor, ingresa tu nombre completo.");
+        return;
+      }
+
+      if (checkboxes.length === 0) {
+        alert("Por favor, selecciona al menos un servicio.");
+        return;
+      }
+
+      if (!fecha) {
+        alert("Por favor, selecciona una fecha para tu cita.");
+        return;
+      }
+
+      if (!horaSeleccionada) {
+        alert("Por favor, selecciona una hora disponible.");
+        return;
+      }
+
+      let serviciosSeleccionados = [];
+      checkboxes.forEach(cb => {
+        serviciosSeleccionados.push("• " + cb.getAttribute('data-name'));
+      });
+
+      const listaServicios = serviciosSeleccionados.join("%0A");
+      const partesFecha = fecha.split('-');
+      const fechaFormateada = `${partesFecha[2]}/${partesFecha[1]}/${partesFecha[0]}`;
+
+      const mensaje = `¡Hola Lash Marii! 👋🏼 Deseo solicitar una reserva:%0A%0A` +
+                      `👤 *Nombre:* ${nombre}%0A` +
+                      `✨ *Servicios:*%0A${listaServicios}%0A%0A` +
+                      `💰 *Total:* ${precioTotal}%0A` +
+                      `💵 *Abono Requerido:* ${precioAbono}%0A` +
+                      `📅 *Fecha:* ${fechaFormateada}%0A` +
+                      `⏰ *Hora:* ${horaSeleccionada} hrs`;
+
+      const telefono = "56912345678"; // Reemplaza con tu número de WhatsApp
+      window.open(`https://wa.me/${telefono}?text=${mensaje}`, '_blank');
+    }
+
+    /* FUNCIONES DEL PANEL ADMIN */
+    function validarAdmin() {
+      const pass = document.getElementById('admin-pass').value;
+      if (pass === CLAVE_ADMIN) {
+        document.getElementById('login-form').style.display = 'none';
+        document.getElementById('admin-panel').style.display = 'block';
+      } else {
+        alert('Contraseña incorrecta');
+      }
+    }
+
+    function cargarHorasAdmin() {
+      const inputFecha = document.getElementById('fecha-admin').value;
+      const gridHoras = document.getElementById('grid-horas-admin');
+
+      if (!inputFecha) {
+        gridHoras.innerHTML = '<div class="placeholder-text">Selecciona un día primero</div>';
+        return;
+      }
+
+      const partes = inputFecha.split('-');
+      const fecha = new Date(partes[0], partes[1] - 1, partes[2]);
+      const diaSemana = fecha.getDay();
+
+      const horasDisponibles = horarios[diaSemana] || [];
+      gridHoras.innerHTML = "";
+
+      if (horasDisponibles.length === 0) {
+        gridHoras.innerHTML = '<div class="placeholder-text">No hay horas configuradas para este día de la semana</div>';
+        return;
+      }
+
+      horasDisponibles.forEach(hora => {
+        const btn = document.createElement('button');
+        btn.type = 'button';
+        btn.className = 'admin-time-btn';
+
+        const horaLimpia = hora.replace(':', '');
+        const claveHora = `${inputFecha}_${horaLimpia}`;
+
+        const estaBloqueada = !!horasOcupadasBaseDatos[claveHora];
+
+        if (estaBloqueada) {
+          btn.classList.add('is-blocked');
+          btn.textContent = `${hora} (Bloqueada)`;
+        } else {
+          btn.textContent = `${hora} (Disponible)`;
+        }
+
+        btn.onclick = () => alternarEstadoHora(claveHora, estaBloqueada);
+        gridHoras.appendChild(btn);
+      });
+    }
+
+    function alternarEstadoHora(claveHora, actualmenteBloqueada) {
+      if (actualmenteBloqueada) {
+        // Desbloquear hora
+        db.ref('horas_bloqueadas/' + claveHora).remove();
+      } else {
+        // Bloquear hora
+        db.ref('horas_bloqueadas/' + claveHora).set(true);
+      }
+    }
+
     document.getElementById('fecha').min = new Date().toISOString().split('T')[0];
+    document.getElementById('fecha-admin').min = new Date().toISOString().split('T')[0];
   </script>
 </body>
 </html>
