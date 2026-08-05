@@ -213,6 +213,7 @@
 
   <div class="container">
     
+    <!-- HEADER CON FOTO Y BIENVENIDA -->
     <header class="header">
       <div class="logo-container">
         <img src="https://i.postimg.cc/9fsRY43k/IMG-0086.jpg" alt="Lash Marii" class="logo-img">
@@ -223,6 +224,7 @@
       <div class="location-badge">📍 Los Andes, Chile</div>
     </header>
 
+    <!-- DATOS PERSONALES Y SERVICIOS -->
     <div class="card">
       <div class="card-title">Datos Personales</div>
 
@@ -265,9 +267,86 @@
       </div>
     </div>
 
+    <!-- FECHA Y HORA -->
     <div class="card">
       <div class="card-title">Fecha y Hora</div>
 
       <div class="form-group">
-        <label for="fecha">El archivo `index.html` es simplemente la página principal que el navegador o un servidor busca por defecto para cargar un sitio web. Si no lo tienes en el teléfono, puedes crearlo fácilmente o renombrar uno que ya tengas.
+        <label for="fecha">Selecciona el Día</label>
+        <input type="date" id="fecha" onchange="actualizarHoras()">
+      </div>
 
+      <div class="form-group">
+        <label>Horas Disponibles</label>
+        <div id="grid-horas" class="time-grid">
+          <div class="placeholder-text">Selecciona un día primero</div>
+        </div>
+      </div>
+    </div>
+
+  </div>
+
+  <script>
+    // Horarios militares por día (0 = Domingo, 1 = Lunes, ...)
+    const horarios = {
+      0: ["10:00", "12:00", "14:00", "16:00", "18:00", "20:00"], // Domingo
+      1: ["14:00", "16:00", "18:00", "20:00"],                   // Lunes
+      2: ["16:00", "18:00", "20:00"],                            // Martes
+      3: ["14:00", "16:00", "18:00", "20:00"],                   // Miércoles
+      4: ["14:00", "16:00", "18:00", "20:00"],                   // Jueves
+      5: ["16:00", "18:00", "20:00"],                            // Viernes
+      6: ["10:00", "12:00", "14:00", "16:00", "18:00", "20:00"]  // Sábado
+    };
+
+    let horaSeleccionada = "";
+
+    function calcularTotal() {
+      const selectServicio = document.getElementById('servicio');
+      const precio = parseInt(selectServicio.value, 10);
+      document.getElementById('precio-total').textContent = "$" + precio.toLocaleString('es-CL');
+    }
+
+    function actualizarHoras() {
+      const inputFecha = document.getElementById('fecha').value;
+      const gridHoras = document.getElementById('grid-horas');
+      
+      if (!inputFecha) {
+        gridHoras.innerHTML = '<div class="placeholder-text">Selecciona un día primero</div>';
+        return;
+      }
+
+      const partes = inputFecha.split('-');
+      const fecha = new Date(partes[0], partes[1] - 1, partes[2]);
+      const diaSemana = fecha.getDay();
+
+      const horasDisponibles = horarios[diaSemana] || [];
+
+      gridHoras.innerHTML = "";
+      horaSeleccionada = "";
+
+      if (horasDisponibles.length === 0) {
+        gridHoras.innerHTML = '<div class="placeholder-text">No hay horas disponibles este día</div>';
+        return;
+      }
+
+      horasDisponibles.forEach(hora => {
+        const btn = document.createElement('button');
+        btn.type = 'button';
+        btn.className = 'time-btn';
+        btn.textContent = hora;
+        btn.onclick = () => seleccionarHora(btn, hora);
+        gridHoras.appendChild(btn);
+      });
+    }
+
+    function seleccionarHora(boton, hora) {
+      document.querySelectorAll('.time-btn').forEach(b => b.classList.remove('selected'));
+      boton.classList.add('selected');
+      horaSeleccionada = hora;
+    }
+
+    // Configurar fecha mínima a la fecha de hoy
+    document.getElementById('fecha').min = new Date().toISOString().split('T')[0];
+  </script>
+</body>
+</html>
