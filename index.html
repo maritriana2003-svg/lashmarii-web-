@@ -523,18 +523,63 @@
       margin-top: 2px;
     }
 
-    .care-section-title {
+    /* ESTILOS NUEVOS ACORDEÓN DE RECOMENDACIONES */
+    .accordion-header {
+      width: 100%;
+      background: #ffffff;
+      border: 1.5px solid var(--border-color);
+      border-radius: 14px;
+      padding: 14px 16px;
       font-size: 0.92rem;
       font-weight: 800;
-      color: var(--primary);
-      margin: 16px 0 10px 0;
+      color: var(--text-dark);
+      text-align: left;
+      cursor: pointer;
       display: flex;
+      justify-content: space-between;
       align-items: center;
-      gap: 6px;
+      margin-bottom: 8px;
+      transition: all 0.2s ease;
     }
 
-    .care-section-title:first-of-type {
-      margin-top: 5px;
+    .accordion-header:hover {
+      background-color: #fff8f9;
+    }
+
+    .accordion-header.active {
+      border-color: var(--primary);
+      background-color: #fff8f9;
+      color: var(--primary);
+      border-bottom-left-radius: 0;
+      border-bottom-right-radius: 0;
+      margin-bottom: 0;
+    }
+
+    .accordion-content {
+      max-height: 0;
+      overflow: hidden;
+      transition: max-height 0.3s ease-out;
+      background: #ffffff;
+      border: 1.5px solid var(--border-color);
+      border-top: none;
+      border-bottom-left-radius: 14px;
+      border-bottom-right-radius: 14px;
+      margin-bottom: 12px;
+      padding: 0 14px;
+    }
+
+    .accordion-content.show {
+      padding: 14px;
+      max-height: 1000px; /* Suficiente espacio para las recomendaciones */
+    }
+
+    .accordion-arrow {
+      font-size: 0.8rem;
+      transition: transform 0.3s ease;
+    }
+
+    .accordion-header.active .accordion-arrow {
+      transform: rotate(180deg);
     }
 
     .care-item {
@@ -546,6 +591,10 @@
       border-radius: 12px;
       margin-bottom: 8px;
       border: 1px solid #fce8ef;
+    }
+
+    .care-item:last-child {
+      margin-bottom: 0;
     }
 
     .care-icon {
@@ -931,89 +980,99 @@
       </div>
     </div>
 
-    <!-- CUIDADOS -->
+    <!-- CUIDADOS / RECOMENDACIONES (MODIFICADO A ACORDEÓN CLICKABLE) -->
     <div id="tab-cuidados" class="tab-content">
       <div class="card">
-        <div class="card-title">Cuidados Posteriores</div>
+        <div class="card-title">Recomendaciones</div>
         <p style="font-size: 0.85rem; color: var(--subtext); margin-bottom: 15px;">
-          Sigue estos tipcitos con amor para mantener tus resultados hermosos por mucho más tiempo ✨
+          Haz clic en cada categoría para ver los tipcitos con amor para cuidar tus resultados ✨
         </p>
 
-        <div class="care-section-title">💖 Extensiones de Pestañas</div>
-
-        <div class="care-item">
-          <div class="care-icon">💧</div>
-          <div class="care-text">
-            <strong>Primeras 24 horas:</strong> Evita mojar tus pestañitas, recibir vapor directo o llorar para asegurar una fijación perfecta.
+        <!-- CATEGORÍA: EXTENSIONES -->
+        <button class="accordion-header" onclick="toggleAccordion(this)">
+          💖 Extensiones de Pestañas <span class="accordion-arrow">▼</span>
+        </button>
+        <div class="accordion-content">
+          <div class="care-item">
+            <div class="care-icon">💧</div>
+            <div class="care-text">
+              <strong>Primeras 24 horas:</strong> Evita mojar tus pestañitas, recibir vapor directo o llorar para asegurar una fijación perfecta.
+            </div>
+          </div>
+          <div class="care-item">
+            <div class="care-icon">🧴</div>
+            <div class="care-text">
+              <strong>Productos sin aceite:</strong> No utilices desmaquillantes o cremas oleosas cerca de tus ojos; prefiere siempre productos a base de agua.
+            </div>
+          </div>
+          <div class="care-item">
+            <div class="care-icon">🧹</div>
+            <div class="care-text">
+              <strong>Cepillado diario:</strong> Peina tus pestañas delicadamente con el cepillito que te regalaré al finalizar tu cita para mantenerlas alineadas y hermosas.
+            </div>
+          </div>
+          <div class="care-item">
+            <div class="care-icon">🙈</div>
+            <div class="care-text">
+              <strong>Cuida tu mirada:</strong> Evita frotar o restregar tus ojitos para proteger tus pestañas naturales y mantener la extensión impecable.
+            </div>
           </div>
         </div>
 
-        <div class="care-item">
-          <div class="care-icon">🧴</div>
-          <div class="care-text">
-            <strong>Productos sin aceite:</strong> No utilices desmaquillantes o cremas oleosas cerca de tus ojos; prefiere siempre productos a base de agua.
+        <!-- CATEGORÍA: LIFTING Y LAMINADO -->
+        <button class="accordion-header" onclick="toggleAccordion(this)">
+          🌸 Lifting & Laminado de Cejas <span class="accordion-arrow">▼</span>
+        </button>
+        <div class="accordion-content">
+          <div class="care-item">
+            <div class="care-icon">💧</div>
+            <div class="care-text">
+              <strong>Primeras 24 horas:</strong> Mantén la zona seca y evita mojar tus pestañas o cejas durante el primer día.
+            </div>
+          </div>
+          <div class="care-item">
+            <div class="care-icon">🌿</div>
+            <div class="care-text">
+              <strong>Nutrición posterior:</strong> A partir de las 24 horas, aplica diariamente el aceitito nutritivo que te entregaré para mantener tus vellitos siempre suaves, hidratados y brillantes.
+            </div>
+          </div>
+          <div class="care-item">
+            <div class="care-icon">🧹</div>
+            <div class="care-text">
+              <strong>Peinado diario:</strong> Usa el cepillito para peinar tus cejas y pestañas, dándoles la forma que más te guste todos los días.
+            </div>
+          </div>
+          <div class="care-item">
+            <div class="care-icon">🙅‍♀️</div>
+            <div class="care-text">
+              <strong>Cero fricción:</strong> Evita restregar la zona tratada para cuidar el diseño y la dirección del peinado.
+            </div>
           </div>
         </div>
 
-        <div class="care-item">
-          <div class="care-icon">🧹</div>
-          <div class="care-text">
-            <strong>Cepillado diario:</strong> Peina tus pestañas delicadamente con el cepillito que te regalaré al finalizar tu cita para mantenerlas alineadas y hermosas.
+        <!-- CATEGORÍA: LABIOS -->
+        <button class="accordion-header" onclick="toggleAccordion(this)">
+          🍓 Hydra Gloss / Hydra Lips <span class="accordion-arrow">▼</span>
+        </button>
+        <div class="accordion-content">
+          <div class="care-item">
+            <div class="care-icon">💄</div>
+            <div class="care-text">
+              <strong>Hidratación constante:</strong> Aplica el labialcito especial que te daré de regalo para mantener tus labios súper frescos, suaves y protegidos en todo momento.
+            </div>
           </div>
         </div>
 
-        <div class="care-item">
-          <div class="care-icon">🙈</div>
-          <div class="care-text">
-            <strong>Cuida tu mirada:</strong> Evita frotar o restregar tus ojitos para proteger tus pestañas naturales y mantener la extensión impecable.
-          </div>
-        </div>
-
-        <div class="care-section-title">🌸 Lifting & Laminado de Cejas</div>
-
-        <div class="care-item">
-          <div class="care-icon">💧</div>
-          <div class="care-text">
-            <strong>Primeras 24 horas:</strong> Mantén la zona seca y evita mojar tus pestañas o cejas durante el primer día.
-          </div>
-        </div>
-
-        <div class="care-item">
-          <div class="care-icon">🌿</div>
-          <div class="care-text">
-            <strong>Nutrición posterior:</strong> A partir de las 24 horas, aplica diariamente el aceitito nutritivo que te entregaré para mantener tus vellitos siempre suaves, hidratados y brillantes.
-          </div>
-        </div>
-
-        <div class="care-item">
-          <div class="care-icon">🧹</div>
-          <div class="care-text">
-            <strong>Peinado diario:</strong> Usa el cepillito para peinar tus cejas y pestañas, dándoles la forma que más te guste todos los días.
-          </div>
-        </div>
-
-        <div class="care-item">
-          <div class="care-icon">🙅‍♀️</div>
-          <div class="care-text">
-            <strong>Cero fricción:</strong> Evita restregar la zona tratada para cuidar el diseño y la dirección del peinado.
-          </div>
-        </div>
-
-        <div class="care-section-title">🍓 Hydra Gloss / Hydra Lips</div>
-
-        <div class="care-item">
-          <div class="care-icon">💄</div>
-          <div class="care-text">
-            <strong>Hidratación constante:</strong> Aplica el labialcito especial que te daré de regalo para mantener tus labios súper frescos, suaves y protegidos en todo momento.
-          </div>
-        </div>
-
-        <div class="care-section-title">🕯️ Depilación de Cejas</div>
-
-        <div class="care-item">
-          <div class="care-icon">🍃</div>
-          <div class="care-text">
-            <strong>Calma tu piel:</strong> Aplica un poquito de crema hidratante o gel de aloe vera para reconfortar la piel recién depilada y mantenerla suavecita.
+        <!-- CATEGORÍA: DEPILACIÓN -->
+        <button class="accordion-header" onclick="toggleAccordion(this)">
+          🕯️ Depilación de Cejas <span class="accordion-arrow">▼</span>
+        </button>
+        <div class="accordion-content">
+          <div class="care-item">
+            <div class="care-icon">🍃</div>
+            <div class="care-text">
+              <strong>Calma tu piel:</strong> Aplica un poquito de crema hidratante o gel de aloe vera para reconfortar la piel recién depilada y mantenerla suavecita.
+            </div>
           </div>
         </div>
 
@@ -1129,6 +1188,29 @@
       window.scrollTo(0, 0);
     }
 
+    /* NUEVA FUNCIÓN PARA CONTROLAR EL DESPLEGABLE */
+    function toggleAccordion(header) {
+      header.classList.toggle('active');
+      const content = header.nextElementSibling;
+      
+      if (content.classList.contains('show')) {
+        content.classList.remove('show');
+        content.style.maxHeight = null;
+      } else {
+        // Cerrar otros si estuvieran abiertos (opcional, da un efecto más limpio)
+        document.querySelectorAll('.accordion-content').forEach(c => {
+          c.classList.remove('show');
+          c.style.maxHeight = null;
+        });
+        document.querySelectorAll('.accordion-header').forEach(h => h.classList.remove('active'));
+        
+        // Abrir el actual
+        header.classList.add('active');
+        content.classList.add('show');
+        content.style.maxHeight = content.scrollHeight + "px";
+      }
+    }
+
     function calcularTotal(checkbox) {
       const labelPadre = checkbox.closest('.service-option');
       if (checkbox.checked) {
@@ -1201,6 +1283,7 @@
       const horasDisponibles = horarios[diaSemana] || [];
 
       gridHoras.innerHTML = "";
+      gridHoras.innerHTML = "";
       horaSeleccionada = "";
 
       if (horasDisponibles.length === 0) {
@@ -1267,7 +1350,7 @@
         serviciosSeleccionados.push("• " + cb.getAttribute('data-name'));
       });
 
-      const listaServicios = serviciosSeleccionados.join("%0A");
+      const listaServicios = serviciosServiciosSeleccionados.join("%0A");
       const partesFecha = fecha.split('-');
       const fechaFormateada = `${partesFecha[2]}/${partesFecha[1]}/${partesFecha[0]}`;
       
