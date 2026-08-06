@@ -323,20 +323,27 @@
       padding: 14px;
       text-align: center;
       font-weight: 700;
-      font-size: 1rem;
+      font-size: 0.95rem;
       color: var(--text-dark);
       margin-top: 15px;
       background-color: #fff8f9;
+      line-height: 1.6;
     }
 
     .total-amount {
       color: var(--primary);
-      font-size: 1.2rem;
+      font-size: 1.15rem;
     }
 
     .abono-amount {
-      color: #2e7d32;
+      color: #e63974;
       font-size: 1.1rem;
+      font-weight: 800;
+    }
+
+    .restante-amount {
+      color: #2e7d32;
+      font-size: 1.15rem;
       font-weight: 800;
     }
 
@@ -467,7 +474,6 @@
       grid-column: span 3;
     }
 
-    /* ESTILOS DE CUIDADOS MEJORADOS */
     .care-section-title {
       font-size: 0.92rem;
       font-weight: 800;
@@ -724,8 +730,11 @@
         </div>
 
         <div class="total-box">
-          <div>Total Estimado: <span class="total-amount" id="precio-total">$0</span></div>
-          <div style="margin-top: 6px;">Abono requerido para agendar: <span class="abono-amount" id="precio-abono">$0</span></div>
+          <div>Total Servicio: <span class="total-amount" id="precio-total">$0</span></div>
+          <div>Abono para reservar: <span class="abono-amount" id="precio-abono">$0</span></div>
+          <div style="margin-top: 6px; padding-top: 6px; border-top: 1px dashed var(--border-color);">
+            Monto a pagar el día de tu cita: <span class="restante-amount" id="precio-restante">$0</span>
+          </div>
         </div>
 
         <div class="payment-box">
@@ -783,7 +792,7 @@
       </div>
     </div>
 
-    <!-- CUIDADOS ACTUALIZADOS -->
+    <!-- CUIDADOS -->
     <div id="tab-cuidados" class="tab-content">
       <div class="card">
         <div class="card-title">Cuidados Posteriores</div>
@@ -791,7 +800,6 @@
           Sigue estos tipcitos con amor para mantener tus resultados hermosos por mucho más tiempo ✨
         </p>
 
-        <!-- EXTENSIONES DE PESTAÑAS -->
         <div class="care-section-title">💖 Extensiones de Pestañas</div>
 
         <div class="care-item">
@@ -822,7 +830,6 @@
           </div>
         </div>
 
-        <!-- LIFTING Y LAMINADO -->
         <div class="care-section-title">🌸 Lifting & Laminado de Cejas</div>
 
         <div class="care-item">
@@ -853,7 +860,6 @@
           </div>
         </div>
 
-        <!-- HYDRA GLOSS -->
         <div class="care-section-title">🍓 Hydra Gloss / Hydra Lips</div>
 
         <div class="care-item">
@@ -863,7 +869,6 @@
           </div>
         </div>
 
-        <!-- DEPILACIÓN DE CEJAS -->
         <div class="care-section-title">🕯️ Depilación de Cejas</div>
 
         <div class="care-item">
@@ -962,7 +967,8 @@
     };
 
     let horaSeleccionada = "";
-    let montoAbono = 0;
+    let montoTotalGlobal = 0;
+    let montoAbonoGlobal = 0;
     let horasOcupadasBaseDatos = {};
 
     db.ref('horas_bloqueadas').on('value', (snapshot) => {
@@ -996,7 +1002,6 @@
     }
 
     function calcularTotal() {
-      const checkboxes = document.querySelectorAll('.service-checkbox');
       const extChecked = document.querySelectorAll('.service-checkbox[data-group="extensiones"]:checked');
       const liftingChecked = document.querySelectorAll('.service-checkbox[data-group="lifting"]:checked');
 
@@ -1030,15 +1035,19 @@
       });
 
       if (cantidadServicios === 1) {
-        montoAbono = 5000;
+        montoAbonoGlobal = 5000;
       } else if (cantidadServicios >= 2) {
-        montoAbono = 10000;
+        montoAbonoGlobal = 10000;
       } else {
-        montoAbono = 0;
+        montoAbonoGlobal = 0;
       }
 
+      montoTotalGlobal = total;
+      const restante = Math.max(0, total - montoAbonoGlobal);
+
       document.getElementById('precio-total').textContent = "$" + total.toLocaleString('es-CL');
-      document.getElementById('precio-abono').textContent = "$" + montoAbono.toLocaleString('es-CL');
+      document.getElementById('precio-abono').textContent = "$" + montoAbonoGlobal.toLocaleString('es-CL');
+      document.getElementById('precio-restante').textContent = "$" + restante.toLocaleString('es-CL');
     }
 
     function actualizarHoras() {
@@ -1126,15 +1135,19 @@
       const listaServicios = serviciosSeleccionados.join("%0A");
       const partesFecha = fecha.split('-');
       const fechaFormateada = `${partesFecha[2]}/${partesFecha[1]}/${partesFecha[0]}`;
+      
+      const saldoRestante = Math.max(0, montoTotalGlobal - montoAbonoGlobal);
+      const saldoRestanteFormateado = "$" + saldoRestante.toLocaleString('es-CL');
 
       const mensaje = `¡Hola Lash Marii! 👋🏼 Deseo solicitar una reserva:%0A%0A` +
                       `👤 *Nombre:* ${nombre}%0A` +
                       `✨ *Servicios:*%0A${listaServicios}%0A%0A` +
-                      `💰 *Total:* ${precioTotal}%0A` +
-                      `💵 *Abono Requerido:* ${precioAbono}%0A` +
+                      `💰 *Total del servicio:* ${precioTotal}%0A` +
+                      `💵 *Abono requerido:* ${precioAbono}%0A` +
                       `📅 *Fecha:* ${fechaFormateada}%0A` +
                       `⏰ *Hora:* ${horaSeleccionada} hrs%0A%0A` +
-                      `📌 *Adjunto mi comprobante de abono a continuación:*`;
+                      `📌 *Adjunto mi comprobante de abono a continuación:*%0A` +
+                      `💖 *Saldo a pagar el día de mi cita:* ${saldoRestanteFormateado}`;
 
       const telefono = "56977952393"; 
       window.open(`https://wa.me/${telefono}?text=${mensaje}`, '_blank');
@@ -1206,4 +1219,3 @@
   </script>
 </body>
 </html>
-
