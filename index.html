@@ -56,12 +56,12 @@
 
     .hero-header {
       text-align: center;
-      padding: 10px 0;
+      padding: 20px 0 10px 0;
     }
 
     .logo-container {
-      width: 140px;
-      height: 140px;
+      width: 150px;
+      height: 150px;
       margin: 0 auto 15px auto;
       border-radius: 50%;
       padding: 4px;
@@ -77,57 +77,40 @@
       display: block;
     }
 
-    .greeting-badge {
-      display: inline-block;
-      background-color: #ffe6ee;
-      color: var(--primary);
-      font-size: 0.95rem;
+    .welcome-text {
+      font-size: 0.9rem;
       font-weight: 800;
-      padding: 6px 16px;
-      border-radius: 20px;
-      margin-bottom: 8px;
-      letter-spacing: 0.5px;
+      letter-spacing: 2px;
+      color: var(--primary);
+      text-transform: uppercase;
+      margin-bottom: 5px;
     }
 
     .brand-title {
-      font-size: 2.2rem;
+      font-size: 2rem;
       font-weight: 800;
       color: var(--text-dark);
       margin-bottom: 12px;
     }
 
-    .bio-card {
-      background: #ffffff;
-      border: 1.5px solid var(--border-color);
-      border-radius: 20px;
-      padding: 18px 16px;
-      margin-bottom: 18px;
-      box-shadow: 0 4px 15px rgba(230, 57, 116, 0.05);
-      text-align: center;
-    }
-
     .brand-desc {
-      font-size: 0.92rem;
+      font-size: 0.95rem;
       color: var(--subtext);
-      line-height: 1.55;
-    }
-
-    .brand-desc strong {
-      color: var(--primary);
+      line-height: 1.5;
+      margin: 0 auto 18px auto;
     }
 
     .location-badge {
       display: inline-flex;
       align-items: center;
       gap: 5px;
-      background-color: #fff;
-      border: 1px solid var(--border-color);
+      background-color: #ffe6ee;
       color: var(--primary);
       font-size: 0.85rem;
       font-weight: 700;
-      padding: 6px 14px;
+      padding: 8px 16px;
       border-radius: 20px;
-      margin-bottom: 20px;
+      margin-bottom: 25px;
     }
 
     .btn-main {
@@ -146,14 +129,42 @@
       justify-content: center;
       gap: 8px;
       text-decoration: none;
-      margin-bottom: 12px;
+      margin-bottom: 10px;
     }
 
     .sub-note {
       text-align: center;
       font-size: 0.85rem;
       color: var(--subtext);
-      margin-bottom: 20px;
+      margin-bottom: 25px;
+    }
+
+    /* BLOQUE DE CONFIANZA Y FORMALIDAD EN PIE DE PORTADA */
+    .trust-footer {
+      background: rgba(255, 255, 255, 0.75);
+      border: 1px solid var(--border-color);
+      border-radius: 14px;
+      padding: 12px;
+      margin: 0 0 20px 0;
+      text-align: left;
+      font-size: 0.78rem;
+      color: var(--subtext);
+      line-height: 1.35;
+    }
+
+    .trust-footer-item {
+      display: flex;
+      align-items: flex-start;
+      gap: 8px;
+      margin-bottom: 8px;
+    }
+
+    .trust-footer-item:last-child {
+      margin-bottom: 0;
+    }
+
+    .trust-footer-item strong {
+      color: var(--text-dark);
     }
 
     .btn-secondary {
@@ -537,22 +548,27 @@
         <div class="logo-container">
           <img src="https://i.postimg.cc/9fsRY43k/IMG-0086.jpg" alt="Lash Marii" class="logo-img">
         </div>
-
-        <div class="greeting-badge">¡Holi! 🌸</div>
+        <div class="welcome-text">Bienvenida a</div>
         <h1 class="brand-title">Lash Marii</h1>
-        
-        <div class="bio-card">
-          <p class="brand-desc">
-            Soy <strong>Mari</strong>, tengo 23 años y estudio ingeniería. Me apasiona combinar la precisión con el arte del diseño de mirada ✨. Estaré encantada de ser tu lashista, escucharte, regalonearte y crear el set perfecto para resaltar tu belleza única 💖.
-          </p>
-        </div>
-
+        <p class="brand-desc">Extensiones de pestañas y lifting con atención completamente personalizada. Diseños únicos para resaltar tu mirada.</p>
         <div class="location-badge">📍 Los Andes, Chile</div>
 
         <button class="btn-main" onclick="switchTab('reservar')">
           💖 Agenda tu cita aquí
         </button>
         <div class="sub-note">Atención personalizada · Solo con reserva previa</div>
+
+        <!-- BLOQUE DE CONFIANZA Y FORMALIDAD -->
+        <div class="trust-footer">
+          <div class="trust-footer-item">
+            <span>🛡️</span>
+            <div><strong>Insumos Certificados:</strong> Productos 100% profesionales comprados directamente con distribuidores oficiales autorizados.</div>
+          </div>
+          <div class="trust-footer-item">
+            <span>📋</span>
+            <div><strong>Estudio Formal:</strong> Registrados ante el Servicio de Impuestos Internos (SII) con emisión de boleta.</div>
+          </div>
+        </div>
 
         <a href="https://instagram.com/Lash.marii" target="_blank" class="btn-secondary">
           📸 Sígueme en Instagram: @Lash.marii
@@ -576,7 +592,7 @@
           <!-- EXTENSIONES DE PESTAÑAS -->
           <div class="service-category">Extensiones de Pestañas</div>
           <div class="service-desc">
-            ℹ️ Aplicación de fibra sintética pelo a pelo o en abanicos sobre tu pestaña natural. <strong>Requieren retoque sí o sí a los 21 días (2 a 3 semanas máximo).</strong>
+            ℹ️ Aplicación de fibra sintética pelo a pelo sobre tu pestaña natural. <strong>Requieren retoque sí o sí a los 21 días (2 a 3 semanas máximo).</strong>
           </div>
 
           <label class="service-option" onclick="toggleService(this)">
@@ -916,7 +932,6 @@
       const extChecked = document.querySelectorAll('.service-checkbox[data-group="extensiones"]:checked');
       const liftingChecked = document.querySelectorAll('.service-checkbox[data-group="lifting"]:checked');
 
-      // Regla de Exclusión Mutua entre Extensiones y Lifting
       if (extChecked.length > 0) {
         document.querySelectorAll('.service-checkbox[data-group="lifting"]').forEach(cb => {
           cb.disabled = true;
@@ -938,7 +953,6 @@
         });
       }
 
-      // Cálculo de Totales
       const seleccionados = document.querySelectorAll('.service-checkbox:checked');
       let total = 0;
       const cantidadServicios = seleccionados.length;
