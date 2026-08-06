@@ -287,34 +287,61 @@
     }
 
     .payment-box {
-      background-color: #f0f7ff;
-      border: 1.5px solid #009ee3;
+      background-color: #fff9fb;
+      border: 1.5px solid var(--border-color);
       border-radius: 16px;
       padding: 16px;
       margin-top: 15px;
-      text-align: center;
     }
 
     .payment-title {
       font-size: 0.95rem;
       font-weight: 800;
-      color: #009ee3;
-      margin-bottom: 6px;
+      color: var(--primary);
+      margin-bottom: 10px;
       display: flex;
       align-items: center;
       justify-content: center;
       gap: 6px;
+      text-align: center;
     }
 
-    .payment-desc {
-      font-size: 0.85rem;
-      color: #4a5568;
+    .bank-details {
+      background-color: #ffffff;
+      border: 1px solid var(--border-color);
+      border-radius: 12px;
+      padding: 12px 14px;
+      margin-bottom: 12px;
+      font-size: 0.88rem;
+      line-height: 1.6;
+    }
+
+    .bank-details div {
+      display: flex;
+      justify-content: space-between;
+      border-bottom: 1px dashed #f2e6ea;
+      padding: 3px 0;
+    }
+
+    .bank-details div:last-child {
+      border-bottom: none;
+    }
+
+    .alert-whatsapp {
+      background-color: #ffe6ee;
+      border-left: 4px solid var(--primary);
+      border-radius: 8px;
+      padding: 10px;
+      font-size: 0.82rem;
+      color: #a12c4e;
+      font-weight: 700;
+      text-align: center;
       line-height: 1.4;
       margin-bottom: 12px;
     }
 
     .btn-mercadopago {
-      display: inline-flex;
+      display: flex;
       align-items: center;
       justify-content: center;
       gap: 8px;
@@ -322,10 +349,10 @@
       color: white;
       text-decoration: none;
       font-weight: 700;
-      font-size: 0.9rem;
-      padding: 12px 20px;
+      font-size: 0.88rem;
+      padding: 12px;
       border-radius: 12px;
-      box-shadow: 0 4px 10px rgba(0, 158, 227, 0.25);
+      box-shadow: 0 4px 10px rgba(0, 158, 227, 0.2);
       width: 100%;
     }
 
@@ -598,11 +625,23 @@
           <div style="margin-top: 6px;">Abono requerido para agendar: <span class="abono-amount" id="precio-abono">$0</span></div>
         </div>
 
+        <!-- MÉTODOS DE PAGO Y BANCO -->
         <div class="payment-box">
-          <div class="payment-title">💳 Paga tu abono con Mercado Pago</div>
-          <div class="payment-desc">Para asegurar tu cita, transfiere o paga el abono a través del siguiente botón o directamente a mi cuenta.</div>
+          <div class="payment-title">💳 Opciones de Abono</div>
+
+          <div class="bank-details">
+            <div><span><strong>Banco:</strong></span> <span>BancoEstado</span></div>
+            <div><span><strong>Tipo:</strong></span> <span>CuentaRUT</span></div>
+            <div><span><strong>N° Cuenta:</strong></span> <span>24.901.982-8</span></div>
+            <div><span><strong>Titular:</strong></span> <span>Maria Triana Ceballos</span></div>
+          </div>
+
+          <div class="alert-whatsapp">
+            ⚠️ OBLIGATORIO: Una vez realizado el abono, debes enviar el comprobante sí o sí a WhatsApp para confirmar tu reserva.
+          </div>
+
           <a href="https://mpago.la/tu-link-aqui" target="_blank" class="btn-mercadopago">
-            Pagar Abono con Mercado Pago
+            Pagar Abono vía Mercado Pago
           </a>
         </div>
 
@@ -624,7 +663,7 @@
         </div>
 
         <button class="btn-main" style="margin-top: 15px; margin-bottom: 0;" onclick="enviarWhatsApp()">
-          Confirmar Reserva por WhatsApp
+          Confirmar Reserva por WhatsApp 📲
         </button>
       </div>
     </div>
@@ -677,7 +716,7 @@
       </div>
     </div>
 
-    <!-- PANEL ADMIN (SOLO PARA TI) -->
+    <!-- PANEL ADMIN -->
     <div id="tab-admin" class="tab-content">
       <div class="card">
         <div class="card-title">Panel de Administración</div>
@@ -738,7 +777,6 @@
   </nav>
 
   <script>
-    // Configuración con tus credenciales reales de Firebase
     const firebaseConfig = {
       apiKey: "AIzaSyDvc97mEgmRfBOFcBcBdPFHkAAoEOy-9VM",
       authDomain: "lash-marii.firebaseapp.com",
@@ -748,28 +786,25 @@
       appId: "1:764630588595:web:76f7d0fb3d9963dcdf64c6"
     };
 
-    // Inicializar Firebase
     firebase.initializeApp(firebaseConfig);
     const db = firebase.database();
 
-    // Tu clave para ingresar al panel administrador
     const CLAVE_ADMIN = "marii123"; 
 
     const horarios = {
-      0: ["10:00", "12:00", "14:00", "16:00", "18:00", "20:00"], // Domingo
-      1: ["10:00", "18:00", "20:00"],                            // Lunes
-      2: ["18:00", "20:00"],                                     // Martes
-      3: ["10:00", "12:00", "14:00", "16:00", "18:00", "20:00"], // Miércoles
-      4: ["10:00", "12:00", "20:00"],                            // Jueves
-      5: ["14:00", "16:00", "18:00", "20:00"],                   // Viernes
-      6: ["16:00", "18:00", "20:00"]                            // Sábado
+      0: ["10:00", "12:00", "14:00", "16:00", "18:00", "20:00"], 
+      1: ["10:00", "18:00", "20:00"],                            
+      2: ["18:00", "20:00"],                                     
+      3: ["10:00", "12:00", "14:00", "16:00", "18:00", "20:00"], 
+      4: ["10:00", "12:00", "20:00"],                            
+      5: ["14:00", "16:00", "18:00", "20:00"],                   
+      6: ["16:00", "18:00", "20:00"]                            
     };
 
     let horaSeleccionada = "";
     let montoAbono = 0;
     let horasOcupadasBaseDatos = {};
 
-    // Escuchar cambios de la base de datos en tiempo real
     db.ref('horas_bloqueadas').on('value', (snapshot) => {
       horasOcupadasBaseDatos = snapshot.val() || {};
       actualizarHoras();
@@ -911,13 +946,13 @@
                       `💰 *Total:* ${precioTotal}%0A` +
                       `💵 *Abono Requerido:* ${precioAbono}%0A` +
                       `📅 *Fecha:* ${fechaFormateada}%0A` +
-                      `⏰ *Hora:* ${horaSeleccionada} hrs`;
+                      `⏰ *Hora:* ${horaSeleccionada} hrs%0A%0A` +
+                      `📌 *Adjunto mi comprobante de abono a continuación:*`;
 
-      const telefono = "56912345678"; // Reemplaza con tu número de WhatsApp
+      const telefono = "56977952393"; 
       window.open(`https://wa.me/${telefono}?text=${mensaje}`, '_blank');
     }
 
-    /* FUNCIONES DEL PANEL ADMIN */
     function validarAdmin() {
       const pass = document.getElementById('admin-pass').value;
       if (pass === CLAVE_ADMIN) {
@@ -973,10 +1008,8 @@
 
     function alternarEstadoHora(claveHora, actualmenteBloqueada) {
       if (actualmenteBloqueada) {
-        // Desbloquear hora
         db.ref('horas_bloqueadas/' + claveHora).remove();
       } else {
-        // Bloquear hora
         db.ref('horas_bloqueadas/' + claveHora).set(true);
       }
     }
