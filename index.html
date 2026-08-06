@@ -139,7 +139,6 @@
       margin-bottom: 25px;
     }
 
-    /* BLOQUE DE CONFIANZA Y FORMALIDAD EN PIE DE PORTADA */
     .trust-footer {
       background: rgba(255, 255, 255, 0.75);
       border: 1px solid var(--border-color);
@@ -468,28 +467,41 @@
       grid-column: span 3;
     }
 
+    /* ESTILOS DE CUIDADOS MEJORADOS */
+    .care-section-title {
+      font-size: 0.92rem;
+      font-weight: 800;
+      color: var(--primary);
+      margin: 16px 0 10px 0;
+      display: flex;
+      align-items: center;
+      gap: 6px;
+    }
+
+    .care-section-title:first-of-type {
+      margin-top: 5px;
+    }
+
     .care-item {
       display: flex;
       align-items: flex-start;
-      gap: 14px;
-      padding: 14px 0;
-      border-bottom: 1px solid #f2e6ea;
-    }
-
-    .care-item:last-child {
-      border-bottom: none;
+      gap: 12px;
+      padding: 10px 12px;
+      background-color: #fff8f9;
+      border-radius: 12px;
+      margin-bottom: 8px;
+      border: 1px solid #fce8ef;
     }
 
     .care-icon {
-      font-size: 1.5rem;
-      line-height: 1;
-      margin-top: 2px;
+      font-size: 1.2rem;
+      line-height: 1.2;
     }
 
     .care-text {
-      font-size: 0.9rem;
+      font-size: 0.85rem;
       color: var(--subtext);
-      line-height: 1.45;
+      line-height: 1.4;
     }
 
     .care-text strong {
@@ -558,7 +570,6 @@
         </button>
         <div class="sub-note">Atención personalizada · Solo con reserva previa</div>
 
-        <!-- BLOQUE DE CONFIANZA Y FORMALIDAD -->
         <div class="trust-footer">
           <div class="trust-footer-item">
             <span>🛡️</span>
@@ -717,7 +728,6 @@
           <div style="margin-top: 6px;">Abono requerido para agendar: <span class="abono-amount" id="precio-abono">$0</span></div>
         </div>
 
-        <!-- MÉTODOS DE PAGO Y BANCO -->
         <div class="payment-box">
           <div class="payment-title">💳 Opciones de Abono</div>
 
@@ -773,38 +783,96 @@
       </div>
     </div>
 
-    <!-- CUIDADOS -->
+    <!-- CUIDADOS ACTUALIZADOS -->
     <div id="tab-cuidados" class="tab-content">
       <div class="card">
         <div class="card-title">Cuidados Posteriores</div>
+        <p style="font-size: 0.85rem; color: var(--subtext); margin-bottom: 15px;">
+          Sigue estos tipcitos con amor para mantener tus resultados hermosos por mucho más tiempo ✨
+        </p>
+
+        <!-- EXTENSIONES DE PESTAÑAS -->
+        <div class="care-section-title">💖 Extensiones de Pestañas</div>
 
         <div class="care-item">
           <div class="care-icon">💧</div>
           <div class="care-text">
-            <strong>Primeras 24 horas:</strong> Evita mojar tus pestañas, el vapor, saunas o lágrimas para garantizar la máxima retención del adhesivo.
+            <strong>Primeras 24 horas:</strong> Evita mojar tus pestañitas, recibir vapor directo o llorar para asegurar una fijación perfecta.
           </div>
         </div>
 
         <div class="care-item">
           <div class="care-icon">🧴</div>
           <div class="care-text">
-            <strong>Productos oleosos:</strong> No utilices desmaquillantes, cremas o aceites cerca de los ojos. Usa siempre productos a base de agua.
+            <strong>Productos sin aceite:</strong> No utilices desmaquillantes o cremas oleosas cerca de tus ojos; prefiere siempre productos a base de agua.
           </div>
         </div>
 
         <div class="care-item">
           <div class="care-icon">🧹</div>
           <div class="care-text">
-            <strong>Cepillado diario:</strong> Peina tus pestañas delicadamente una o dos veces al día con el cepillo limpio que te entregaré en tu cita.
+            <strong>Cepillado diario:</strong> Peina tus pestañas delicadamente con el cepillito que te regalaré al finalizar tu cita para mantenerlas alineadas y hermosas.
           </div>
         </div>
 
         <div class="care-item">
           <div class="care-icon">🙈</div>
           <div class="care-text">
-            <strong>Evita frotar:</strong> No tires ni juegues con las extensiones. Si deseas retirarlas, asiste conmigo para un retiro profesional.
+            <strong>Cuida tu mirada:</strong> Evita frotar o restregar tus ojitos para proteger tus pestañas naturales y mantener la extensión impecable.
           </div>
         </div>
+
+        <!-- LIFTING Y LAMINADO -->
+        <div class="care-section-title">🌸 Lifting & Laminado de Cejas</div>
+
+        <div class="care-item">
+          <div class="care-icon">💧</div>
+          <div class="care-text">
+            <strong>Primeras 24 horas:</strong> Mantén la zona seca y evita mojar tus pestañas o cejas durante el primer día.
+          </div>
+        </div>
+
+        <div class="care-item">
+          <div class="care-icon">🌿</div>
+          <div class="care-text">
+            <strong>Nutrición posterior:</strong> A partir de las 24 horas, aplica diariamente el aceitito nutritivo que te entregaré para mantener tus vellitos siempre suaves, hidratados y brillantes.
+          </div>
+        </div>
+
+        <div class="care-item">
+          <div class="care-icon">🧹</div>
+          <div class="care-text">
+            <strong>Peinado diario:</strong> Usa el cepillito para peinar tus cejas y pestañas, dándoles la forma que más te guste todos los días.
+          </div>
+        </div>
+
+        <div class="care-item">
+          <div class="care-icon">🙅‍♀️</div>
+          <div class="care-text">
+            <strong>Cero fricción:</strong> Evita restregar la zona tratada para cuidar el diseño y la dirección del peinado.
+          </div>
+        </div>
+
+        <!-- HYDRA GLOSS -->
+        <div class="care-section-title">🍓 Hydra Gloss / Hydra Lips</div>
+
+        <div class="care-item">
+          <div class="care-icon">💄</div>
+          <div class="care-text">
+            <strong>Hidratación constante:</strong> Aplica el labialcito especial que te daré de regalo para mantener tus labios súper frescos, suaves y protegidos en todo momento.
+          </div>
+        </div>
+
+        <!-- DEPILACIÓN DE CEJAS -->
+        <div class="care-section-title">🕯️ Depilación de Cejas</div>
+
+        <div class="care-item">
+          <div class="care-icon">🍃</div>
+          <div class="care-text">
+            <strong>Calma tu piel:</strong> Aplica un poquito de crema hidratante o gel de aloe vera para reconfortar la piel recién depilada y mantenerla suavecita.
+          </div>
+        </div>
+
       </div>
     </div>
 
@@ -1138,3 +1206,4 @@
   </script>
 </body>
 </html>
+
