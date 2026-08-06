@@ -238,6 +238,14 @@
       background-color: #fff8f9;
     }
 
+    /* Estilo para opciones bloqueadas por incompatibilidad */
+    .service-option.disabled {
+      opacity: 0.4;
+      background-color: #f7f7f7;
+      cursor: not-allowed;
+      border-color: #e2e8f0;
+    }
+
     .service-info {
       display: flex;
       align-items: center;
@@ -526,7 +534,7 @@
 
           <label class="service-option" onclick="toggleService(this)">
             <div class="service-info">
-              <input type="checkbox" class="service-checkbox" value="27000" data-name="Pestañas Clásicas" onchange="calcularTotal()">
+              <input type="checkbox" class="service-checkbox" data-group="extensiones" value="27000" data-name="Pestañas Clásicas" onchange="calcularTotal()">
               <span class="service-name">Clásicas</span>
             </div>
             <span class="service-price">$27.000</span>
@@ -534,7 +542,7 @@
 
           <label class="service-option" onclick="toggleService(this)">
             <div class="service-info">
-              <input type="checkbox" class="service-checkbox" value="25000" data-name="Pestañas Rímel" onchange="calcularTotal()">
+              <input type="checkbox" class="service-checkbox" data-group="extensiones" value="25000" data-name="Pestañas Rímel" onchange="calcularTotal()">
               <span class="service-name">Rímel</span>
             </div>
             <span class="service-price">$25.000</span>
@@ -542,7 +550,7 @@
 
           <label class="service-option" onclick="toggleService(this)">
             <div class="service-info">
-              <input type="checkbox" class="service-checkbox" value="25000" data-name="Pestañas Hawaianas" onchange="calcularTotal()">
+              <input type="checkbox" class="service-checkbox" data-group="extensiones" value="25000" data-name="Pestañas Hawaianas" onchange="calcularTotal()">
               <span class="service-name">Hawaianas</span>
             </div>
             <span class="service-price">$25.000</span>
@@ -550,7 +558,7 @@
 
           <label class="service-option" onclick="toggleService(this)">
             <div class="service-info">
-              <input type="checkbox" class="service-checkbox" value="30000" data-name="Pestañas Griego 3D" onchange="calcularTotal()">
+              <input type="checkbox" class="service-checkbox" data-group="extensiones" value="30000" data-name="Pestañas Griego 3D" onchange="calcularTotal()">
               <span class="service-name">Griego 3D</span>
             </div>
             <span class="service-price">$30.000</span>
@@ -558,7 +566,7 @@
 
           <label class="service-option" onclick="toggleService(this)">
             <div class="service-info">
-              <input type="checkbox" class="service-checkbox" value="35000" data-name="Pestañas 5D" onchange="calcularTotal()">
+              <input type="checkbox" class="service-checkbox" data-group="extensiones" value="35000" data-name="Pestañas 5D" onchange="calcularTotal()">
               <span class="service-name">5D</span>
             </div>
             <span class="service-price">$35.000</span>
@@ -568,7 +576,7 @@
 
           <label class="service-option" onclick="toggleService(this)">
             <div class="service-info">
-              <input type="checkbox" class="service-checkbox" value="20000" data-name="Lifting (Queratina + Bótox)" onchange="calcularTotal()">
+              <input type="checkbox" class="service-checkbox" data-group="lifting" value="20000" data-name="Lifting (Queratina + Bótox)" onchange="calcularTotal()">
               <span class="service-name">Lifting (Queratina + Bótox)</span>
             </div>
             <span class="service-price">$20.000</span>
@@ -578,7 +586,7 @@
 
           <label class="service-option" onclick="toggleService(this)">
             <div class="service-info">
-              <input type="checkbox" class="service-checkbox" value="15000" data-name="Laminado de Cejas" onchange="calcularTotal()">
+              <input type="checkbox" class="service-checkbox" data-group="cejas" value="15000" data-name="Laminado de Cejas" onchange="calcularTotal()">
               <span class="service-name">Laminado de Cejas</span>
             </div>
             <span class="service-price">$15.000</span>
@@ -586,7 +594,7 @@
 
           <label class="service-option" onclick="toggleService(this)">
             <div class="service-info">
-              <input type="checkbox" class="service-checkbox" value="20000" data-name="Henna (Incluye laminado)" onchange="calcularTotal()">
+              <input type="checkbox" class="service-checkbox" data-group="cejas" value="20000" data-name="Henna (Incluye laminado)" onchange="calcularTotal()">
               <span class="service-name">Henna (Incluye laminado)</span>
             </div>
             <span class="service-price">$20.000</span>
@@ -594,7 +602,7 @@
 
           <label class="service-option" onclick="toggleService(this)">
             <div class="service-info">
-              <input type="checkbox" class="service-checkbox" value="7000" data-name="Depilación de Cejas" onchange="calcularTotal()">
+              <input type="checkbox" class="service-checkbox" data-group="cejas" value="7000" data-name="Depilación de Cejas" onchange="calcularTotal()">
               <span class="service-name">Depilación de Cejas</span>
             </div>
             <span class="service-price">$7.000</span>
@@ -602,7 +610,7 @@
 
           <label class="service-option" onclick="toggleService(this)">
             <div class="service-info">
-              <input type="checkbox" class="service-checkbox" value="5000" data-name="Perfilado de Cejas" onchange="calcularTotal()">
+              <input type="checkbox" class="service-checkbox" data-group="cejas" value="5000" data-name="Perfilado de Cejas" onchange="calcularTotal()">
               <span class="service-name">Perfilado de Cejas</span>
             </div>
             <span class="service-price">$5.000</span>
@@ -612,7 +620,7 @@
 
           <label class="service-option" onclick="toggleService(this)">
             <div class="service-info">
-              <input type="checkbox" class="service-checkbox" value="20000" data-name="Hydra Gloss (Labios)" onchange="calcularTotal()">
+              <input type="checkbox" class="service-checkbox" data-group="otros" value="20000" data-name="Hydra Gloss (Labios)" onchange="calcularTotal()">
               <span class="service-name">Hydra Gloss (Labios)</span>
             </div>
             <span class="service-price">$20.000</span>
@@ -826,6 +834,8 @@
 
     function toggleService(label) {
       const checkbox = label.querySelector('.service-checkbox');
+      if (checkbox.disabled) return;
+      
       if (checkbox.checked) {
         label.classList.add('selected');
       } else {
@@ -834,11 +844,41 @@
     }
 
     function calcularTotal() {
-      const checkboxes = document.querySelectorAll('.service-checkbox:checked');
-      let total = 0;
-      const cantidadServicios = checkboxes.length;
+      const checkboxes = document.querySelectorAll('.service-checkbox');
+      const extChecked = document.querySelectorAll('.service-checkbox[data-group="extensiones"]:checked');
+      const liftingChecked = document.querySelectorAll('.service-checkbox[data-group="lifting"]:checked');
 
-      checkboxes.forEach(cb => {
+      // Regla de Exclusión Mutua entre Extensiones y Lifting
+      if (extChecked.length > 0) {
+        // Deshabilitar Lifting
+        document.querySelectorAll('.service-checkbox[data-group="lifting"]').forEach(cb => {
+          cb.disabled = true;
+          cb.checked = false;
+          cb.closest('.service-option').classList.add('disabled');
+          cb.closest('.service-option').classList.remove('selected');
+        });
+      } else if (liftingChecked.length > 0) {
+        // Deshabilitar Extensiones
+        document.querySelectorAll('.service-checkbox[data-group="extensiones"]').forEach(cb => {
+          cb.disabled = true;
+          cb.checked = false;
+          cb.closest('.service-option').classList.add('disabled');
+          cb.closest('.service-option').classList.remove('selected');
+        });
+      } else {
+        // Habilitar ambos si ninguno está marcado
+        document.querySelectorAll('.service-checkbox[data-group="extensiones"], .service-checkbox[data-group="lifting"]').forEach(cb => {
+          cb.disabled = false;
+          cb.closest('.service-option').classList.remove('disabled');
+        });
+      }
+
+      // Cálculo de Totales
+      const seleccionados = document.querySelectorAll('.service-checkbox:checked');
+      let total = 0;
+      const cantidadServicios = seleccionados.length;
+
+      seleccionados.forEach(cb => {
         total += parseInt(cb.value, 10);
       });
 
