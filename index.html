@@ -523,7 +523,6 @@
       margin-top: 2px;
     }
 
-    /* ESTILOS NUEVOS ACORDEÓN DE RECOMENDACIONES */
     .accordion-header {
       width: 100%;
       background: #ffffff;
@@ -570,7 +569,7 @@
 
     .accordion-content.show {
       padding: 14px;
-      max-height: 1000px; /* Suficiente espacio para las recomendaciones */
+      max-height: 1000px;
     }
 
     .accordion-arrow {
@@ -882,7 +881,6 @@
         </p>
 
         <div class="gallery-grid">
-          
           <div class="gallery-card featured">
             <div class="badge-new">🔥 ¡NUEVO!</div>
             <img src="https://i.postimg.cc/Bn32Fr4F/IMG-0106.jpg" alt="Depilación de Cejas" class="gallery-img">
@@ -971,7 +969,6 @@
               <div class="gallery-subtitle">Elegante y muy natural</div>
             </div>
           </div>
-
         </div>
 
         <a href="https://instagram.com/Lash.marii" target="_blank" class="btn-secondary" style="margin-top: 18px;">
@@ -980,7 +977,7 @@
       </div>
     </div>
 
-    <!-- CUIDADOS / RECOMENDACIONES (MODIFICADO A ACORDEÓN CLICKABLE) -->
+    <!-- CUIDADOS / RECOMENDACIONES -->
     <div id="tab-cuidados" class="tab-content">
       <div class="card">
         <div class="card-title">Recomendaciones</div>
@@ -1075,7 +1072,6 @@
             </div>
           </div>
         </div>
-
       </div>
     </div>
 
@@ -1109,7 +1105,6 @@
             </div>
           </div>
         </div>
-
       </div>
     </div>
 
@@ -1188,7 +1183,6 @@
       window.scrollTo(0, 0);
     }
 
-    /* NUEVA FUNCIÓN PARA CONTROLAR EL DESPLEGABLE */
     function toggleAccordion(header) {
       header.classList.toggle('active');
       const content = header.nextElementSibling;
@@ -1197,14 +1191,12 @@
         content.classList.remove('show');
         content.style.maxHeight = null;
       } else {
-        // Cerrar otros si estuvieran abiertos (opcional, da un efecto más limpio)
         document.querySelectorAll('.accordion-content').forEach(c => {
           c.classList.remove('show');
           c.style.maxHeight = null;
         });
         document.querySelectorAll('.accordion-header').forEach(h => h.classList.remove('active'));
         
-        // Abrir el actual
         header.classList.add('active');
         content.classList.add('show');
         content.style.maxHeight = content.scrollHeight + "px";
@@ -1267,6 +1259,7 @@
       document.getElementById('precio-restante').textContent = "$" + restante.toLocaleString('es-CL');
     }
 
+    // MODIFICADO: Bloqueo de días pasados a nivel lógico
     function actualizarHoras() {
       const inputFecha = document.getElementById('fecha').value;
       const gridHoras = document.getElementById('grid-horas');
@@ -1276,15 +1269,23 @@
         return;
       }
 
+      // Validar si la fecha seleccionada está en el pasado
+      const hoy = new Date();
+      hoy.setHours(0, 0, 0, 0);
       const partes = inputFecha.split('-');
-      const fecha = new Date(partes[0], partes[1] - 1, partes[2]);
-      const diaSemana = fecha.getDay();
+      const fechaSeleccionada = new Date(partes[0], partes[1] - 1, partes[2]);
+      fechaSeleccionada.setHours(0, 0, 0, 0);
 
-      const horasDisponibles = horarios[diaSemana] || [];
-
-      gridHoras.innerHTML = "";
       gridHoras.innerHTML = "";
       horaSeleccionada = "";
+
+      if (fechaSeleccionada < hoy) {
+        gridHoras.innerHTML = '<div class="placeholder-text" style="color: #e63974; font-weight: bold;">❌ No puedes seleccionar un día pasado</div>';
+        return;
+      }
+
+      const diaSemana = fechaSeleccionada.getDay();
+      const horasDisponibles = horarios[diaSemana] || [];
 
       if (horasDisponibles.length === 0) {
         gridHoras.innerHTML = '<div class="placeholder-text">No hay horas disponibles este día</div>';
@@ -1350,7 +1351,7 @@
         serviciosSeleccionados.push("• " + cb.getAttribute('data-name'));
       });
 
-      const listaServicios = serviciosServiciosSeleccionados.join("%0A");
+      const listaServicios = serviciosSeleccionados.join("%0A");
       const partesFecha = fecha.split('-');
       const fechaFormateada = `${partesFecha[2]}/${partesFecha[1]}/${partesFecha[0]}`;
       
@@ -1432,8 +1433,14 @@
       }
     }
 
-    document.getElementById('fecha').min = new Date().toISOString().split('T')[0];
-    document.getElementById('fecha-admin').min = new Date().toISOString().split('T')[0];
+    // MODIFICADO: Asignación precisa de la fecha mínima nativa en base al huso horario local
+    const hoyLocal = new Date();
+    const offset = hoyLocal.getTimezoneOffset();
+    const fechaAjustada = new Date(hoyLocal.getTime() - (offset * 60 * 1000));
+    const isoFechaMin = fechaAjustada.toISOString().split('T')[0];
+
+    document.getElementById('fecha').min = isoFechaMin;
+    document.getElementById('fecha-admin').min = isoFechaMin;
   </script>
 </body>
 </html>
