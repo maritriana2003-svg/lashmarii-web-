@@ -962,8 +962,9 @@
             </div>
           </div>
 
+          <!-- ACTUALIZADO: Foto real en el catálogo para el Efecto Clásicas -->
           <div class="gallery-card">
-            <img src="https://images.unsplash.com/photo-1583001931096-959e9a1a6223?w=500&q=80" alt="Pestañas Clásicas" class="gallery-img">
+            <img src="https://i.postimg.cc/K8BVmk5b/IMG-3421.jpg" alt="Pestañas Clásicas" class="gallery-img">
             <div class="gallery-info">
               <div class="gallery-title">Efecto Clásicas</div>
               <div class="gallery-subtitle">Elegante y muy natural</div>
@@ -1259,7 +1260,6 @@
       document.getElementById('precio-restante').textContent = "$" + restante.toLocaleString('es-CL');
     }
 
-    // MODIFICADO: Bloqueo de días pasados a nivel lógico
     function actualizarHoras() {
       const inputFecha = document.getElementById('fecha').value;
       const gridHoras = document.getElementById('grid-horas');
@@ -1269,7 +1269,6 @@
         return;
       }
 
-      // Validar si la fecha seleccionada está en el pasado
       const hoy = new Date();
       hoy.setHours(0, 0, 0, 0);
       const partes = inputFecha.split('-');
@@ -1433,7 +1432,6 @@
       }
     }
 
-    // MODIFICADO: Asignación precisa de la fecha mínima nativa en base al huso horario local
     const hoyLocal = new Date();
     const offset = hoyLocal.getTimezoneOffset();
     const fechaAjustada = new Date(hoyLocal.getTime() - (offset * 60 * 1000));
