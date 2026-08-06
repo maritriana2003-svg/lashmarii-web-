@@ -297,7 +297,7 @@
       display: flex;
       align-items: center;
       gap: 10px;
-      pointer-events: none; /* Evita interferencias en el click del label */
+      pointer-events: none;
     }
 
     .service-checkbox {
@@ -461,7 +461,6 @@
       grid-column: span 3;
     }
 
-    /* ESTILOS GALERÍA / INSPÍRATE */
     .gallery-grid {
       display: grid;
       grid-template-columns: repeat(2, 1fr);
@@ -835,7 +834,6 @@
 
         <div class="gallery-grid">
           
-          <!-- NUEVO SERVICIO DESTACADO -->
           <div class="gallery-card featured">
             <div class="badge-new">🔥 ¡NUEVO!</div>
             <img src="https://i.postimg.cc/Bn32Fr4F/IMG-0106.jpg" alt="Depilación de Cejas" class="gallery-img">
@@ -845,7 +843,6 @@
             </div>
           </div>
 
-          <!-- LAMINADO DE CEJAS -->
           <div class="gallery-card">
             <img src="https://i.postimg.cc/HkSjLRxT/IMG-3417.jpg" alt="Laminado de Cejas" class="gallery-img">
             <div class="gallery-info">
@@ -854,7 +851,6 @@
             </div>
           </div>
 
-          <!-- CEJAS HENNA -->
           <div class="gallery-card">
             <img src="https://i.postimg.cc/jd0fVpwT/IMG-0082.jpg" alt="Cejas Henna" class="gallery-img">
             <div class="gallery-info">
@@ -863,7 +859,6 @@
             </div>
           </div>
 
-          <!-- LIFTING -->
           <div class="gallery-card">
             <img src="https://i.postimg.cc/L6bVZChv/IMG-0437-Original.jpg" alt="Lifting de Pestañas" class="gallery-img">
             <div class="gallery-info">
@@ -872,7 +867,6 @@
             </div>
           </div>
 
-          <!-- EFECTO RÍMEL -->
           <div class="gallery-card">
             <img src="https://i.postimg.cc/65yrwrzj/IMG-0236.jpg" alt="Efecto Rímel" class="gallery-img">
             <div class="gallery-info">
@@ -881,7 +875,6 @@
             </div>
           </div>
 
-          <!-- EFECTO 5D -->
           <div class="gallery-card">
             <img src="https://i.postimg.cc/RV6H2MVt/IMG-0423.png" alt="Pestañas 5D" class="gallery-img">
             <div class="gallery-info">
@@ -890,7 +883,6 @@
             </div>
           </div>
 
-          <!-- EFECTO COFFEE -->
           <div class="gallery-card">
             <img src="https://i.postimg.cc/6q78s0wB/IMG-0390.png" alt="Efecto Coffee" class="gallery-img">
             <div class="gallery-info">
@@ -899,7 +891,6 @@
             </div>
           </div>
 
-          <!-- EFECTO HAWAIANAS -->
           <div class="gallery-card">
             <img src="https://i.postimg.cc/KYCxgNFJ/IMG-3409.jpg" alt="Pestañas Hawaianas" class="gallery-img">
             <div class="gallery-info">
@@ -908,7 +899,6 @@
             </div>
           </div>
 
-          <!-- GRIEGO 3D -->
           <div class="gallery-card">
             <img src="https://i.postimg.cc/zvjj4xGH/IMG-3410.jpg" alt="Pestañas Griego 3D" class="gallery-img">
             <div class="gallery-info">
@@ -917,7 +907,6 @@
             </div>
           </div>
 
-          <!-- EFECTO ANIME / MANGA -->
           <div class="gallery-card">
             <img src="https://i.postimg.cc/rp82RwD1/IMG-2060.jpg" alt="Efecto Anime Manga" class="gallery-img">
             <div class="gallery-info">
@@ -926,7 +915,6 @@
             </div>
           </div>
 
-          <!-- EFECTO CLÁSICAS -->
           <div class="gallery-card">
             <img src="https://images.unsplash.com/photo-1583001931096-959e9a1a6223?w=500&q=80" alt="Pestañas Clásicas" class="gallery-img">
             <div class="gallery-info">
@@ -1142,7 +1130,6 @@
     }
 
     function calcularTotal(checkbox) {
-      // Manejar el estilo visual de la tarjeta contenedora (.service-option)
       const labelPadre = checkbox.closest('.service-option');
       if (checkbox.checked) {
         labelPadre.classList.add('selected');
@@ -1150,7 +1137,6 @@
         labelPadre.classList.remove('selected');
       }
 
-      // Restricción mutua entre Extensiones y Lifting
       const extChecked = document.querySelectorAll('.service-checkbox[data-group="extensiones"]:checked');
       const liftingChecked = document.querySelectorAll('.service-checkbox[data-group="lifting"]:checked');
 
@@ -1175,7 +1161,6 @@
         });
       }
 
-      // Cálculos financieros
       const seleccionados = document.querySelectorAll('.service-checkbox:checked');
       let total = 0;
       const cantidadServicios = seleccionados.length;
