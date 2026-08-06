@@ -1,4 +1,4 @@
-¡Listo! Eliminé por completo el botón y la sección de Mercado Pago. Ahora la única opción visible para el <!DOCTYPE html>
+<!DOCTYPE html>
 <html lang="es">
 <head>
   <meta charset="UTF-8">
@@ -278,6 +278,7 @@
       cursor: pointer;
       transition: all 0.2s ease;
       background-color: #fff;
+      user-select: none;
     }
 
     .service-option.selected {
@@ -296,6 +297,7 @@
       display: flex;
       align-items: center;
       gap: 10px;
+      pointer-events: none; /* Evita interferencias en el click del label */
     }
 
     .service-checkbox {
@@ -315,6 +317,7 @@
       font-size: 0.9rem;
       font-weight: 700;
       color: var(--primary);
+      pointer-events: none;
     }
 
     .total-box {
@@ -659,41 +662,41 @@
             ℹ️ Aplicación de fibra sintética pelo a pelo sobre tu pestaña natural. <strong>Requieren retoque sí o sí a los 21 días (2 a 3 semanas máximo).</strong>
           </div>
 
-          <label class="service-option" onclick="toggleService(this)">
+          <label class="service-option">
             <div class="service-info">
-              <input type="checkbox" class="service-checkbox" data-group="extensiones" value="27000" data-name="Pestañas Clásicas" onchange="calcularTotal()">
+              <input type="checkbox" class="service-checkbox" data-group="extensiones" value="27000" data-name="Pestañas Clásicas" onchange="calcularTotal(this)">
               <span class="service-name">Clásicas</span>
             </div>
             <span class="service-price">$27.000</span>
           </label>
 
-          <label class="service-option" onclick="toggleService(this)">
+          <label class="service-option">
             <div class="service-info">
-              <input type="checkbox" class="service-checkbox" data-group="extensiones" value="25000" data-name="Pestañas Rímel" onchange="calcularTotal()">
+              <input type="checkbox" class="service-checkbox" data-group="extensiones" value="25000" data-name="Pestañas Rímel" onchange="calcularTotal(this)">
               <span class="service-name">Rímel</span>
             </div>
             <span class="service-price">$25.000</span>
           </label>
 
-          <label class="service-option" onclick="toggleService(this)">
+          <label class="service-option">
             <div class="service-info">
-              <input type="checkbox" class="service-checkbox" data-group="extensiones" value="25000" data-name="Pestañas Hawaianas" onchange="calcularTotal()">
+              <input type="checkbox" class="service-checkbox" data-group="extensiones" value="25000" data-name="Pestañas Hawaianas" onchange="calcularTotal(this)">
               <span class="service-name">Hawaianas</span>
             </div>
             <span class="service-price">$25.000</span>
           </label>
 
-          <label class="service-option" onclick="toggleService(this)">
+          <label class="service-option">
             <div class="service-info">
-              <input type="checkbox" class="service-checkbox" data-group="extensiones" value="30000" data-name="Pestañas Griego 3D" onchange="calcularTotal()">
+              <input type="checkbox" class="service-checkbox" data-group="extensiones" value="30000" data-name="Pestañas Griego 3D" onchange="calcularTotal(this)">
               <span class="service-name">Griego 3D</span>
             </div>
             <span class="service-price">$30.000</span>
           </label>
 
-          <label class="service-option" onclick="toggleService(this)">
+          <label class="service-option">
             <div class="service-info">
-              <input type="checkbox" class="service-checkbox" data-group="extensiones" value="35000" data-name="Pestañas 5D" onchange="calcularTotal()">
+              <input type="checkbox" class="service-checkbox" data-group="extensiones" value="35000" data-name="Pestañas 5D" onchange="calcularTotal(this)">
               <span class="service-name">5D</span>
             </div>
             <span class="service-price">$35.000</span>
@@ -705,9 +708,9 @@
             ℹ️ Tratamiento que eleva y curva tus pestañas naturales desde la raíz, aportando nutrición y color. <strong>Duración: hasta 1 mes.</strong>
           </div>
 
-          <label class="service-option" onclick="toggleService(this)">
+          <label class="service-option">
             <div class="service-info">
-              <input type="checkbox" class="service-checkbox" data-group="lifting" value="20000" data-name="Lifting (Queratina + Bótox)" onchange="calcularTotal()">
+              <input type="checkbox" class="service-checkbox" data-group="lifting" value="20000" data-name="Lifting (Queratina + Bótox)" onchange="calcularTotal(this)">
               <span class="service-name">Lifting (Queratina + Bótox)</span>
             </div>
             <span class="service-price">$20.000</span>
@@ -716,9 +719,9 @@
           <!-- CEJAS -->
           <div class="service-category">Cejas</div>
 
-          <label class="service-option" onclick="toggleService(this)">
+          <label class="service-option">
             <div class="service-info">
-              <input type="checkbox" class="service-checkbox" data-group="cejas" value="15000" data-name="Laminado de Cejas" onchange="calcularTotal()">
+              <input type="checkbox" class="service-checkbox" data-group="cejas" value="15000" data-name="Laminado de Cejas" onchange="calcularTotal(this)">
               <span class="service-name">Laminado de Cejas</span>
             </div>
             <span class="service-price">$15.000</span>
@@ -727,9 +730,9 @@
             Efecto peinado hacia arriba fijo (como si usaras gel de cejas). Ideal para cejas muy chasconas o rebeldes.
           </div>
 
-          <label class="service-option" onclick="toggleService(this)">
+          <label class="service-option">
             <div class="service-info">
-              <input type="checkbox" class="service-checkbox" data-group="cejas" value="20000" data-name="Henna (Incluye laminado)" onchange="calcularTotal()">
+              <input type="checkbox" class="service-checkbox" data-group="cejas" value="20000" data-name="Henna (Incluye laminado)" onchange="calcularTotal(this)">
               <span class="service-name">Henna (Incluye laminado)</span>
             </div>
             <span class="service-price">$20.000</span>
@@ -738,9 +741,9 @@
             Tinte orgánico que sombrea la piel y el pelo. El vestigio de color se va aclarando en un lapso de 6 días a 1.5 - 2 semanas.
           </div>
 
-          <label class="service-option" onclick="toggleService(this)">
+          <label class="service-option">
             <div class="service-info">
-              <input type="checkbox" class="service-checkbox" data-group="cejas" value="7000" data-name="Depilación de Cejas" onchange="calcularTotal()">
+              <input type="checkbox" class="service-checkbox" data-group="cejas" value="7000" data-name="Depilación de Cejas" onchange="calcularTotal(this)">
               <span class="service-name">Depilación de Cejas</span>
             </div>
             <span class="service-price">$7.000</span>
@@ -749,9 +752,9 @@
             Retiro del vello para dar forma a la ceja utilizando cera fría.
           </div>
 
-          <label class="service-option" onclick="toggleService(this)">
+          <label class="service-option">
             <div class="service-info">
-              <input type="checkbox" class="service-checkbox" data-group="cejas" value="5000" data-name="Perfilado de Cejas" onchange="calcularTotal()">
+              <input type="checkbox" class="service-checkbox" data-group="cejas" value="5000" data-name="Perfilado de Cejas" onchange="calcularTotal(this)">
               <span class="service-name">Perfilado de Cejas</span>
             </div>
             <span class="service-price">$5.000</span>
@@ -763,9 +766,9 @@
           <!-- TRATAMIENTOS ESPECIALES -->
           <div class="service-category">Tratamientos Especiales</div>
 
-          <label class="service-option" onclick="toggleService(this)">
+          <label class="service-option">
             <div class="service-info">
-              <input type="checkbox" class="service-checkbox" data-group="otros" value="20000" data-name="Hydra Gloss (Labios)" onchange="calcularTotal()">
+              <input type="checkbox" class="service-checkbox" data-group="otros" value="20000" data-name="Hydra Gloss (Labios)" onchange="calcularTotal(this)">
               <span class="service-name">Hydra Gloss (Labios)</span>
             </div>
             <span class="service-price">$20.000</span>
@@ -832,10 +835,10 @@
 
         <div class="gallery-grid">
           
-          <!-- NUEVO SERVICIO DESTACADO: DEPILACIÓN DE CEJAS -->
+          <!-- NUEVO SERVICIO DESTACADO -->
           <div class="gallery-card featured">
             <div class="badge-new">🔥 ¡NUEVO!</div>
-            <img src="https://i.postimg.cc/Bn32Fr4F/IMG-0106.jpg" alt="Depilación de Cejas Lash Marii" class="gallery-img">
+            <img src="https://i.postimg.cc/Bn32Fr4F/IMG-0106.jpg" alt="Depilación de Cejas" class="gallery-img">
             <div class="gallery-info">
               <div class="gallery-title">Depilación de Cejas</div>
               <div class="gallery-subtitle">Diseño perfecto y mirada limpia</div>
@@ -844,7 +847,7 @@
 
           <!-- LAMINADO DE CEJAS -->
           <div class="gallery-card">
-            <img src="https://i.postimg.cc/HkSjLRxT/IMG-3417.jpg" alt="Laminado de Cejas Lash Marii" class="gallery-img">
+            <img src="https://i.postimg.cc/HkSjLRxT/IMG-3417.jpg" alt="Laminado de Cejas" class="gallery-img">
             <div class="gallery-info">
               <div class="gallery-title">Laminado Cejas</div>
               <div class="gallery-subtitle">Diseño peinado y fijo</div>
@@ -853,7 +856,7 @@
 
           <!-- CEJAS HENNA -->
           <div class="gallery-card">
-            <img src="https://i.postimg.cc/jd0fVpwT/IMG-0082.jpg" alt="Cejas Henna Lash Marii" class="gallery-img">
+            <img src="https://i.postimg.cc/jd0fVpwT/IMG-0082.jpg" alt="Cejas Henna" class="gallery-img">
             <div class="gallery-info">
               <div class="gallery-title">Cejas Henna</div>
               <div class="gallery-subtitle">Sombreado natural y definido</div>
@@ -862,7 +865,7 @@
 
           <!-- LIFTING -->
           <div class="gallery-card">
-            <img src="https://i.postimg.cc/L6bVZChv/IMG-0437-Original.jpg" alt="Lifting de Pestañas Lash Marii" class="gallery-img">
+            <img src="https://i.postimg.cc/L6bVZChv/IMG-0437-Original.jpg" alt="Lifting de Pestañas" class="gallery-img">
             <div class="gallery-info">
               <div class="gallery-title">Lifting</div>
               <div class="gallery-subtitle">Curvatura 100% natural</div>
@@ -871,7 +874,7 @@
 
           <!-- EFECTO RÍMEL -->
           <div class="gallery-card">
-            <img src="https://i.postimg.cc/65yrwrzj/IMG-0236.jpg" alt="Efecto Rímel Lash Marii" class="gallery-img">
+            <img src="https://i.postimg.cc/65yrwrzj/IMG-0236.jpg" alt="Efecto Rímel" class="gallery-img">
             <div class="gallery-info">
               <div class="gallery-title">Efecto Rímel</div>
               <div class="gallery-subtitle">Definición e intensidad</div>
@@ -880,7 +883,7 @@
 
           <!-- EFECTO 5D -->
           <div class="gallery-card">
-            <img src="https://i.postimg.cc/RV6H2MVt/IMG-0423.png" alt="Pestañas 5D Lash Marii" class="gallery-img">
+            <img src="https://i.postimg.cc/RV6H2MVt/IMG-0423.png" alt="Pestañas 5D" class="gallery-img">
             <div class="gallery-info">
               <div class="gallery-title">Efecto 5D</div>
               <div class="gallery-subtitle">Mayor volumen y densidad</div>
@@ -889,7 +892,7 @@
 
           <!-- EFECTO COFFEE -->
           <div class="gallery-card">
-            <img src="https://i.postimg.cc/6q78s0wB/IMG-0390.png" alt="Efecto Coffee Lash Marii" class="gallery-img">
+            <img src="https://i.postimg.cc/6q78s0wB/IMG-0390.png" alt="Efecto Coffee" class="gallery-img">
             <div class="gallery-info">
               <div class="gallery-title">Efecto Coffee</div>
               <div class="gallery-subtitle">Tonos café para una mirada suave</div>
@@ -898,7 +901,7 @@
 
           <!-- EFECTO HAWAIANAS -->
           <div class="gallery-card">
-            <img src="https://i.postimg.cc/KYCxgNFJ/IMG-3409.jpg" alt="Pestañas Hawaianas Lash Marii" class="gallery-img">
+            <img src="https://i.postimg.cc/KYCxgNFJ/IMG-3409.jpg" alt="Pestañas Hawaianas" class="gallery-img">
             <div class="gallery-info">
               <div class="gallery-title">Hawaianas</div>
               <div class="gallery-subtitle">Textura y volumen sutil</div>
@@ -907,7 +910,7 @@
 
           <!-- GRIEGO 3D -->
           <div class="gallery-card">
-            <img src="https://i.postimg.cc/zvjj4xGH/IMG-3410.jpg" alt="Pestañas Griego 3D Lash Marii" class="gallery-img">
+            <img src="https://i.postimg.cc/zvjj4xGH/IMG-3410.jpg" alt="Pestañas Griego 3D" class="gallery-img">
             <div class="gallery-info">
               <div class="gallery-title">Griego 3D</div>
               <div class="gallery-subtitle">Volumen tupido y suave</div>
@@ -916,7 +919,7 @@
 
           <!-- EFECTO ANIME / MANGA -->
           <div class="gallery-card">
-            <img src="https://i.postimg.cc/rp82RwD1/IMG-2060.jpg" alt="Efecto Anime Manga Lash Marii" class="gallery-img">
+            <img src="https://i.postimg.cc/rp82RwD1/IMG-2060.jpg" alt="Efecto Anime Manga" class="gallery-img">
             <div class="gallery-info">
               <div class="gallery-title">Anime / Manga</div>
               <div class="gallery-subtitle">Picos definidos y estilo único</div>
@@ -1138,18 +1141,16 @@
       window.scrollTo(0, 0);
     }
 
-    function toggleService(label) {
-      const checkbox = label.querySelector('.service-checkbox');
-      if (checkbox.disabled) return;
-      
+    function calcularTotal(checkbox) {
+      // Manejar el estilo visual de la tarjeta contenedora (.service-option)
+      const labelPadre = checkbox.closest('.service-option');
       if (checkbox.checked) {
-        label.classList.add('selected');
+        labelPadre.classList.add('selected');
       } else {
-        label.classList.remove('selected');
+        labelPadre.classList.remove('selected');
       }
-    }
 
-    function calcularTotal() {
+      // Restricción mutua entre Extensiones y Lifting
       const extChecked = document.querySelectorAll('.service-checkbox[data-group="extensiones"]:checked');
       const liftingChecked = document.querySelectorAll('.service-checkbox[data-group="lifting"]:checked');
 
@@ -1174,6 +1175,7 @@
         });
       }
 
+      // Cálculos financieros
       const seleccionados = document.querySelectorAll('.service-checkbox:checked');
       let total = 0;
       const cantidadServicios = seleccionados.length;
@@ -1367,4 +1369,3 @@
   </script>
 </body>
 </html>
-
