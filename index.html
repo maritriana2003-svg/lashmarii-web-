@@ -474,6 +474,48 @@
       grid-column: span 3;
     }
 
+    /* ESTILOS GALERÍA / INSPÍRATE */
+    .gallery-grid {
+      display: grid;
+      grid-template-columns: repeat(2, 1fr);
+      gap: 12px;
+      margin-top: 15px;
+    }
+
+    .gallery-card {
+      background: #ffffff;
+      border-radius: 16px;
+      overflow: hidden;
+      border: 1px solid var(--border-color);
+      box-shadow: 0 4px 10px rgba(0,0,0,0.03);
+      display: flex;
+      flex-direction: column;
+    }
+
+    .gallery-img {
+      width: 100%;
+      height: 140px;
+      object-fit: cover;
+      display: block;
+    }
+
+    .gallery-info {
+      padding: 10px;
+      text-align: center;
+    }
+
+    .gallery-title {
+      font-size: 0.85rem;
+      font-weight: 800;
+      color: var(--text-dark);
+    }
+
+    .gallery-subtitle {
+      font-size: 0.72rem;
+      color: var(--subtext);
+      margin-top: 2px;
+    }
+
     .care-section-title {
       font-size: 0.92rem;
       font-weight: 800;
@@ -779,15 +821,74 @@
       </div>
     </div>
 
-    <!-- GALERÍA -->
+    <!-- INSPÍRATE -->
     <div id="tab-galeria" class="tab-content">
-      <div class="card" style="text-align: center;">
-        <div class="card-title" style="justify-content: flex-start;">Mi Trabajo</div>
-        <p class="brand-desc" style="margin-bottom: 20px;">
-          ¡Mira mis últimos diseños y sets directamente en mi cuenta oficial de Instagram!
+      <div class="card">
+        <div class="card-title">Inspírate ✨</div>
+        <p class="brand-desc" style="margin-bottom: 10px;">
+          Conoce los diferentes efectos y acabados que podemos lograr en tus pestañas y cejas.
         </p>
-        <a href="https://instagram.com/Lash.marii" target="_blank" class="btn-main" style="margin-bottom: 0; text-decoration: none;">
-          Ver Fotos en @Lash.marii
+
+        <div class="gallery-grid">
+          
+          <!-- EFECTO CLÁSICAS -->
+          <div class="gallery-card">
+            <img src="https://images.unsplash.com/photo-1583001931096-959e9a1a6223?w=500&q=80" alt="Pestañas Clásicas" class="gallery-img">
+            <div class="gallery-info">
+              <div class="gallery-title">Efecto Clásicas</div>
+              <div class="gallery-subtitle">Elegante y muy natural</div>
+            </div>
+          </div>
+
+          <!-- EFECTO RÍMEL -->
+          <div class="gallery-card">
+            <img src="https://images.unsplash.com/photo-1522337360788-8b13dee7a37e?w=500&q=80" alt="Efecto Rímel" class="gallery-img">
+            <div class="gallery-info">
+              <div class="gallery-title">Efecto Rímel</div>
+              <div class="gallery-subtitle">Definición e intensidad</div>
+            </div>
+          </div>
+
+          <!-- EFECTO HAWAIANAS (FOTO REAL) -->
+          <div class="gallery-card">
+            <img src="https://i.postimg.cc/287Mfxtz/IMG-3409.jpg" alt="Pestañas Hawaianas Lash Marii" class="gallery-img">
+            <div class="gallery-info">
+              <div class="gallery-title">Hawaianas</div>
+              <div class="gallery-subtitle">Textura y volumen sutil</div>
+            </div>
+          </div>
+
+          <!-- GRIEGO 3D (FOTO REAL ACTUALIZADA) -->
+          <div class="gallery-card">
+            <img src="https://i.postimg.cc/zvjj4xGH/IMG-3410.jpg" alt="Pestañas Griego 3D Lash Marii" class="gallery-img">
+            <div class="gallery-info">
+              <div class="gallery-title">Griego 3D</div>
+              <div class="gallery-subtitle">Volumen tupido y suave</div>
+            </div>
+          </div>
+
+          <!-- LIFTING -->
+          <div class="gallery-card">
+            <img src="https://images.unsplash.com/photo-1560750588-73207b1ef5b8?w=500&q=80" alt="Lifting de Pestañas" class="gallery-img">
+            <div class="gallery-info">
+              <div class="gallery-title">Lifting</div>
+              <div class="gallery-subtitle">Curvatura 100% natural</div>
+            </div>
+          </div>
+
+          <!-- LAMINADO DE CEJAS -->
+          <div class="gallery-card">
+            <img src="https://images.unsplash.com/photo-1616683693504-3ea7e9ad6fec?w=500&q=80" alt="Laminado de Cejas" class="gallery-img">
+            <div class="gallery-info">
+              <div class="gallery-title">Laminado Cejas</div>
+              <div class="gallery-subtitle">Diseño peinado y fijo</div>
+            </div>
+          </div>
+
+        </div>
+
+        <a href="https://instagram.com/Lash.marii" target="_blank" class="btn-secondary" style="margin-top: 18px;">
+          📸 Ver más fotos en Instagram @Lash.marii
         </a>
       </div>
     </div>
@@ -928,11 +1029,11 @@
       <span>Reservar</span>
     </button>
     <button class="nav-item" onclick="switchTab('galeria')">
-      <span class="icon">🖼️</span>
-      <span>Galería</span>
+      <span class="icon">✨</span>
+      <span>Inspírate</span>
     </button>
     <button class="nav-item" onclick="switchTab('cuidados')">
-      <span class="icon">✨</span>
+      <span class="icon">🌸</span>
       <span>Cuidados</span>
     </button>
     <button class="nav-item" onclick="switchTab('admin')">
