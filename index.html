@@ -56,12 +56,12 @@
 
     .hero-header {
       text-align: center;
-      padding: 20px 0 10px 0;
+      padding: 10px 0;
     }
 
     .logo-container {
-      width: 150px;
-      height: 150px;
+      width: 140px;
+      height: 140px;
       margin: 0 auto 15px auto;
       border-radius: 50%;
       padding: 4px;
@@ -77,81 +77,57 @@
       display: block;
     }
 
-    .welcome-text {
-      font-size: 0.9rem;
-      font-weight: 800;
-      letter-spacing: 2px;
+    .greeting-badge {
+      display: inline-block;
+      background-color: #ffe6ee;
       color: var(--primary);
-      text-transform: uppercase;
-      margin-bottom: 5px;
+      font-size: 0.95rem;
+      font-weight: 800;
+      padding: 6px 16px;
+      border-radius: 20px;
+      margin-bottom: 8px;
+      letter-spacing: 0.5px;
     }
 
     .brand-title {
-      font-size: 2rem;
+      font-size: 2.2rem;
       font-weight: 800;
       color: var(--text-dark);
       margin-bottom: 12px;
     }
 
+    .bio-card {
+      background: #ffffff;
+      border: 1.5px solid var(--border-color);
+      border-radius: 20px;
+      padding: 18px 16px;
+      margin-bottom: 18px;
+      box-shadow: 0 4px 15px rgba(230, 57, 116, 0.05);
+      text-align: center;
+    }
+
     .brand-desc {
-      font-size: 0.95rem;
+      font-size: 0.92rem;
       color: var(--subtext);
-      line-height: 1.5;
-      margin: 0 auto 18px auto;
+      line-height: 1.55;
+    }
+
+    .brand-desc strong {
+      color: var(--primary);
     }
 
     .location-badge {
       display: inline-flex;
       align-items: center;
       gap: 5px;
-      background-color: #ffe6ee;
+      background-color: #fff;
+      border: 1px solid var(--border-color);
       color: var(--primary);
       font-size: 0.85rem;
       font-weight: 700;
-      padding: 8px 16px;
+      padding: 6px 14px;
       border-radius: 20px;
-      margin-bottom: 25px;
-    }
-
-    /* Estilo para el bloque de Garantía y Formalidad */
-    .trust-box {
-      background: #ffffff;
-      border: 1.5px solid var(--border-color);
-      border-radius: 18px;
-      padding: 16px 14px;
-      margin: 20px 0;
-      text-align: left;
-      box-shadow: 0 4px 12px rgba(230, 57, 116, 0.04);
-    }
-
-    .trust-item {
-      display: flex;
-      align-items: flex-start;
-      gap: 10px;
-      margin-bottom: 12px;
-    }
-
-    .trust-item:last-child {
-      margin-bottom: 0;
-    }
-
-    .trust-icon {
-      font-size: 1.2rem;
-      line-height: 1;
-      margin-top: 2px;
-    }
-
-    .trust-text {
-      font-size: 0.82rem;
-      color: var(--subtext);
-      line-height: 1.4;
-    }
-
-    .trust-text strong {
-      color: var(--text-dark);
-      display: block;
-      margin-bottom: 2px;
-      font-size: 0.85rem;
+      margin-bottom: 20px;
     }
 
     .btn-main {
@@ -170,7 +146,7 @@
       justify-content: center;
       gap: 8px;
       text-decoration: none;
-      margin-bottom: 15px;
+      margin-bottom: 12px;
     }
 
     .sub-note {
@@ -561,28 +537,17 @@
         <div class="logo-container">
           <img src="https://i.postimg.cc/9fsRY43k/IMG-0086.jpg" alt="Lash Marii" class="logo-img">
         </div>
-        <div class="welcome-text">Bienvenida a</div>
-        <h1 class="brand-title">Lash Marii</h1>
-        <p class="brand-desc">Extensiones de pestañas y lifting con atención completamente personalizada. Diseños únicos para resaltar tu mirada.</p>
-        <div class="location-badge">📍 Los Andes, Chile</div>
 
-        <!-- BLOQUE DE CONFIANZA Y FORMALIDAD -->
-        <div class="trust-box">
-          <div class="trust-item">
-            <span class="trust-icon">🛡️</span>
-            <div class="trust-text">
-              <strong>Insumos Certificados y Profesionales</strong>
-              Tratamientos realizados con productos 100% originales adquiridos a distribuidores oficiales autorizados, garantizando la salud de tu rostro y mirada.
-            </div>
-          </div>
-          <div class="trust-item">
-            <span class="trust-icon">📋</span>
-            <div class="trust-text">
-              <strong>Estudio Establecido y Formal</strong>
-              Operamos en estricto cumplimiento con la normativa tributaria vigente (SII), respaldando la seguridad y confianza de cada uno de tus servicios.
-            </div>
-          </div>
+        <div class="greeting-badge">¡Holi! 🌸</div>
+        <h1 class="brand-title">Lash Marii</h1>
+        
+        <div class="bio-card">
+          <p class="brand-desc">
+            Soy <strong>Mari</strong>, tengo 23 años y estudio ingeniería. Me apasiona combinar la precisión con el arte del diseño de mirada ✨. Estaré encantada de ser tu lashista, escucharte, regalonearte y crear el set perfecto para resaltar tu belleza única 💖.
+          </p>
         </div>
+
+        <div class="location-badge">📍 Los Andes, Chile</div>
 
         <button class="btn-main" onclick="switchTab('reservar')">
           💖 Agenda tu cita aquí
@@ -951,6 +916,7 @@
       const extChecked = document.querySelectorAll('.service-checkbox[data-group="extensiones"]:checked');
       const liftingChecked = document.querySelectorAll('.service-checkbox[data-group="lifting"]:checked');
 
+      // Regla de Exclusión Mutua entre Extensiones y Lifting
       if (extChecked.length > 0) {
         document.querySelectorAll('.service-checkbox[data-group="lifting"]').forEach(cb => {
           cb.disabled = true;
@@ -972,6 +938,7 @@
         });
       }
 
+      // Cálculo de Totales
       const seleccionados = document.querySelectorAll('.service-checkbox:checked');
       let total = 0;
       const cantidadServicios = seleccionados.length;
