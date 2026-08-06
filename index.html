@@ -398,23 +398,7 @@
       font-weight: 700;
       text-align: center;
       line-height: 1.4;
-      margin-bottom: 12px;
-    }
-
-    .btn-mercadopago {
-      display: flex;
-      align-items: center;
-      justify-content: center;
-      gap: 8px;
-      background-color: #009ee3;
-      color: white;
-      text-decoration: none;
-      font-weight: 700;
-      font-size: 0.88rem;
-      padding: 12px;
-      border-radius: 12px;
-      box-shadow: 0 4px 10px rgba(0, 158, 227, 0.2);
-      width: 100%;
+      margin-bottom: 0;
     }
 
     .time-grid {
@@ -490,6 +474,27 @@
       box-shadow: 0 4px 10px rgba(0,0,0,0.03);
       display: flex;
       flex-direction: column;
+      position: relative;
+    }
+
+    .gallery-card.featured {
+      border: 2px solid var(--primary);
+      box-shadow: 0 6px 16px rgba(230, 57, 116, 0.18);
+    }
+
+    .badge-new {
+      position: absolute;
+      top: 8px;
+      right: 8px;
+      background: linear-gradient(135deg, #e63974, #ff5e91);
+      color: white;
+      font-size: 0.68rem;
+      font-weight: 800;
+      padding: 4px 8px;
+      border-radius: 10px;
+      box-shadow: 0 2px 8px rgba(230, 57, 116, 0.4);
+      letter-spacing: 0.5px;
+      z-index: 2;
     }
 
     .gallery-img {
@@ -780,7 +785,7 @@
         </div>
 
         <div class="payment-box">
-          <div class="payment-title">💳 Opciones de Abono</div>
+          <div class="payment-title">💳 Datos para la Transferencia</div>
 
           <div class="bank-details">
             <div><span><strong>Banco:</strong></span> <span>BancoEstado</span></div>
@@ -792,10 +797,6 @@
           <div class="alert-whatsapp">
             ⚠️ OBLIGATORIO: Una vez realizado el abono, debes enviar el comprobante sí o sí a WhatsApp para confirmar tu reserva.
           </div>
-
-          <a href="https://mpago.la/tu-link-aqui" target="_blank" class="btn-mercadopago">
-            Pagar Abono vía Mercado Pago
-          </a>
         </div>
 
       </div>
@@ -831,21 +832,67 @@
 
         <div class="gallery-grid">
           
-          <!-- EFECTO CLÁSICAS -->
-          <div class="gallery-card">
-            <img src="https://images.unsplash.com/photo-1583001931096-959e9a1a6223?w=500&q=80" alt="Pestañas Clásicas" class="gallery-img">
+          <!-- NUEVO SERVICIO DESTACADO: DEPILACIÓN DE CEJAS -->
+          <div class="gallery-card featured">
+            <div class="badge-new">🔥 ¡NUEVO!</div>
+            <img src="https://i.postimg.cc/Bn32Fr4F/IMG-0106.jpg" alt="Depilación de Cejas Lash Marii" class="gallery-img">
             <div class="gallery-info">
-              <div class="gallery-title">Efecto Clásicas</div>
-              <div class="gallery-subtitle">Elegante y muy natural</div>
+              <div class="gallery-title">Depilación de Cejas</div>
+              <div class="gallery-subtitle">Diseño perfecto y mirada limpia</div>
             </div>
           </div>
 
-          <!-- EFECTO RÍMEL (FOTO REAL ACTUALIZADA) -->
+          <!-- LAMINADO DE CEJAS -->
           <div class="gallery-card">
-            <img src="https://i.postimg.cc/59GJKJrx/IMG-0467.jpg" alt="Efecto Rímel Lash Marii" class="gallery-img">
+            <img src="https://i.postimg.cc/HkSjLRxT/IMG-3417.jpg" alt="Laminado de Cejas Lash Marii" class="gallery-img">
+            <div class="gallery-info">
+              <div class="gallery-title">Laminado Cejas</div>
+              <div class="gallery-subtitle">Diseño peinado y fijo</div>
+            </div>
+          </div>
+
+          <!-- CEJAS HENNA -->
+          <div class="gallery-card">
+            <img src="https://i.postimg.cc/jd0fVpwT/IMG-0082.jpg" alt="Cejas Henna Lash Marii" class="gallery-img">
+            <div class="gallery-info">
+              <div class="gallery-title">Cejas Henna</div>
+              <div class="gallery-subtitle">Sombreado natural y definido</div>
+            </div>
+          </div>
+
+          <!-- LIFTING -->
+          <div class="gallery-card">
+            <img src="https://i.postimg.cc/L6bVZChv/IMG-0437-Original.jpg" alt="Lifting de Pestañas Lash Marii" class="gallery-img">
+            <div class="gallery-info">
+              <div class="gallery-title">Lifting</div>
+              <div class="gallery-subtitle">Curvatura 100% natural</div>
+            </div>
+          </div>
+
+          <!-- EFECTO RÍMEL -->
+          <div class="gallery-card">
+            <img src="https://i.postimg.cc/65yrwrzj/IMG-0236.jpg" alt="Efecto Rímel Lash Marii" class="gallery-img">
             <div class="gallery-info">
               <div class="gallery-title">Efecto Rímel</div>
               <div class="gallery-subtitle">Definición e intensidad</div>
+            </div>
+          </div>
+
+          <!-- EFECTO 5D -->
+          <div class="gallery-card">
+            <img src="https://i.postimg.cc/RV6H2MVt/IMG-0423.png" alt="Pestañas 5D Lash Marii" class="gallery-img">
+            <div class="gallery-info">
+              <div class="gallery-title">Efecto 5D</div>
+              <div class="gallery-subtitle">Mayor volumen y densidad</div>
+            </div>
+          </div>
+
+          <!-- EFECTO COFFEE -->
+          <div class="gallery-card">
+            <img src="https://i.postimg.cc/6q78s0wB/IMG-0390.png" alt="Efecto Coffee Lash Marii" class="gallery-img">
+            <div class="gallery-info">
+              <div class="gallery-title">Efecto Coffee</div>
+              <div class="gallery-subtitle">Tonos café para una mirada suave</div>
             </div>
           </div>
 
@@ -867,16 +914,7 @@
             </div>
           </div>
 
-          <!-- EFECTO 5D (FOTO REAL ACTUALIZADA) -->
-          <div class="gallery-card">
-            <img src="https://i.postimg.cc/PqhTbMRc/IMG-0387.jpg" alt="Pestañas 5D Lash Marii" class="gallery-img">
-            <div class="gallery-info">
-              <div class="gallery-title">Efecto 5D</div>
-              <div class="gallery-subtitle">Mayor volumen y densidad</div>
-            </div>
-          </div>
-
-          <!-- EFECTO ANIME / MANGA (NUEVA FOTO) -->
+          <!-- EFECTO ANIME / MANGA -->
           <div class="gallery-card">
             <img src="https://i.postimg.cc/rp82RwD1/IMG-2060.jpg" alt="Efecto Anime Manga Lash Marii" class="gallery-img">
             <div class="gallery-info">
@@ -885,21 +923,12 @@
             </div>
           </div>
 
-          <!-- LIFTING -->
+          <!-- EFECTO CLÁSICAS -->
           <div class="gallery-card">
-            <img src="https://images.unsplash.com/photo-1560750588-73207b1ef5b8?w=500&q=80" alt="Lifting de Pestañas" class="gallery-img">
+            <img src="https://images.unsplash.com/photo-1583001931096-959e9a1a6223?w=500&q=80" alt="Pestañas Clásicas" class="gallery-img">
             <div class="gallery-info">
-              <div class="gallery-title">Lifting</div>
-              <div class="gallery-subtitle">Curvatura 100% natural</div>
-            </div>
-          </div>
-
-          <!-- LAMINADO DE CEJAS -->
-          <div class="gallery-card">
-            <img src="https://images.unsplash.com/photo-1616683693504-3ea7e9ad6fec?w=500&q=80" alt="Laminado de Cejas" class="gallery-img">
-            <div class="gallery-info">
-              <div class="gallery-title">Laminado Cejas</div>
-              <div class="gallery-subtitle">Diseño peinado y fijo</div>
+              <div class="gallery-title">Efecto Clásicas</div>
+              <div class="gallery-subtitle">Elegante y muy natural</div>
             </div>
           </div>
 
