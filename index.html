@@ -404,6 +404,21 @@
       margin-bottom: 0;
     }
 
+    .location-info-box {
+      background-color: #eef2ff;
+      border-left: 4px solid #3b82f6;
+      border-radius: 8px;
+      padding: 12px;
+      font-size: 0.85rem;
+      color: #1e3a8a;
+      font-weight: 700;
+      text-align: center;
+      line-height: 1.4;
+      margin-top: 15px;
+      margin-bottom: 15px;
+      display: none;
+    }
+
     .time-grid {
       display: grid;
       grid-template-columns: repeat(3, 1fr);
@@ -866,6 +881,9 @@
           </div>
         </div>
 
+        <!-- Alerta de Ubicación Dinámica -->
+        <div id="location-info" class="location-info-box"></div>
+
         <button class="btn-main" style="margin-top: 15px; margin-bottom: 0;" onclick="enviarWhatsApp()">
           Confirmar Reserva por WhatsApp 📲
         </button>
@@ -975,15 +993,6 @@
             <div class="gallery-info">
               <div class="gallery-title">Hydra Gloss</div>
               <div class="gallery-subtitle">Hidratación profunda para labios</div>
-            </div>
-          </div>
-
-          <!-- NUEVA ADICIÓN DE EJEMPLO DE HIDROGLOSS EN LA GALERÍA -->
-          <div class="gallery-card">
-            <img src="https://i.postimg.cc/j23Rz8gG/IMG-3425.jpg" alt="Servicio Hidrogloss" class="gallery-img">
-            <div class="gallery-info">
-              <div class="gallery-title">Hidrogloss</div>
-              <div class="gallery-subtitle">Hidratación profunda y volumen</div>
             </div>
           </div>
 
@@ -1280,9 +1289,11 @@
     function actualizarHoras() {
       const inputFecha = document.getElementById('fecha').value;
       const gridHoras = document.getElementById('grid-horas');
+      const locationInfo = document.getElementById('location-info');
       
       if (!inputFecha) {
         gridHoras.innerHTML = '<div class="placeholder-text">Selecciona un día primero</div>';
+        locationInfo.style.display = 'none';
         return;
       }
 
@@ -1297,11 +1308,29 @@
 
       if (fechaSeleccionada < hoy) {
         gridHoras.innerHTML = '<div class="placeholder-text" style="color: #e63974; font-weight: bold;">❌ No puedes seleccionar un día pasado</div>';
+        locationInfo.style.display = 'none';
         return;
       }
 
       const diaSemana = fechaSeleccionada.getDay();
       const horasDisponibles = horarios[diaSemana] || [];
+
+      // Control dinámico del aviso de dirección según el día
+      if (diaSemana === 3) {
+        // Miércoles
+        locationInfo.style.backgroundColor = '#eef2ff';
+        locationInfo.style.borderColor = '#3b82f6';
+        locationInfo.style.color = '#1e3a8a';
+        locationInfo.innerHTML = "📍 Atención en: Centro de Los Andes (Calle Santa Rosa)";
+        locationInfo.style.display = 'block';
+      } else {
+        // Lunes, Martes, Jueves, Viernes, Sábado, Domingo
+        locationInfo.style.backgroundColor = '#fff8f9';
+        locationInfo.style.borderColor = '#e63974';
+        locationInfo.style.color = '#a12c4e';
+        locationInfo.innerHTML = "🏠 Atención en: Villa Sendero de Los Andes 2<br><small>(La dirección exacta y ubicación se envía una vez realizado el abono)</small>";
+        locationInfo.style.display = 'block';
+      }
 
       if (horasDisponibles.length === 0) {
         gridHoras.innerHTML = '<div class="placeholder-text">No hay horas disponibles este día</div>';
@@ -1374,13 +1403,25 @@
       const saldoRestante = Math.max(0, montoTotalGlobal - montoAbonoGlobal);
       const saldoRestanteFormateado = "$" + saldoRestante.toLocaleString('es-CL');
 
+      // Determinar texto de ubicación para el mensaje de WhatsApp
+      const d = new Date(partesFecha[0], partesFecha[1] - 1, partesFecha[2]);
+      const diaSemana = d.getDay();
+      let textoUbicacionWsp = "";
+      
+      if (diaSemana === 3) {
+        textoUbicacionWsp = "📍 *Lugar de atención:* Centro de Los Andes (Calle Santa Rosa)";
+      } else {
+        textoUbicacionWsp = "🏠 *Lugar de atención:* Villa Sendero de Los Andes 2 (Ubicación exacta al abonar)";
+      }
+
       const mensaje = `¡Hola Lash Marii! 👋🏼 Deseo solicitar una reserva:%0A%0A` +
                       `👤 *Nombre:* ${nombre}%0A` +
                       `✨ *Servicios:*%0A${listaServicios}%0A%0A` +
                       `💰 *Total del servicio:* ${precioTotal}%0A` +
                       `💵 *Abono requerido:* ${precioAbono}%0A` +
                       `📅 *Fecha:* ${fechaFormateada}%0A` +
-                      `⏰ *Hora:* ${horaSeleccionada} hrs%0A%0A` +
+                      `⏰ *Hora:* ${horaSeleccionada} hrs%0A` +
+                      `${textoUbicacionWsp}%0A%0A` +
                       `📌 *Adjunto mi comprobante de abono a continuación:*%0A` +
                       `💖 *Saldo a pagar el día de mi cita:* ${saldoRestanteFormateado}`;
 
