@@ -3,7 +3,7 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Lash Marii - Reservas</title>
+  <title>Lash Marii - Reservas & Fidelidad</title>
   
   <!-- Firebase SDKs -->
   <script src="https://www.gstatic.com/firebasejs/9.22.2/firebase-app-compat.js"></script>
@@ -222,7 +222,7 @@
       margin-bottom: 8px;
     }
 
-    input[type="text"], input[type="date"], input[type="password"] {
+    input[type="text"], input[type="tel"], input[type="date"], input[type="password"] {
       width: 100%;
       padding: 14px;
       border: 1.5px solid var(--border-color);
@@ -424,7 +424,6 @@
       text-decoration: underline;
     }
 
-    /* NUEVO: Contenedor estético de Sobrecupo */
     .overbook-box {
       background-color: #fff0f3;
       border: 2px dashed #e63974;
@@ -448,10 +447,6 @@
       color: var(--text-dark);
       line-height: 1.4;
       margin-bottom: 12px;
-    }
-
-    .overbook-text strong {
-      color: #e63974;
     }
 
     .overbook-select {
@@ -674,21 +669,103 @@
       color: var(--text-dark);
     }
 
+    /* ESTILOS ESPECÍFICOS DE LA TARJETA DE FIDELIDAD */
+    .stamps-grid {
+      display: grid;
+      grid-template-columns: repeat(5, 1fr);
+      gap: 8px;
+      margin: 18px 0;
+    }
+
+    .stamp-slot {
+      aspect-ratio: 1;
+      border-radius: 50%;
+      border: 2px dashed var(--border-color);
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: center;
+      font-size: 0.75rem;
+      position: relative;
+      background: #fff8f9;
+      transition: all 0.3s ease;
+    }
+
+    .stamp-type {
+      font-size: 0.55rem;
+      color: var(--subtext);
+      margin-top: 2px;
+      font-weight: 700;
+      text-transform: uppercase;
+    }
+
+    .stamp-slot.active {
+      border: 2px solid var(--primary);
+      background: var(--primary);
+      color: white;
+      box-shadow: 0 4px 10px rgba(230, 57, 116, 0.3);
+      font-weight: bold;
+    }
+
+    .stamp-slot.active .stamp-type {
+      color: #fff;
+    }
+
+    .stamp-slot.reward {
+      border-color: #d97706;
+      background: #fffbe3;
+      color: #b45309;
+    }
+
+    .stamp-slot.reward.active {
+      background: linear-gradient(135deg, #f59e0b, #d97706);
+      color: #fff;
+      border-color: #f59e0b;
+      box-shadow: 0 4px 12px rgba(245, 158, 11, 0.4);
+    }
+
+    .stamp-slot.reward.active .stamp-type {
+      color: #fff;
+    }
+
+    .rewards-info {
+      font-size: 0.8rem;
+      text-align: left;
+      background: #fff8f9;
+      border: 1px solid var(--border-color);
+      padding: 12px;
+      border-radius: 12px;
+      margin-bottom: 15px;
+      line-height: 1.5;
+    }
+
+    .history-list {
+      font-size: 0.78rem;
+      text-align: left;
+      color: var(--subtext);
+      max-height: 90px;
+      overflow-y: auto;
+      margin-top: 8px;
+      background: #fdf2f5;
+      padding: 8px 12px;
+      border-radius: 10px;
+    }
+
     .bottom-nav {
       position: fixed;
       bottom: 20px;
       left: 50%;
       transform: translateX(-50%);
       width: calc(100% - 30px);
-      max-width: 390px;
-      background: rgba(255, 255, 255, 0.92);
+      max-width: 410px;
+      background: rgba(255, 255, 255, 0.94);
       backdrop-filter: blur(12px);
       border-radius: 25px;
       display: flex;
       justify-content: space-around;
-      padding: 10px 6px;
+      padding: 10px 4px;
       box-shadow: 0 10px 30px rgba(0, 0, 0, 0.08);
-      border: 1px solid rgba(247, 214, 224, 0.6);
+      border: 1px solid rgba(247, 214, 224, 0.8);
       z-index: 1000;
     }
 
@@ -696,19 +773,19 @@
       display: flex;
       flex-direction: column;
       align-items: center;
-      gap: 4px;
+      gap: 3px;
       background: none;
       border: none;
       color: #a08c90;
-      font-size: 0.75rem;
+      font-size: 0.7rem;
       font-weight: 700;
       cursor: pointer;
-      width: 20%;
+      flex: 1;
       transition: all 0.2s ease;
     }
 
     .nav-item .icon {
-      font-size: 1.25rem;
+      font-size: 1.2rem;
     }
 
     .nav-item.active {
@@ -929,7 +1006,6 @@
           </div>
         </div>
 
-        <!-- NUEVO: Caja Dinámica para cuando todo esté lleno (Sobrecupo) -->
         <div id="box-sobrecupo" class="overbook-box">
           <div class="overbook-title">✨ ¡Cupos Llenos! Pero hay una opción...</div>
           <div class="overbook-text">
@@ -947,13 +1023,75 @@
           </select>
         </div>
 
-        <!-- Alerta de Ubicación Dinámica -->
         <div id="location-info" class="location-info-box"></div>
 
         <button class="btn-main" style="margin-top: 15px; margin-bottom: 0;" onclick="enviarWhatsApp()">
           Confirmar Reserva por WhatsApp 📲
         </button>
       </div>
+    </div>
+
+    <!-- TARJETA DE FIDELIDAD -->
+    <div id="tab-fidelidad" class="tab-content">
+      
+      <!-- Búsqueda -->
+      <div id="client-search-view" class="card">
+        <div class="card-title">Tarjeta de Fidelidad ✨</div>
+        <p class="brand-desc" style="margin-bottom: 15px; text-align: center;">
+          Ingresa tu nombre y teléfono para revisar tus sellos y beneficios acumulados.
+        </p>
+        <div class="form-group">
+          <label for="client-name-input">Nombre Completo</label>
+          <input type="text" id="client-name-input" placeholder="Ej. María González">
+        </div>
+        <div class="form-group">
+          <label for="client-phone-input">Teléfono Móvil</label>
+          <input type="tel" id="client-phone-input" placeholder="Ej. +56912345678">
+        </div>
+        <button onclick="buscarTarjeta()" class="btn-main">
+          Ver Mi Tarjeta de Fidelidad
+        </button>
+      </div>
+
+      <!-- Display de Tarjeta -->
+      <div id="card-display-view" class="card" style="display: none;">
+        <div class="card-title" id="display-client-name">Cliente</div>
+        <p id="display-client-phone" style="font-size: 0.85rem; color: var(--subtext); margin-top: -10px; margin-bottom: 4px; text-align: center; font-weight: 600;"></p>
+        <p id="display-stamp-count" style="font-size: 0.95rem; font-weight: 800; color: var(--primary); text-align: center; margin-bottom: 10px;">0 de 10 servicios</p>
+
+        <!-- Grilla de 10 Sellos Alternados -->
+        <div class="stamps-grid" id="stamps-container"></div>
+
+        <!-- Leyenda de Premios -->
+        <div class="rewards-info">
+          <p>⭐ <b>Sello #5 (Set Completo):</b> 10% de descuento</p>
+          <p>💖 <b>Sello #10 (Retoque):</b> 50% de descuento</p>
+        </div>
+
+        <!-- Historial -->
+        <div>
+          <small style="font-weight: 700; color: var(--text-dark);">Historial de servicios:</small>
+          <div id="history-container" class="history-list">Sin servicios registrados aún.</div>
+        </div>
+
+        <!-- Panel Admin Fidelidad -->
+        <div id="admin-controls-fidelidad" style="display: none; margin-top: 15px; border-top: 1.5px dashed var(--border-color); padding-top: 15px;">
+          <button onclick="marcarServicio()" class="btn-main" style="background: linear-gradient(135deg, #2e7d32, #1b5e20); margin-bottom: 8px;">
+            ✔ Marcar Servicio Atendido
+          </button>
+          <button onclick="reiniciarTarjeta()" class="btn-secondary" style="color: #d32f2f; border-color: #ffcdd2;">
+            Reiniciar Ciclo de Tarjeta
+          </button>
+        </div>
+
+        <button onclick="volverABuscar()" class="btn-secondary" style="margin-top: 12px;">
+          🔍 Buscar otro cliente
+        </button>
+        <button id="toggle-admin-btn-fidelidad" onclick="activarModoAdminFidelidad()" class="btn-secondary" style="margin-top: 8px; border-style: dashed; font-size: 0.8rem; color: var(--subtext);">
+          🔒 Modo Admin Fidelidad
+        </button>
+      </div>
+
     </div>
 
     <!-- INSPÍRATE -->
@@ -1203,7 +1341,7 @@
 
   </div>
 
-  <!-- NAVEGACIÓN INFERIOR -->
+  <!-- NAVEGACIÓN INFERIOR ACTUALIZADA CON PESTAÑA DE FIDELIDAD -->
   <nav class="bottom-nav">
     <button class="nav-item active" onclick="switchTab('inicio')">
       <span class="icon">🏠</span>
@@ -1213,8 +1351,12 @@
       <span class="icon">💖</span>
       <span>Reservar</span>
     </button>
-    <button class="nav-item" onclick="switchTab('galeria')">
+    <button class="nav-item" onclick="switchTab('fidelidad')">
       <span class="icon">✨</span>
+      <span>Fidelidad</span>
+    </button>
+    <button class="nav-item" onclick="switchTab('galeria')">
+      <span class="icon">🖼️</span>
       <span>Inspírate</span>
     </button>
     <button class="nav-item" onclick="switchTab('cuidados')">
@@ -1272,7 +1414,7 @@
 
       document.getElementById('tab-' + tabId).classList.add('active');
       
-      const tabIndex = { 'inicio': 0, 'reservar': 1, 'galeria': 2, 'cuidados': 3, 'admin': 4 };
+      const tabIndex = { 'inicio': 0, 'reservar': 1, 'fidelidad': 2, 'galeria': 3, 'cuidados': 4, 'admin': 5 };
       document.querySelectorAll('.nav-item')[tabIndex[tabId]].classList.add('active');
       window.scrollTo(0, 0);
     }
@@ -1339,7 +1481,6 @@
         total += parseInt(cb.value, 10);
       });
 
-      // Si es sobrecupo activo, le sumamos los $5.000 adicionales de forma automática
       if (esSobrecupo) {
         total += 5000;
       }
@@ -1367,7 +1508,6 @@
       const boxSobrecupo = document.getElementById('box-sobrecupo');
       const contenedorHorasNormales = document.getElementById('contenedor-horas-normales');
       
-      // Reiniciamos estado de sobrecupo al cambiar de día
       esSobrecupo = false;
       document.getElementById('select-sobrecupo-hora').value = "";
 
@@ -1401,7 +1541,6 @@
       const diaSemana = fechaSeleccionada.getDay();
       const horasDisponibles = horarios[diaSemana] || [];
 
-      // Control dinámico del aviso de dirección según el día
       if (diaSemana === 3) {
         locationInfo.style.backgroundColor = '#eef2ff';
         locationInfo.style.borderColor = '#3b82f6';
@@ -1424,7 +1563,6 @@
         return;
       }
 
-      // Contamos cuántas horas de este día están ocupadas en la base de datos
       let contadorOcupadas = 0;
 
       horasDisponibles.forEach(hora => {
@@ -1435,7 +1573,6 @@
         }
       });
 
-      // MODIFICACIÓN: Si TODAS las horas del día están ocupadas, activamos sobrecupo estético
       if (contadorOcupadas === horasDisponibles.length && horasDisponibles.length > 0) {
         contenedorHorasNormales.style.display = 'none';
         boxSobrecupo.style.display = 'block';
@@ -1536,7 +1673,6 @@
         textoUbicacionWsp = "🏠 *Lugar de atención:* Villa Sendero de Los Andes 2 (Ubicación exacta al abonar)";
       }
 
-      // Ajustamos la etiqueta de hora en el mensaje de texto si es un sobrecupo
       const etiquetaHora = esSobrecupo ? `⚠️ *SOBRECUPO:* ${horaSeleccionada}` : `⏰ *Hora:* ${horaSeleccionada} hrs`;
       const notaAdicionalSobrecupo = esSobrecupo ? `%0A📌 _Nota: Este servicio incluye un recargo de $5.000 por concepto de sobrecupo ya sumado al total._` : "";
 
@@ -1614,6 +1750,146 @@
       } else {
         db.ref('horas_bloqueadas/' + claveHora).set(true);
       }
+    }
+
+    /* LÓGICA DE LA TARJETA DE FIDELIDAD */
+    let clienteClaveActual = "";
+    let nombreClienteActual = "";
+    let esAdminFidelidad = false;
+
+    function obtenerBaseDatosFidelidad() {
+      return JSON.parse(localStorage.getItem('lash_fidelidad_db')) || {};
+    }
+
+    function guardarBaseDatosFidelidad(db) {
+      localStorage.setItem('lash_fidelidad_db', JSON.stringify(db));
+    }
+
+    function buscarTarjeta() {
+      const nombre = document.getElementById('client-name-input').value.trim();
+      const telefono = document.getElementById('client-phone-input').value.trim();
+
+      if (!nombre || !telefono) {
+        alert("Por favor ingresa tu nombre completo y teléfono.");
+        return;
+      }
+
+      clienteClaveActual = telefono.replace(/\s+/g, '');
+      nombreClienteActual = nombre;
+
+      renderizarTarjeta();
+      document.getElementById('client-search-view').style.display = 'none';
+      document.getElementById('card-display-view').style.display = 'block';
+    }
+
+    function renderizarTarjeta() {
+      const dbFid = obtenerBaseDatosFidelidad();
+      const datos = dbFid[clienteClaveActual] || { nombre: nombreClienteActual, sellos: 0, historial: [] };
+
+      document.getElementById('display-client-name').innerText = datos.nombre || nombreClienteActual;
+      document.getElementById('display-client-phone').innerText = `Tel: ${clienteClaveActual}`;
+      document.getElementById('display-stamp-count').innerText = `${datos.sellos} de 10 servicios acumulados`;
+
+      const grid = document.getElementById('stamps-container');
+      grid.innerHTML = '';
+
+      for (let i = 1; i <= 10; i++) {
+        const slot = document.createElement('div');
+        slot.className = 'stamp-slot';
+        
+        const esSetCompleto = (i % 2 !== 0); // Impares = Set, Pares = Retoque
+        const tipoTexto = esSetCompleto ? 'Set' : 'Retoque';
+
+        if (i === 5 || i === 10) slot.classList.add('reward');
+        if (i <= datos.sellos) slot.classList.add('active');
+
+        let contenidoSello = '';
+        if (i <= datos.sellos) {
+          contenidoSello = `<span>✨</span><span class="stamp-type">${tipoTexto}</span>`;
+        } else if (i === 5) {
+          contenidoSello = `<span>10%</span><span class="stamp-type">Set</span>`;
+        } else if (i === 10) {
+          contenidoSello = `<span>50%</span><span class="stamp-type">Retoque</span>`;
+        } else {
+          contenidoSello = `<span>${i}</span><span class="stamp-type">${tipoTexto}</span>`;
+        }
+
+        slot.innerHTML = contenidoSello;
+        grid.appendChild(slot);
+      }
+
+      const historyDiv = document.getElementById('history-container');
+      if (datos.historial && datos.historial.length > 0) {
+        historyDiv.innerHTML = datos.historial.map((item) => `<p>• ${item.tipo} - ${item.fecha}</p>`).join('');
+      } else {
+        historyDiv.innerHTML = '<p>Sin servicios registrados aún.</p>';
+      }
+    }
+
+    function marcarServicio() {
+      if (!clienteClaveActual) return;
+      const dbFid = obtenerBaseDatosFidelidad();
+      
+      if (!dbFid[clienteClaveActual]) {
+        dbFid[clienteClaveActual] = { nombre: nombreClienteActual, sellos: 0, historial: [] };
+      }
+
+      const cliente = dbFid[clienteClaveActual];
+
+      if (cliente.sellos < 10) {
+        cliente.sellos += 1;
+        const esSetCompleto = (cliente.sellos % 2 !== 0);
+        const tipoServicio = esSetCompleto ? 'Set Completo' : 'Retoque';
+        const fechaHoy = new Date().toLocaleDateString('es-CL');
+        
+        cliente.historial.push({ tipo: tipoServicio, fecha: fechaHoy });
+        
+        guardarBaseDatosFidelidad(dbFid);
+        renderizarTarjeta();
+        
+        if (cliente.sellos === 5) alert(`¡Atención #${cliente.sellos} (${tipoServicio})! Aplica 10% OFF.`);
+        else if (cliente.sellos === 10) alert(`¡Tarjeta completada en la atención #${cliente.sellos} (${tipoServicio})! Aplica 50% OFF.`);
+        else alert(`¡Servicio #${cliente.sellos} (${tipoServicio}) marcado con éxito!`);
+      } else {
+        alert("Esta tarjeta ya completó los 10 servicios. Puedes reiniciarla para un nuevo ciclo.");
+      }
+    }
+
+    function reiniciarTarjeta() {
+      if (confirm("¿Deseas reiniciar los sellos de este cliente para iniciar un nuevo ciclo de 10?")) {
+        const dbFid = obtenerBaseDatosFidelidad();
+        if (dbFid[clienteClaveActual]) {
+          dbFid[clienteClaveActual].sellos = 0;
+          dbFid[clienteClaveActual].historial = [];
+          guardarBaseDatosFidelidad(dbFid);
+          renderizarTarjeta();
+        }
+      }
+    }
+
+    function activarModoAdminFidelidad() {
+      if (esAdminFidelidad) {
+        esAdminFidelidad = false;
+        document.getElementById('admin-controls-fidelidad').style.display = 'none';
+        document.getElementById('toggle-admin-btn-fidelidad').innerText = '🔒 Modo Admin Fidelidad';
+        return;
+      }
+
+      const clave = prompt("Ingresa la clave de administración:");
+      if (clave === CLAVE_ADMIN) {
+        esAdminFidelidad = true;
+        document.getElementById('admin-controls-fidelidad').style.display = 'block';
+        document.getElementById('toggle-admin-btn-fidelidad').innerText = '🔓 Salir de Admin';
+      } else if (clave !== null) {
+        alert("Clave incorrecta.");
+      }
+    }
+
+    function volverABuscar() {
+      document.getElementById('card-display-view').style.display = 'none';
+      document.getElementById('client-search-view').style.display = 'block';
+      document.getElementById('client-name-input').value = '';
+      document.getElementById('client-phone-input').value = '';
     }
 
     const hoyLocal = new Date();
