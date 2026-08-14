@@ -424,6 +424,49 @@
       text-decoration: underline;
     }
 
+    /* NUEVO: Contenedor estético de Sobrecupo */
+    .overbook-box {
+      background-color: #fff0f3;
+      border: 2px dashed #e63974;
+      border-radius: 16px;
+      padding: 16px;
+      text-align: center;
+      margin-top: 10px;
+      display: none;
+      animation: fadeIn 0.3s ease-in-out;
+    }
+
+    .overbook-title {
+      font-size: 1rem;
+      font-weight: 800;
+      color: #e63974;
+      margin-bottom: 6px;
+    }
+
+    .overbook-text {
+      font-size: 0.88rem;
+      color: var(--text-dark);
+      line-height: 1.4;
+      margin-bottom: 12px;
+    }
+
+    .overbook-text strong {
+      color: #e63974;
+    }
+
+    .overbook-select {
+      width: 100%;
+      padding: 12px;
+      border: 1.5px solid var(--border-color);
+      border-radius: 12px;
+      font-size: 0.92rem;
+      color: var(--text-dark);
+      background-color: #fff;
+      font-weight: 600;
+      outline: none;
+      font-family: inherit;
+    }
+
     .time-grid {
       display: grid;
       grid-template-columns: repeat(3, 1fr);
@@ -879,11 +922,29 @@
           <input type="date" id="fecha" onchange="actualizarHoras()">
         </div>
 
-        <div class="form-group">
+        <div class="form-group" id="contenedor-horas-normales">
           <label>Horas Disponibles</label>
           <div id="grid-horas" class="time-grid">
             <div class="placeholder-text">Selecciona un día primero</div>
           </div>
+        </div>
+
+        <!-- NUEVO: Caja Dinámica para cuando todo esté lleno (Sobrecupo) -->
+        <div id="box-sobrecupo" class="overbook-box">
+          <div class="overbook-title">✨ ¡Cupos Llenos! Pero hay una opción...</div>
+          <div class="overbook-text">
+            Uy, lo siento, están todas las horitas tomadas para este día, pero <strong>siempre hay un sobrecupo para ti 💖</strong>.<br>
+            <small style="color:#d62862; font-weight:bold; display:block; margin-top:5px;">
+              ⚠️ IMPORTANTE: El sobrecupo tiene un valor adicional de $5.000 (se suma automáticamente al total).
+            </small>
+          </div>
+          <label style="text-align:left; font-size:0.85rem; margin-bottom:5px;">Elige el horario de sobrecupo:</label>
+          <select id="select-sobrecupo-hora" class="overbook-select" onchange="seleccionarSobrecupo(this.value)">
+            <option value="">-- Selecciona una opción --</option>
+            <option value="08:00 AM (Sobrecupo)">🌅 08:00 de la mañana</option>
+            <option value="09:30 PM (Sobrecupo)">🌌 09:30 de la noche</option>
+            <option value="A convenir (Sobrecupo)">🤝 Horario a convenir</option>
+          </select>
         </div>
 
         <!-- Alerta de Ubicación Dinámica -->
@@ -1192,6 +1253,7 @@
     };
 
     let horaSeleccionada = "";
+    let esSobrecupo = false;
     let montoTotalGlobal = 0;
     let montoAbonoGlobal = 0;
     let horasOcupadasBaseDatos = {};
@@ -1236,11 +1298,13 @@
     }
 
     function calcularTotal(checkbox) {
-      const labelPadre = checkbox.closest('.service-option');
-      if (checkbox.checked) {
-        labelPadre.classList.add('selected');
-      } else {
-        labelPadre.classList.remove('selected');
+      if (checkbox) {
+        const labelPadre = checkbox.closest('.service-option');
+        if (checkbox.checked) {
+          labelPadre.classList.add('selected');
+        } else {
+          labelPadre.classList.remove('selected');
+        }
       }
 
       const extChecked = document.querySelectorAll('.service-checkbox[data-group="extensiones"]:checked');
@@ -1275,6 +1339,11 @@
         total += parseInt(cb.value, 10);
       });
 
+      // Si es sobrecupo activo, le sumamos los $5.000 adicionales de forma automática
+      if (esSobrecupo) {
+        total += 5000;
+      }
+
       if (cantidadServicios === 1) {
         montoAbonoGlobal = 5000;
       } else if (cantidadServicios >= 2) {
@@ -1295,10 +1364,19 @@
       const inputFecha = document.getElementById('fecha').value;
       const gridHoras = document.getElementById('grid-horas');
       const locationInfo = document.getElementById('location-info');
+      const boxSobrecupo = document.getElementById('box-sobrecupo');
+      const contenedorHorasNormales = document.getElementById('contenedor-horas-normales');
       
+      // Reiniciamos estado de sobrecupo al cambiar de día
+      esSobrecupo = false;
+      document.getElementById('select-sobrecupo-hora').value = "";
+
       if (!inputFecha) {
         gridHoras.innerHTML = '<div class="placeholder-text">Selecciona un día primero</div>';
         locationInfo.style.display = 'none';
+        boxSobrecupo.style.display = 'none';
+        contenedorHorasNormales.style.display = 'block';
+        calcularTotal(null);
         return;
       }
 
@@ -1314,6 +1392,9 @@
       if (fechaSeleccionada < hoy) {
         gridHoras.innerHTML = '<div class="placeholder-text" style="color: #e63974; font-weight: bold;">❌ No puedes seleccionar un día pasado</div>';
         locationInfo.style.display = 'none';
+        boxSobrecupo.style.display = 'none';
+        contenedorHorasNormales.style.display = 'block';
+        calcularTotal(null);
         return;
       }
 
@@ -1322,14 +1403,12 @@
 
       // Control dinámico del aviso de dirección según el día
       if (diaSemana === 3) {
-        // Miércoles - Centro en Salón Entre Nosotras con el link directo
         locationInfo.style.backgroundColor = '#eef2ff';
         locationInfo.style.borderColor = '#3b82f6';
         locationInfo.style.color = '#1e3a8a';
         locationInfo.innerHTML = "📍 Atención en: Centro de Los Andes, calle Santa Rosa (Salón \"Entre nosotras\")<br><a href=\"https://maps.app.goo.gl/A8fdG5X6iJC7QCfj8\" target=\"_blank\">🗺️ Ver ubicación en Google Maps</a>";
         locationInfo.style.display = 'block';
       } else {
-        // Lunes, Martes, Jueves, Viernes, Sábado, Domingo - Villa Sendero
         locationInfo.style.backgroundColor = '#fff8f9';
         locationInfo.style.borderColor = '#e63974';
         locationInfo.style.color = '#a12c4e';
@@ -1339,34 +1418,71 @@
 
       if (horasDisponibles.length === 0) {
         gridHoras.innerHTML = '<div class="placeholder-text">No hay horas disponibles este día</div>';
+        boxSobrecupo.style.display = 'none';
+        contenedorHorasNormales.style.display = 'block';
+        calcularTotal(null);
         return;
       }
 
+      // Contamos cuántas horas de este día están ocupadas en la base de datos
+      let contadorOcupadas = 0;
+
       horasDisponibles.forEach(hora => {
-        const btn = document.createElement('button');
-        btn.type = 'button';
-        btn.className = 'time-btn';
-        
         const horaLimpia = hora.replace(':', '');
         const claveHora = `${inputFecha}_${horaLimpia}`;
-
         if (horasOcupadasBaseDatos[claveHora]) {
-          btn.classList.add('occupied');
-          btn.textContent = `${hora} (Ocupada)`;
-          btn.disabled = true;
-        } else {
-          btn.textContent = hora;
-          btn.onclick = () => seleccionarHora(btn, hora);
+          contadorOcupadas++;
         }
-
-        gridHoras.appendChild(btn);
       });
+
+      // MODIFICACIÓN: Si TODAS las horas del día están ocupadas, activamos sobrecupo estético
+      if (contadorOcupadas === horasDisponibles.length && horasDisponibles.length > 0) {
+        contenedorHorasNormales.style.display = 'none';
+        boxSobrecupo.style.display = 'block';
+      } else {
+        contenedorHorasNormales.style.display = 'block';
+        boxSobrecupo.style.display = 'none';
+
+        horasDisponibles.forEach(hora => {
+          const btn = document.createElement('button');
+          btn.type = 'button';
+          btn.className = 'time-btn';
+          
+          const horaLimpia = hora.replace(':', '');
+          const claveHora = `${inputFecha}_${horaLimpia}`;
+
+          if (horasOcupadasBaseDatos[claveHora]) {
+            btn.classList.add('occupied');
+            btn.textContent = `${hora} (Ocupada)`;
+            btn.disabled = true;
+          } else {
+            btn.textContent = hora;
+            btn.onclick = () => seleccionarHora(btn, hora);
+          }
+          gridHoras.appendChild(btn);
+        });
+      }
+      
+      calcularTotal(null);
     }
 
     function seleccionarHora(boton, hora) {
       document.querySelectorAll('.time-btn:not(.occupied)').forEach(b => b.classList.remove('selected'));
       boton.classList.add('selected');
       horaSeleccionada = hora;
+      esSobrecupo = false;
+      calcularTotal(null);
+    }
+
+    function seleccionarSobrecupo(valor) {
+      if (valor !== "") {
+        horaSeleccionada = valor;
+        esSobrecupo = true;
+      } else {
+        horaSeleccionada = "";
+        esSobrecupo = false;
+      }
+      calcularTotal(null);
     }
 
     function enviarWhatsApp() {
@@ -1392,7 +1508,9 @@
       }
 
       if (!horaSeleccionada) {
-        alert("Por favor, selecciona una hora disponible.");
+        alert(esSobrecupo || document.getElementById('box-sobrecupo').style.display === 'block' 
+          ? "Por favor, selecciona un horario válido para tu sobrecupo." 
+          : "Por favor, selecciona una hora disponible.");
         return;
       }
 
@@ -1408,7 +1526,6 @@
       const saldoRestante = Math.max(0, montoTotalGlobal - montoAbonoGlobal);
       const saldoRestanteFormateado = "$" + saldoRestante.toLocaleString('es-CL');
 
-      // Determinar texto de ubicación para el mensaje de WhatsApp
       const d = new Date(partesFecha[0], partesFecha[1] - 1, partesFecha[2]);
       const diaSemana = d.getDay();
       let textoUbicacionWsp = "";
@@ -1419,13 +1536,17 @@
         textoUbicacionWsp = "🏠 *Lugar de atención:* Villa Sendero de Los Andes 2 (Ubicación exacta al abonar)";
       }
 
+      // Ajustamos la etiqueta de hora en el mensaje de texto si es un sobrecupo
+      const etiquetaHora = esSobrecupo ? `⚠️ *SOBRECUPO:* ${horaSeleccionada}` : `⏰ *Hora:* ${horaSeleccionada} hrs`;
+      const notaAdicionalSobrecupo = esSobrecupo ? `%0A📌 _Nota: Este servicio incluye un recargo de $5.000 por concepto de sobrecupo ya sumado al total._` : "";
+
       const mensaje = `¡Hola Lash Marii! 👋🏼 Deseo solicitar una reserva:%0A%0A` +
                       `👤 *Nombre:* ${nombre}%0A` +
                       `✨ *Servicios:*%0A${listaServicios}%0A%0A` +
-                      `💰 *Total del servicio:* ${precioTotal}%0A` +
+                      `💰 *Total del servicio:* ${precioTotal}${notaAdicionalSobrecupo}%0A` +
                       `💵 *Abono requerido:* ${precioAbono}%0A` +
                       `📅 *Fecha:* ${fechaFormateada}%0A` +
-                      `⏰ *Hora:* ${horaSeleccionada} hrs%0A` +
+                      `${etiquetaHora}%0A` +
                       `${textoUbicacionWsp}%0A%0A` +
                       `📌 *Adjunto mi comprobante de abono a continuación:*%0A` +
                       `💖 *Saldo a pagar el día de mi cita:* ${saldoRestanteFormateado}`;
