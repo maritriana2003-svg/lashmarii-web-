@@ -3,7 +3,7 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Lash Marii & Las Mary Boutique</title>
+  <title>Lash Marii & Lash Marii Boutique</title>
   
   <!-- Firebase SDKs -->
   <script src="https://www.gstatic.com/firebasejs/9.22.2/firebase-app-compat.js"></script>
@@ -581,7 +581,7 @@
       margin-top: 2px;
     }
 
-    /* ESTILOS ESPECÍFICOS DE LAS MARY BOUTIQUE */
+    /* ESTILOS ESPECÍFICOS DE LASH MARII BOUTIQUE */
     .boutique-grid {
       display: grid;
       grid-template-columns: repeat(1, 1fr);
@@ -885,7 +885,7 @@
         <div class="sub-note">Atención personalizada · Solo con reserva previa</div>
 
         <button class="btn-secondary" style="margin-bottom: 20px; background: #fff8f9; border-color: var(--primary);" onclick="switchTab('boutique')">
-          👜 Visita Las Mary Boutique
+          👜 Visita Lash Marii Boutique
         </button>
 
         <div class="trust-footer">
@@ -1106,10 +1106,10 @@
       </div>
     </div>
 
-    <!-- LAS MARY BOUTIQUE -->
+    <!-- LASH MARII BOUTIQUE -->
     <div id="tab-boutique" class="tab-content">
       <div class="card">
-        <div class="card-title">Las Mary Boutique 👜</div>
+        <div class="card-title">Lash Marii Boutique 👜</div>
         <p class="brand-desc" style="margin-bottom: 12px;">
           Encuentra la cartera perfecta para complementar tu estilo. Modelos exclusivos, elegantes y con excelentes acabados ✨.
         </p>
@@ -1475,7 +1475,7 @@
 
   </div>
 
-  <!-- NAVEGACIÓN INFERIOR ACTUALIZADA -->
+  <!-- NAVEGACIÓN INFERIOR -->
   <nav class="bottom-nav">
     <button class="nav-item active" onclick="switchTab('inicio')">
       <span class="icon">🏠</span>
@@ -1831,7 +1831,7 @@
 
     function consultarCartera(nombreModelo, precio) {
       const telefono = "56977952393";
-      const mensaje = `¡Hola Las Mary Boutique! 👜✨ Me encantó este modelo:%0A%0A` +
+      const mensaje = `¡Hola Lash Marii Boutique! 👜✨ Me encantó este modelo:%0A%0A` +
                       `👜 *Modelo:* ${nombreModelo}%0A` +
                       `💰 *Precio:* ${precio}%0A%0A` +
                       `¿Tienes stock disponible o cómo puedo adquirirlo?`;
@@ -1944,7 +1944,7 @@
         const slot = document.createElement('div');
         slot.className = 'stamp-slot';
         
-        const esSetCompleto = (i % 2 !== 0); // Impares = Set, Pares = Retoque
+        const esSetCompleto = (i % 2 !== 0);
         const tipoTexto = esSetCompleto ? 'Set' : 'Retoque';
 
         if (i === 5 || i === 10) slot.classList.add('reward');
