@@ -3,7 +3,7 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Lash Marii - Reservas & Fidelidad</title>
+  <title>Lash Marii & Las Mary Boutique</title>
   
   <!-- Firebase SDKs -->
   <script src="https://www.gstatic.com/firebasejs/9.22.2/firebase-app-compat.js"></script>
@@ -581,6 +581,77 @@
       margin-top: 2px;
     }
 
+    /* ESTILOS ESPECÍFICOS DE LAS MARY BOUTIQUE */
+    .boutique-grid {
+      display: grid;
+      grid-template-columns: repeat(1, 1fr);
+      gap: 16px;
+      margin-top: 15px;
+    }
+
+    .boutique-card {
+      background: #ffffff;
+      border-radius: 18px;
+      overflow: hidden;
+      border: 1px solid var(--border-color);
+      box-shadow: 0 4px 12px rgba(230, 57, 116, 0.05);
+      display: flex;
+      flex-direction: column;
+    }
+
+    .boutique-img {
+      width: 100%;
+      height: 220px;
+      object-fit: cover;
+      display: block;
+    }
+
+    .boutique-details {
+      padding: 15px;
+    }
+
+    .boutique-name {
+      font-size: 1.05rem;
+      font-weight: 800;
+      color: var(--text-dark);
+      margin-bottom: 4px;
+    }
+
+    .boutique-desc {
+      font-size: 0.82rem;
+      color: var(--subtext);
+      margin-bottom: 10px;
+      line-height: 1.35;
+    }
+
+    .boutique-price-row {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      margin-top: 5px;
+    }
+
+    .boutique-price {
+      font-size: 1.15rem;
+      font-weight: 800;
+      color: var(--primary);
+    }
+
+    .btn-buy {
+      background: linear-gradient(135deg, #e63974, #d62862);
+      color: white;
+      border: none;
+      border-radius: 10px;
+      padding: 8px 14px;
+      font-size: 0.82rem;
+      font-weight: 700;
+      cursor: pointer;
+      text-decoration: none;
+      display: inline-flex;
+      align-items: center;
+      gap: 4px;
+    }
+
     .accordion-header {
       width: 100%;
       background: #ffffff;
@@ -757,13 +828,13 @@
       left: 50%;
       transform: translateX(-50%);
       width: calc(100% - 30px);
-      max-width: 410px;
+      max-width: 420px;
       background: rgba(255, 255, 255, 0.94);
       backdrop-filter: blur(12px);
       border-radius: 25px;
       display: flex;
       justify-content: space-around;
-      padding: 10px 4px;
+      padding: 10px 2px;
       box-shadow: 0 10px 30px rgba(0, 0, 0, 0.08);
       border: 1px solid rgba(247, 214, 224, 0.8);
       z-index: 1000;
@@ -777,7 +848,7 @@
       background: none;
       border: none;
       color: #a08c90;
-      font-size: 0.7rem;
+      font-size: 0.65rem;
       font-weight: 700;
       cursor: pointer;
       flex: 1;
@@ -785,7 +856,7 @@
     }
 
     .nav-item .icon {
-      font-size: 1.2rem;
+      font-size: 1.1rem;
     }
 
     .nav-item.active {
@@ -812,6 +883,10 @@
           💖 Agenda tu cita aquí
         </button>
         <div class="sub-note">Atención personalizada · Solo con reserva previa</div>
+
+        <button class="btn-secondary" style="margin-bottom: 20px; background: #fff8f9; border-color: var(--primary);" onclick="switchTab('boutique')">
+          👜 Visita Las Mary Boutique
+        </button>
 
         <div class="trust-footer">
           <div class="trust-footer-item">
@@ -1028,6 +1103,65 @@
         <button class="btn-main" style="margin-top: 15px; margin-bottom: 0;" onclick="enviarWhatsApp()">
           Confirmar Reserva por WhatsApp 📲
         </button>
+      </div>
+    </div>
+
+    <!-- LAS MARY BOUTIQUE -->
+    <div id="tab-boutique" class="tab-content">
+      <div class="card">
+        <div class="card-title">Las Mary Boutique 👜</div>
+        <p class="brand-desc" style="margin-bottom: 12px;">
+          Encuentra la cartera perfecta para complementar tu estilo. Modelos exclusivos, elegantes y con excelentes acabados ✨.
+        </p>
+
+        <div class="boutique-grid">
+          
+          <!-- PRODUCTO 1 -->
+          <div class="boutique-card">
+            <img src="https://images.unsplash.com/photo-1584917865442-de89df76afd3?auto=format&fit=crop&w=600&q=80" alt="Cartera Elegante Classic" class="boutique-img">
+            <div class="boutique-details">
+              <div class="boutique-name">Cartera Classic Nude</div>
+              <div class="boutique-desc">Diseño estructurado en tono nude con detalles dorados. Incluye correa ajustable para usar cruzada o al hombro.</div>
+              <div class="boutique-price-row">
+                <span class="boutique-price">$24.990</span>
+                <button class="btn-buy" onclick="consultarCartera('Cartera Classic Nude', '$24.990')">
+                  Consultar / Comprar 📲
+                </button>
+              </div>
+            </div>
+          </div>
+
+          <!-- PRODUCTO 2 -->
+          <div class="boutique-card">
+            <img src="https://images.unsplash.com/photo-1590874103328-eac38a683ce7?auto=format&fit=crop&w=600&q=80" alt="Cartera Shoulder Bag Black" class="boutique-img">
+            <div class="boutique-details">
+              <div class="boutique-name">Shoulder Bag Noir</div>
+              <div class="boutique-desc">Estilo baguette moderno en cuero sintético negro. Perfecta para salidas de noche o eventos formales.</div>
+              <div class="boutique-price-row">
+                <span class="boutique-price">$19.990</span>
+                <button class="btn-buy" onclick="consultarCartera('Shoulder Bag Noir', '$19.990')">
+                  Consultar / Comprar 📲
+                </button>
+              </div>
+            </div>
+          </div>
+
+          <!-- PRODUCTO 3 -->
+          <div class="boutique-card">
+            <img src="https://images.unsplash.com/photo-1548036328-c9fa89d128fa?auto=format&fit=crop&w=600&q=80" alt="Mini Bag Rose" class="boutique-img">
+            <div class="boutique-details">
+              <div class="boutique-name">Mini Bag Rosé</div>
+              <div class="boutique-desc">Compacta y chic. Ideal para llevar tus esenciales (celular, labial y tarjetas) con el máximo estilo.</div>
+              <div class="boutique-price-row">
+                <span class="boutique-price">$16.990</span>
+                <button class="btn-buy" onclick="consultarCartera('Mini Bag Rosé', '$16.990')">
+                  Consultar / Comprar 📲
+                </button>
+              </div>
+            </div>
+          </div>
+
+        </div>
       </div>
     </div>
 
@@ -1341,7 +1475,7 @@
 
   </div>
 
-  <!-- NAVEGACIÓN INFERIOR ACTUALIZADA CON PESTAÑA DE FIDELIDAD -->
+  <!-- NAVEGACIÓN INFERIOR ACTUALIZADA -->
   <nav class="bottom-nav">
     <button class="nav-item active" onclick="switchTab('inicio')">
       <span class="icon">🏠</span>
@@ -1350,6 +1484,10 @@
     <button class="nav-item" onclick="switchTab('reservar')">
       <span class="icon">💖</span>
       <span>Reservar</span>
+    </button>
+    <button class="nav-item" onclick="switchTab('boutique')">
+      <span class="icon">👜</span>
+      <span>Boutique</span>
     </button>
     <button class="nav-item" onclick="switchTab('fidelidad')">
       <span class="icon">✨</span>
@@ -1414,7 +1552,7 @@
 
       document.getElementById('tab-' + tabId).classList.add('active');
       
-      const tabIndex = { 'inicio': 0, 'reservar': 1, 'fidelidad': 2, 'galeria': 3, 'cuidados': 4, 'admin': 5 };
+      const tabIndex = { 'inicio': 0, 'reservar': 1, 'boutique': 2, 'fidelidad': 3, 'galeria': 4, 'cuidados': 5, 'admin': 6 };
       document.querySelectorAll('.nav-item')[tabIndex[tabId]].classList.add('active');
       window.scrollTo(0, 0);
     }
@@ -1691,6 +1829,15 @@
       window.open(`https://wa.me/${telefono}?text=${mensaje}`, '_blank');
     }
 
+    function consultarCartera(nombreModelo, precio) {
+      const telefono = "56977952393";
+      const mensaje = `¡Hola Las Mary Boutique! 👜✨ Me encantó este modelo:%0A%0A` +
+                      `👜 *Modelo:* ${nombreModelo}%0A` +
+                      `💰 *Precio:* ${precio}%0A%0A` +
+                      `¿Tienes stock disponible o cómo puedo adquirirlo?`;
+      window.open(`https://wa.me/${telefono}?text=${encodeURIComponent(mensaje)}`, '_blank');
+    }
+
     function validarAdmin() {
       const pass = document.getElementById('admin-pass').value;
       if (pass === CLAVE_ADMIN) {
@@ -1902,4 +2049,3 @@
   </script>
 </body>
 </html>
-
