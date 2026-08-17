@@ -1,22 +1,45 @@
 // Variable para almacenar la hora seleccionada
 let horaSeleccionada = "";
 
-// Función para cambiar de pestañas (Tab System)
+// Función para cambiar de pestañas (Tab System) y sincronizar el menú inferior
 function switchTab(tabId) {
+  // Ocultar todas las pestañas
   const tabs = document.querySelectorAll('.tab-content');
   tabs.forEach(tab => tab.classList.remove('active'));
 
+  // Mostrar la pestaña seleccionada
   const activeTab = document.getElementById('tab-' + tabId);
   if (activeTab) {
     activeTab.classList.add('active');
   }
 
+  // Actualizar el estado visual de los botones de la barra inferior
+  const navItems = document.querySelectorAll('.nav-item');
+  navItems.forEach(item => {
+    item.classList.remove('active');
+    if (item.getAttribute('onclick') && item.getAttribute('onclick').includes(tabId)) {
+      item.classList.add('active');
+    }
+  });
+
   window.scrollTo(0, 0);
+}
+
+// Función para el Acordeón de la sección Cuidados
+function toggleAccordion(button) {
+  button.classList.toggle('active');
+  const content = button.nextElementSibling;
+  
+  if (content.classList.contains('show')) {
+    content.classList.remove('show');
+  } else {
+    content.classList.add('show');
+  }
 }
 
 // Función para calcular total, abono y saldo pendiente
 function calcularTotal(checkboxModificado) {
-  // Manejo de restricción: solo un tipo de pestañas a la vez
+  // Solo un tipo de técnica de pestañas a la vez
   if (checkboxModificado && checkboxModificado.dataset.group === 'extensiones' && checkboxModificado.checked) {
     const extensiones = document.querySelectorAll('.service-checkbox[data-group="extensiones"]');
     extensiones.forEach(cb => {
@@ -58,10 +81,9 @@ function actualizarHoras() {
 
   if (!fechaInput) return;
 
-  // Limpiar horas previas
   gridHoras.innerHTML = '';
   
-  // Ejemplo de horas por defecto (Ajusta según tus necesidades)
+  // Horarios disponibles estándar
   const horasDisponibles = ["10:00 AM", "12:30 PM", "03:30 PM", "06:00 PM"];
 
   if (horasDisponibles.length > 0) {
@@ -78,7 +100,6 @@ function actualizarHoras() {
       gridHoras.appendChild(btn);
     });
   } else {
-    // Si no hay cupos, muestra la opción de sobrecupo
     boxSobrecupo.style.display = 'block';
   }
 }
@@ -88,7 +109,7 @@ function seleccionarSobrecupo(valor) {
   horaSeleccionada = valor;
 }
 
-// Enviar reserva a WhatsApp
+// Enviar mensaje de confirmación por WhatsApp
 function enviarWhatsApp() {
   const nombre = document.getElementById('nombre').value.trim();
   const fecha = document.getElementById('fecha').value;
@@ -120,6 +141,6 @@ function enviarWhatsApp() {
     `⏰ *Hora:* ${horaSeleccionada}\n\n` +
     `Ya tengo listos los datos para hacer la transferencia del abono.`;
 
-  const url = `https://wa.me/56912345678?text=${encodeURIComponent(mensaje)}`; // Reemplaza con tu número real
+  const url = `https://wa.me/56912345678?text=${encodeURIComponent(mensaje)}`; // Reemplaza con tu número de WhatsApp
   window.open(url, '_blank');
 }
