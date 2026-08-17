@@ -1,1157 +1,1181 @@
 <!DOCTYPE html>
 <html lang="es">
 <head>
-  <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Lash Marii & Lash Marii Boutique</title>
-  
-  <!-- Firebase SDKs -->
-  <script src="https://www.gstatic.com/firebasejs/9.22.2/firebase-app-compat.js"></script>
-  <script src="https://www.gstatic.com/firebasejs/9.22.2/firebase-database-compat.js"></script>
-
-  <style>
-    :root {
-      --bg-color: #fff4f6;
-      --card-bg: #ffffff;
-      --primary: #e63974;
-      --primary-hover: #c82a60;
-      --text-dark: #3a1c22;
-      --border-color: #f7d6e0;
-      --subtext: #786267;
-    }
-
-    * {
-      box-sizing: border-box;
-      margin: 0;
-      padding: 0;
-    }
-
-    body {
-      font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Helvetica, Arial, sans-serif;
-      background-color: var(--bg-color);
-      color: var(--text-dark);
-      padding: 20px 15px 120px 15px;
-      display: flex;
-      justify-content: center;
-    }
-
-    .container {
-      width: 100%;
-      max-width: 420px;
-    }
-
-    .tab-content {
-      display: none;
-      animation: fadeIn 0.3s ease-in-out;
-    }
-
-    .tab-content.active {
-      display: block;
-    }
-
-    @keyframes fadeIn {
-      from { opacity: 0; transform: translateY(6px); }
-      to { opacity: 1; transform: translateY(0); }
-    }
-
-    .hero-header {
-      text-align: center;
-      padding: 20px 0 10px 0;
-    }
-
-    .logo-container {
-      width: 150px;
-      height: 150px;
-      margin: 0 auto 15px auto;
-      border-radius: 50%;
-      padding: 4px;
-      background: linear-gradient(135deg, #f7d6e0, #e63974);
-      box-shadow: 0 6px 20px rgba(230, 57, 116, 0.2);
-    }
-
-    .logo-img {
-      width: 100%;
-      height: 100%;
-      border-radius: 50%;
-      object-fit: cover;
-      display: block;
-    }
-
-    .welcome-text {
-      font-size: 0.9rem;
-      font-weight: 800;
-      letter-spacing: 2px;
-      color: var(--primary);
-      text-transform: uppercase;
-      margin-bottom: 5px;
-    }
-
-    .brand-title {
-      font-size: 2rem;
-      font-weight: 800;
-      color: var(--text-dark);
-      margin-bottom: 12px;
-    }
-
-    .brand-desc {
-      font-size: 0.95rem;
-      color: var(--subtext);
-      line-height: 1.5;
-      margin: 0 auto 18px auto;
-    }
-
-    .location-badge {
-      display: inline-flex;
-      align-items: center;
-      gap: 5px;
-      background-color: #ffe6ee;
-      color: var(--primary);
-      font-size: 0.85rem;
-      font-weight: 700;
-      padding: 8px 16px;
-      border-radius: 20px;
-      margin-bottom: 25px;
-    }
-
-    .btn-main {
-      width: 100%;
-      background: linear-gradient(135deg, #e63974, #d62862);
-      color: white;
-      border: none;
-      border-radius: 16px;
-      padding: 16px;
-      font-size: 1rem;
-      font-weight: 700;
-      cursor: pointer;
-      box-shadow: 0 4px 15px rgba(230, 57, 116, 0.3);
-      display: flex;
-      align-items: center;
-      justify-content: center;
-      gap: 8px;
-      text-decoration: none;
-      margin-bottom: 10px;
-    }
-
-    .sub-note {
-      text-align: center;
-      font-size: 0.85rem;
-      color: var(--subtext);
-      margin-bottom: 25px;
-    }
-
-    .trust-footer {
-      background: rgba(255, 255, 255, 0.75);
-      border: 1px solid var(--border-color);
-      border-radius: 14px;
-      padding: 12px;
-      margin: 0 0 20px 0;
-      text-align: left;
-      font-size: 0.78rem;
-      color: var(--subtext);
-      line-height: 1.35;
-    }
-
-    .trust-footer-item {
-      display: flex;
-      align-items: flex-start;
-      gap: 8px;
-      margin-bottom: 8px;
-    }
-
-    .trust-footer-item:last-child {
-      margin-bottom: 0;
-    }
-
-    .trust-footer-item strong {
-      color: var(--text-dark);
-    }
-
-    .btn-secondary {
-      width: 100%;
-      background: #ffffff;
-      color: var(--text-dark);
-      border: 1px solid var(--border-color);
-      border-radius: 16px;
-      padding: 14px;
-      font-size: 0.95rem;
-      font-weight: 700;
-      cursor: pointer;
-      display: flex;
-      align-items: center;
-      justify-content: center;
-      gap: 8px;
-      text-decoration: none;
-      box-shadow: 0 2px 8px rgba(0, 0, 0, 0.03);
-    }
-
-    .card {
-      background: var(--card-bg);
-      border-radius: 20px;
-      padding: 22px;
-      box-shadow: 0 4px 18px rgba(230, 57, 116, 0.06);
-      margin-bottom: 20px;
-    }
-
-    .card-title {
-      display: flex;
-      align-items: center;
-      gap: 10px;
-      font-size: 1.25rem;
-      font-weight: 800;
-      margin-bottom: 18px;
-      color: var(--text-dark);
-    }
-
-    .card-title::before {
-      content: "";
-      display: inline-block;
-      width: 4px;
-      height: 22px;
-      background-color: var(--primary);
-      border-radius: 2px;
-    }
-
-    .form-group {
-      margin-bottom: 16px;
-    }
-
-    label {
-      display: block;
-      font-weight: 700;
-      font-size: 0.9rem;
-      margin-bottom: 8px;
-    }
-
-    input[type="text"], input[type="tel"], input[type="date"], input[type="password"] {
-      width: 100%;
-      padding: 14px;
-      border: 1.5px solid var(--border-color);
-      border-radius: 14px;
-      font-size: 0.95rem;
-      outline: none;
-      color: var(--text-dark);
-      background-color: #fff;
-      font-family: inherit;
-    }
-
-    .service-category {
-      font-size: 0.88rem;
-      font-weight: 800;
-      color: var(--primary);
-      text-transform: uppercase;
-      letter-spacing: 0.5px;
-      margin: 18px 0 4px 0;
-    }
-
-    .service-category:first-of-type {
-      margin-top: 5px;
-    }
-
-    .service-desc {
-      font-size: 0.8rem;
-      color: var(--subtext);
-      line-height: 1.35;
-      margin-bottom: 10px;
-      background-color: #fff8f9;
-      padding: 8px 12px;
-      border-radius: 10px;
-      border-left: 3px solid var(--primary);
-    }
-
-    .service-desc-item {
-      font-size: 0.78rem;
-      color: var(--subtext);
-      line-height: 1.3;
-      margin: -4px 0 10px 6px;
-      padding-left: 8px;
-      border-left: 2px solid var(--border-color);
-    }
-
-    .service-option {
-      display: flex;
-      align-items: center;
-      justify-content: space-between;
-      padding: 12px 14px;
-      border: 1.5px solid var(--border-color);
-      border-radius: 14px;
-      margin-bottom: 6px;
-      cursor: pointer;
-      transition: all 0.2s ease;
-      background-color: #fff;
-      user-select: none;
-    }
-
-    .service-option.selected {
-      border-color: var(--primary);
-      background-color: #fff8f9;
-    }
-
-    .service-info {
-      display: flex;
-      align-items: center;
-      gap: 10px;
-      pointer-events: none;
-    }
-
-    .service-checkbox {
-      width: 18px;
-      height: 18px;
-      accent-color: var(--primary);
-      cursor: pointer;
-    }
-
-    .service-name {
-      font-size: 0.9rem;
-      font-weight: 600;
-      color: var(--text-dark);
-    }
-
-    .service-price {
-      font-size: 0.9rem;
-      font-weight: 700;
-      color: var(--primary);
-      pointer-events: none;
-    }
-
-    .total-box {
-      border: 1.5px dashed var(--primary);
-      border-radius: 14px;
-      padding: 14px;
-      text-align: center;
-      font-weight: 700;
-      font-size: 0.95rem;
-      color: var(--text-dark);
-      margin-top: 15px;
-      background-color: #fff8f9;
-      line-height: 1.6;
-    }
-
-    .total-amount { color: var(--primary); font-size: 1.15rem; }
-    .abono-amount { color: #e63974; font-size: 1.1rem; font-weight: 800; }
-    .restante-amount { color: #2e7d32; font-size: 1.15rem; font-weight: 800; }
-
-    .payment-box {
-      background-color: #fff9fb;
-      border: 1.5px solid var(--border-color);
-      border-radius: 16px;
-      padding: 16px;
-      margin-top: 15px;
-    }
-
-    .payment-title {
-      font-size: 0.95rem;
-      font-weight: 800;
-      color: var(--primary);
-      margin-bottom: 10px;
-      text-align: center;
-    }
-
-    .bank-details {
-      background-color: #ffffff;
-      border: 1px solid var(--border-color);
-      border-radius: 12px;
-      padding: 12px 14px;
-      margin-bottom: 12px;
-      font-size: 0.88rem;
-      line-height: 1.6;
-    }
-
-    .bank-details div {
-      display: flex;
-      justify-content: space-between;
-      border-bottom: 1px dashed #f2e6ea;
-      padding: 3px 0;
-    }
-
-    .bank-details div:last-child { border-bottom: none; }
-
-    .alert-whatsapp {
-      background-color: #ffe6ee;
-      border-left: 4px solid var(--primary);
-      border-radius: 8px;
-      padding: 10px;
-      font-size: 0.82rem;
-      color: #a12c4e;
-      font-weight: 700;
-      text-align: center;
-      line-height: 1.4;
-    }
-
-    .overbook-box {
-      background-color: #fff0f3;
-      border: 2px dashed #e63974;
-      border-radius: 16px;
-      padding: 16px;
-      text-align: center;
-      margin-top: 10px;
-      display: none;
-      animation: fadeIn 0.3s ease-in-out;
-    }
-
-    .overbook-title {
-      font-size: 1rem;
-      font-weight: 800;
-      color: #e63974;
-      margin-bottom: 6px;
-    }
-
-    .overbook-text {
-      font-size: 0.88rem;
-      color: var(--text-dark);
-      line-height: 1.4;
-      margin-bottom: 12px;
-    }
-
-    .overbook-select {
-      width: 100%;
-      padding: 12px;
-      border: 1.5px solid var(--border-color);
-      border-radius: 12px;
-      font-size: 0.92rem;
-      color: var(--text-dark);
-      background-color: #fff;
-      font-weight: 600;
-      outline: none;
-    }
-
-    .time-grid {
-      display: grid;
-      grid-template-columns: repeat(3, 1fr);
-      gap: 10px;
-      margin-top: 10px;
-    }
-
-    .time-btn {
-      background-color: #fff;
-      border: 1.5px solid var(--border-color);
-      border-radius: 12px;
-      padding: 12px 5px;
-      font-size: 0.95rem;
-      font-weight: 700;
-      color: var(--text-dark);
-      cursor: pointer;
-      transition: all 0.2s ease;
-    }
-
-    .time-btn.selected {
-      background-color: var(--primary);
-      color: white;
-      border-color: var(--primary);
-    }
-
-    .time-btn.occupied {
-      background-color: #e2e8f0;
-      color: #a0aec0;
-      border-color: #cbd5e0;
-      cursor: not-allowed;
-      text-decoration: line-through;
-    }
-
-    .placeholder-text {
-      color: var(--subtext);
-      font-size: 0.9rem;
-      text-align: center;
-      margin-top: 10px;
-      grid-column: span 3;
-    }
-
-    /* ESTILOS DE LASH MARII BOUTIQUE Y CARRUSELES */
-    .boutique-grid {
-      display: grid;
-      grid-template-columns: repeat(1, 1fr);
-      gap: 20px;
-      margin-top: 15px;
-    }
-
-    .boutique-card {
-      background: #ffffff;
-      border-radius: 18px;
-      overflow: hidden;
-      border: 1px solid var(--border-color);
-      box-shadow: 0 4px 12px rgba(230, 57, 116, 0.05);
-      display: flex;
-      flex-direction: column;
-    }
-
-    .boutique-details { 
-      padding: 16px; 
-    }
-
-    .boutique-name {
-      font-size: 1.1rem;
-      font-weight: 800;
-      color: var(--text-dark);
-      margin-bottom: 6px;
-    }
-
-    .boutique-desc {
-      font-size: 0.85rem;
-      color: var(--subtext);
-      margin-bottom: 12px;
-      line-height: 1.4;
-    }
-
-    .boutique-price-row {
-      display: flex;
-      justify-content: space-between;
-      align-items: center;
-      margin-top: 10px;
-      padding-top: 10px;
-      border-top: 1px dashed var(--border-color);
-    }
-
-    .boutique-price {
-      font-size: 1.2rem;
-      font-weight: 800;
-      color: var(--primary);
-    }
-
-    .btn-buy {
-      background: linear-gradient(135deg, #e63974, #d62862);
-      color: white;
-      border: none;
-      border-radius: 12px;
-      padding: 10px 16px;
-      font-size: 0.85rem;
-      font-weight: 700;
-      cursor: pointer;
-      text-decoration: none;
-      display: inline-flex;
-      align-items: center;
-      gap: 6px;
-      box-shadow: 0 3px 10px rgba(230, 57, 116, 0.2);
-    }
-
-    .carousel-container {
-      position: relative;
-      width: 100%;
-      overflow: hidden;
-      border-radius: 18px 18px 0 0;
-      background-color: #f9f9f9;
-    }
-
-    .carousel-track {
-      display: flex;
-      transition: transform 0.3s ease-in-out;
-      width: 100%;
-    }
-
-    .carousel-slide {
-      min-width: 100%;
-      box-sizing: border-box;
-    }
-
-    .carousel-slide img {
-      width: 100%;
-      height: 280px;
-      object-fit: cover;
-      display: block;
-    }
-
-    .carousel-btn {
-      position: absolute;
-      top: 50%;
-      transform: translateY(-50%);
-      background: rgba(0, 0, 0, 0.4);
-      color: white;
-      border: none;
-      font-size: 14px;
-      padding: 8px 11px;
-      cursor: pointer;
-      border-radius: 50%;
-      z-index: 5;
-      backdrop-filter: blur(2px);
-    }
-
-    .carousel-btn.prev { left: 8px; }
-    .carousel-btn.next { right: 8px; }
-
-    .carousel-dots {
-      position: absolute;
-      bottom: 10px;
-      left: 50%;
-      transform: translateX(-50%);
-      display: flex;
-      gap: 6px;
-      z-index: 5;
-    }
-
-    .dot {
-      width: 8px;
-      height: 8px;
-      background: rgba(255, 255, 255, 0.6);
-      border-radius: 50%;
-      cursor: pointer;
-      transition: background 0.3s, width 0.3s;
-    }
-
-    .dot.active {
-      background: #ffffff;
-      width: 18px;
-      border-radius: 4px;
-    }
-
-    .bottom-nav {
-      position: fixed;
-      bottom: 20px;
-      left: 50%;
-      transform: translateX(-50%);
-      width: calc(100% - 30px);
-      max-width: 420px;
-      background: rgba(255, 255, 255, 0.94);
-      backdrop-filter: blur(12px);
-      border-radius: 25px;
-      display: flex;
-      justify-content: space-around;
-      padding: 10px 2px;
-      box-shadow: 0 10px 30px rgba(0, 0, 0, 0.08);
-      border: 1px solid rgba(247, 214, 224, 0.8);
-      z-index: 1000;
-    }
-
-    .nav-item {
-      display: flex;
-      flex-direction: column;
-      align-items: center;
-      gap: 3px;
-      background: none;
-      border: none;
-      color: #a08c90;
-      font-size: 0.65rem;
-      font-weight: 700;
-      cursor: pointer;
-      flex: 1;
-      transition: all 0.2s ease;
-    }
-
-    .nav-item .icon { font-size: 1.1rem; }
-    .nav-item.active { color: var(--primary); }
-  </style>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Lash Marii & Lash Marii Boutique</title>
+  
+  <!-- Firebase SDKs -->
+  <script src="https://www.gstatic.com/firebasejs/9.22.2/firebase-app-compat.js"></script>
+  <script src="https://www.gstatic.com/firebasejs/9.22.2/firebase-database-compat.js"></script>
+
+  <style>
+    :root {
+      --bg-color: #fff4f6;
+      --card-bg: #ffffff;
+      --primary: #e63974;
+      --primary-hover: #c82a60;
+      --text-dark: #3a1c22;
+      --border-color: #f7d6e0;
+      --subtext: #786267;
+    }
+
+    * {
+      box-sizing: border-box;
+      margin: 0;
+      padding: 0;
+    }
+
+    body {
+      font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Helvetica, Arial, sans-serif;
+      background-color: var(--bg-color);
+      color: var(--text-dark);
+      padding: 20px 15px 120px 15px;
+      display: flex;
+      justify-content: center;
+    }
+
+    .container {
+      width: 100%;
+      max-width: 420px;
+    }
+
+    .tab-content {
+      display: none;
+      animation: fadeIn 0.3s ease-in-out;
+    }
+
+    .tab-content.active {
+      display: block;
+    }
+
+    @keyframes fadeIn {
+      from { opacity: 0; transform: translateY(6px); }
+      to { opacity: 1; transform: translateY(0); }
+    }
+
+    .hero-header {
+      text-align: center;
+      padding: 20px 0 10px 0;
+    }
+
+    .logo-container {
+      width: 150px;
+      height: 150px;
+      margin: 0 auto 15px auto;
+      border-radius: 50%;
+      padding: 4px;
+      background: linear-gradient(135deg, #f7d6e0, #e63974);
+      box-shadow: 0 6px 20px rgba(230, 57, 116, 0.2);
+    }
+
+    .logo-img {
+      width: 100%;
+      height: 100%;
+      border-radius: 50%;
+      object-fit: cover;
+      display: block;
+    }
+
+    .welcome-text {
+      font-size: 0.9rem;
+      font-weight: 800;
+      letter-spacing: 2px;
+      color: var(--primary);
+      text-transform: uppercase;
+      margin-bottom: 5px;
+    }
+
+    .brand-title {
+      font-size: 2rem;
+      font-weight: 800;
+      color: var(--text-dark);
+      margin-bottom: 12px;
+    }
+
+    .brand-desc {
+      font-size: 0.95rem;
+      color: var(--subtext);
+      line-height: 1.5;
+      margin: 0 auto 18px auto;
+    }
+
+    .location-badge {
+      display: inline-flex;
+      align-items: center;
+      gap: 5px;
+      background-color: #ffe6ee;
+      color: var(--primary);
+      font-size: 0.85rem;
+      font-weight: 700;
+      padding: 8px 16px;
+      border-radius: 20px;
+      margin-bottom: 25px;
+    }
+
+    .btn-main {
+      width: 100%;
+      background: linear-gradient(135deg, #e63974, #d62862);
+      color: white;
+      border: none;
+      border-radius: 16px;
+      padding: 16px;
+      font-size: 1rem;
+      font-weight: 700;
+      cursor: pointer;
+      box-shadow: 0 4px 15px rgba(230, 57, 116, 0.3);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      gap: 8px;
+      text-decoration: none;
+      margin-bottom: 10px;
+    }
+
+    .sub-note {
+      text-align: center;
+      font-size: 0.85rem;
+      color: var(--subtext);
+      margin-bottom: 25px;
+    }
+
+    .trust-footer {
+      background: rgba(255, 255, 255, 0.75);
+      border: 1px solid var(--border-color);
+      border-radius: 14px;
+      padding: 12px;
+      margin: 0 0 20px 0;
+      text-align: left;
+      font-size: 0.78rem;
+      color: var(--subtext);
+      line-height: 1.35;
+    }
+
+    .trust-footer-item {
+      display: flex;
+      align-items: flex-start;
+      gap: 8px;
+      margin-bottom: 8px;
+    }
+
+    .trust-footer-item:last-child {
+      margin-bottom: 0;
+    }
+
+    .trust-footer-item strong {
+      color: var(--text-dark);
+    }
+
+    .btn-secondary {
+      width: 100%;
+      background: #ffffff;
+      color: var(--text-dark);
+      border: 1px solid var(--border-color);
+      border-radius: 16px;
+      padding: 14px;
+      font-size: 0.95rem;
+      font-weight: 700;
+      cursor: pointer;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      gap: 8px;
+      text-decoration: none;
+      box-shadow: 0 2px 8px rgba(0, 0, 0, 0.03);
+    }
+
+    .card {
+      background: var(--card-bg);
+      border-radius: 20px;
+      padding: 22px;
+      box-shadow: 0 4px 18px rgba(230, 57, 116, 0.06);
+      margin-bottom: 20px;
+    }
+
+    .card-title {
+      display: flex;
+      align-items: center;
+      gap: 10px;
+      font-size: 1.25rem;
+      font-weight: 800;
+      margin-bottom: 18px;
+      color: var(--text-dark);
+    }
+
+    .card-title::before {
+      content: "";
+      display: inline-block;
+      width: 4px;
+      height: 22px;
+      background-color: var(--primary);
+      border-radius: 2px;
+    }
+
+    .form-group {
+      margin-bottom: 16px;
+    }
+
+    label {
+      display: block;
+      font-weight: 700;
+      font-size: 0.9rem;
+      margin-bottom: 8px;
+    }
+
+    input[type="text"], input[type="tel"], input[type="date"], input[type="password"] {
+      width: 100%;
+      padding: 14px;
+      border: 1.5px solid var(--border-color);
+      border-radius: 14px;
+      font-size: 0.95rem;
+      outline: none;
+      color: var(--text-dark);
+      background-color: #fff;
+      font-family: inherit;
+    }
+
+    .service-category {
+      font-size: 0.88rem;
+      font-weight: 800;
+      color: var(--primary);
+      text-transform: uppercase;
+      letter-spacing: 0.5px;
+      margin: 18px 0 4px 0;
+    }
+
+    .service-category:first-of-type {
+      margin-top: 5px;
+    }
+
+    .service-desc {
+      font-size: 0.8rem;
+      color: var(--subtext);
+      line-height: 1.35;
+      margin-bottom: 10px;
+      background-color: #fff8f9;
+      padding: 8px 12px;
+      border-radius: 10px;
+      border-left: 3px solid var(--primary);
+    }
+
+    .service-desc-item {
+      font-size: 0.78rem;
+      color: var(--subtext);
+      line-height: 1.3;
+      margin: -4px 0 10px 6px;
+      padding-left: 8px;
+      border-left: 2px solid var(--border-color);
+    }
+
+    .service-option {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      padding: 12px 14px;
+      border: 1.5px solid var(--border-color);
+      border-radius: 14px;
+      margin-bottom: 6px;
+      cursor: pointer;
+      transition: all 0.2s ease;
+      background-color: #fff;
+      user-select: none;
+    }
+
+    .service-option.selected {
+      border-color: var(--primary);
+      background-color: #fff8f9;
+    }
+
+    .service-option.disabled {
+      opacity: 0.4;
+      background-color: #f7f7f7;
+      cursor: not-allowed;
+      border-color: #e2e8f0;
+    }
+
+    .service-info {
+      display: flex;
+      align-items: center;
+      gap: 10px;
+      pointer-events: none;
+    }
+
+    .service-checkbox {
+      width: 18px;
+      height: 18px;
+      accent-color: var(--primary);
+      cursor: pointer;
+    }
+
+    .service-name {
+      font-size: 0.9rem;
+      font-weight: 600;
+      color: var(--text-dark);
+    }
+
+    .service-price {
+      font-size: 0.9rem;
+      font-weight: 700;
+      color: var(--primary);
+      pointer-events: none;
+    }
+
+    .total-box {
+      border: 1.5px dashed var(--primary);
+      border-radius: 14px;
+      padding: 14px;
+      text-align: center;
+      font-weight: 700;
+      font-size: 0.95rem;
+      color: var(--text-dark);
+      margin-top: 15px;
+      background-color: #fff8f9;
+      line-height: 1.6;
+    }
+
+    .total-amount {
+      color: var(--primary);
+      font-size: 1.15rem;
+    }
+
+    .abono-amount {
+      color: #e63974;
+      font-size: 1.1rem;
+      font-weight: 800;
+    }
+
+    .restante-amount {
+      color: #2e7d32;
+      font-size: 1.15rem;
+      font-weight: 800;
+    }
+
+    .payment-box {
+      background-color: #fff9fb;
+      border: 1.5px solid var(--border-color);
+      border-radius: 16px;
+      padding: 16px;
+      margin-top: 15px;
+    }
+
+    .payment-title {
+      font-size: 0.95rem;
+      font-weight: 800;
+      color: var(--primary);
+      margin-bottom: 10px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      gap: 6px;
+      text-align: center;
+    }
+
+    .bank-details {
+      background-color: #ffffff;
+      border: 1px solid var(--border-color);
+      border-radius: 12px;
+      padding: 12px 14px;
+      margin-bottom: 12px;
+      font-size: 0.88rem;
+      line-height: 1.6;
+    }
+
+    .bank-details div {
+      display: flex;
+      justify-content: space-between;
+      border-bottom: 1px dashed #f2e6ea;
+      padding: 3px 0;
+    }
+
+    .bank-details div:last-child {
+      border-bottom: none;
+    }
+
+    .alert-whatsapp {
+      background-color: #ffe6ee;
+      border-left: 4px solid var(--primary);
+      border-radius: 8px;
+      padding: 10px;
+      font-size: 0.82rem;
+      color: #a12c4e;
+      font-weight: 700;
+      text-align: center;
+      line-height: 1.4;
+      margin-bottom: 0;
+    }
+
+    .location-info-box {
+      background-color: #eef2ff;
+      border-left: 4px solid #3b82f6;
+      border-radius: 8px;
+      padding: 12px;
+      font-size: 0.85rem;
+      color: #1e3a8a;
+      font-weight: 700;
+      text-align: center;
+      line-height: 1.4;
+      margin-top: 15px;
+      margin-bottom: 15px;
+      display: none;
+    }
+
+    .location-info-box a {
+      color: #2563eb;
+      text-decoration: underline;
+    }
+
+    .overbook-box {
+      background-color: #fff0f3;
+      border: 2px dashed #e63974;
+      border-radius: 16px;
+      padding: 16px;
+      text-align: center;
+      margin-top: 10px;
+      display: none;
+      animation: fadeIn 0.3s ease-in-out;
+    }
+
+    .overbook-title {
+      font-size: 1rem;
+      font-weight: 800;
+      color: #e63974;
+      margin-bottom: 6px;
+    }
+
+    .overbook-text {
+      font-size: 0.88rem;
+      color: var(--text-dark);
+      line-height: 1.4;
+      margin-bottom: 12px;
+    }
+
+    .overbook-select {
+      width: 100%;
+      padding: 12px;
+      border: 1.5px solid var(--border-color);
+      border-radius: 12px;
+      font-size: 0.92rem;
+      color: var(--text-dark);
+      background-color: #fff;
+      font-weight: 600;
+      outline: none;
+      font-family: inherit;
+    }
+
+    .time-grid {
+      display: grid;
+      grid-template-columns: repeat(3, 1fr);
+      gap: 10px;
+      margin-top: 10px;
+    }
+
+    .time-btn {
+      background-color: #fff;
+      border: 1.5px solid var(--border-color);
+      border-radius: 12px;
+      padding: 12px 5px;
+      font-size: 0.95rem;
+      font-weight: 700;
+      color: var(--text-dark);
+      cursor: pointer;
+      transition: all 0.2s ease;
+    }
+
+    .time-btn.selected {
+      background-color: var(--primary);
+      color: white;
+      border-color: var(--primary);
+    }
+
+    .time-btn.occupied {
+      background-color: #e2e8f0;
+      color: #a0aec0;
+      border-color: #cbd5e0;
+      cursor: not-allowed;
+      text-decoration: line-through;
+    }
+
+    .admin-time-btn {
+      background-color: #fff;
+      border: 1.5px solid var(--border-color);
+      border-radius: 12px;
+      padding: 12px 5px;
+      font-size: 0.85rem;
+      font-weight: 700;
+      cursor: pointer;
+    }
+
+    .admin-time-btn.is-blocked {
+      background-color: #e63974;
+      color: white;
+      border-color: #e63974;
+    }
+
+    .placeholder-text {
+      color: var(--subtext);
+      font-size: 0.9rem;
+      text-align: center;
+      margin-top: 10px;
+      grid-column: span 3;
+    }
+
+    .gallery-grid {
+      display: grid;
+      grid-template-columns: repeat(2, 1fr);
+      gap: 12px;
+      margin-top: 15px;
+    }
+
+    .gallery-card {
+      background: #ffffff;
+      border-radius: 16px;
+      overflow: hidden;
+      border: 1px solid var(--border-color);
+      box-shadow: 0 4px 10px rgba(0,0,0,0.03);
+      display: flex;
+      flex-direction: column;
+      position: relative;
+    }
+
+    .gallery-card.featured {
+      border: 2px solid var(--primary);
+      box-shadow: 0 6px 16px rgba(230, 57, 116, 0.18);
+    }
+
+    .badge-new {
+      position: absolute;
+      top: 8px;
+      right: 8px;
+      background: linear-gradient(135deg, #e63974, #ff5e91);
+      color: white;
+      font-size: 0.68rem;
+      font-weight: 800;
+      padding: 4px 8px;
+      border-radius: 10px;
+      box-shadow: 0 2px 8px rgba(230, 57, 116, 0.4);
+      letter-spacing: 0.5px;
+      z-index: 2;
+    }
+
+    .gallery-img {
+      width: 100%;
+      height: 140px;
+      object-fit: cover;
+      display: block;
+    }
+
+    .gallery-info {
+      padding: 10px;
+      text-align: center;
+    }
+
+    .gallery-title {
+      font-size: 0.85rem;
+      font-weight: 800;
+      color: var(--text-dark);
+    }
+
+    .gallery-subtitle {
+      font-size: 0.72rem;
+      color: var(--subtext);
+      margin-top: 2px;
+    }
+
+    /* ESTILOS ESPECÍFICOS DE LASH MARII BOUTIQUE Y CARRUSEL */
+    .boutique-grid {
+      display: grid;
+      grid-template-columns: repeat(1, 1fr);
+      gap: 16px;
+      margin-top: 15px;
+    }
+
+    .boutique-card {
+      background: #ffffff;
+      border-radius: 18px;
+      overflow: hidden;
+      border: 1px solid var(--border-color);
+      box-shadow: 0 4px 12px rgba(230, 57, 116, 0.05);
+      display: flex;
+      flex-direction: column;
+    }
+
+    .boutique-img {
+      width: 100%;
+      height: 260px;
+      object-fit: cover;
+      display: block;
+    }
+
+    .boutique-details {
+      padding: 15px;
+    }
+
+    .boutique-name {
+      font-size: 1.05rem;
+      font-weight: 800;
+      color: var(--text-dark);
+      margin-bottom: 4px;
+    }
+
+    .boutique-desc {
+      font-size: 0.82rem;
+      color: var(--subtext);
+      margin-bottom: 10px;
+      line-height: 1.35;
+    }
+
+    .boutique-price-row {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      margin-top: 5px;
+    }
+
+    .boutique-price {
+      font-size: 1.15rem;
+      font-weight: 800;
+      color: var(--primary);
+    }
+
+    .btn-buy {
+      background: linear-gradient(135deg, #e63974, #d62862);
+      color: white;
+      border: none;
+      border-radius: 10px;
+      padding: 8px 14px;
+      font-size: 0.82rem;
+      font-weight: 700;
+      cursor: pointer;
+      text-decoration: none;
+      display: inline-flex;
+      align-items: center;
+      gap: 4px;
+    }
+
+    /* ESTILOS DEL CARRUSEL */
+    .carousel-container {
+      position: relative;
+      width: 100%;
+      overflow: hidden;
+      border-radius: 18px 18px 0 0;
+    }
+
+    .carousel-track {
+      display: flex;
+      transition: transform 0.3s ease-in-out;
+      width: 100%;
+    }
+
+    .carousel-slide {
+      min-width: 100%;
+      box-sizing: border-box;
+    }
+
+    .carousel-btn {
+      position: absolute;
+      top: 50%;
+      transform: translateY(-50%);
+      background: rgba(0, 0, 0, 0.4);
+      color: white;
+      border: none;
+      font-size: 14px;
+      padding: 8px 11px;
+      cursor: pointer;
+      border-radius: 50%;
+      z-index: 5;
+      backdrop-filter: blur(2px);
+    }
+
+    .carousel-btn.prev { left: 8px; }
+    .carousel-btn.next { right: 8px; }
+
+    .carousel-dots {
+      position: absolute;
+      bottom: 8px;
+      left: 50%;
+      transform: translateX(-50%);
+      display: flex;
+      gap: 6px;
+      z-index: 5;
+    }
+
+    .dot {
+      width: 8px;
+      height: 8px;
+      background: rgba(255, 255, 255, 0.5);
+      border-radius: 50%;
+      cursor: pointer;
+      transition: background 0.3s, width 0.3s;
+    }
+
+    .dot.active {
+      background: #ffffff;
+      width: 18px;
+      border-radius: 4px;
+    }
+
+    .accordion-header {
+      width: 100%;
+      background: #ffffff;
+      border: 1.5px solid var(--border-color);
+      border-radius: 14px;
+      padding: 14px 16px;
+      font-size: 0.92rem;
+      font-weight: 800;
+      color: var(--text-dark);
+      text-align: left;
+      cursor: pointer;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      margin-bottom: 8px;
+      transition: all 0.2s ease;
+    }
+
+    .accordion-header:hover {
+      background-color: #fff8f9;
+    }
+
+    .accordion-header.active {
+      border-color: var(--primary);
+      background-color: #fff8f9;
+      color: var(--primary);
+      border-bottom-left-radius: 0;
+      border-bottom-right-radius: 0;
+      margin-bottom: 0;
+    }
+
+    .accordion-content {
+      max-height: 0;
+      overflow: hidden;
+      transition: max-height 0.3s ease-out;
+      background: #ffffff;
+      border: 1.5px solid var(--border-color);
+      border-top: none;
+      border-bottom-left-radius: 14px;
+      border-bottom-right-radius: 14px;
+      margin-bottom: 12px;
+      padding: 0 14px;
+    }
+
+    .accordion-content.show {
+      padding: 14px;
+      max-height: 1000px;
+    }
+
+    .accordion-arrow {
+      font-size: 0.8rem;
+      transition: transform 0.3s ease;
+    }
+
+    .accordion-header.active .accordion-arrow {
+      transform: rotate(180deg);
+    }
+
+    .care-item {
+      display: flex;
+      align-items: flex-start;
+      gap: 12px;
+      padding: 10px 12px;
+      background-color: #fff8f9;
+      border-radius: 12px;
+      margin-bottom: 8px;
+      border: 1px solid #fce8ef;
+    }
+
+    .care-item:last-child {
+      margin-bottom: 0;
+    }
+
+    .care-icon {
+      font-size: 1.2rem;
+      line-height: 1.2;
+    }
+
+    .care-text {
+      font-size: 0.85rem;
+      color: var(--subtext);
+      line-height: 1.4;
+    }
+
+    .care-text strong {
+      color: var(--text-dark);
+    }
+
+    /* ESTILOS ESPECÍFICOS DE LA TARJETA DE FIDELIDAD */
+    .stamps-grid {
+      display: grid;
+      grid-template-columns: repeat(5, 1fr);
+      gap: 8px;
+      margin: 18px 0;
+    }
+
+    .stamp-slot {
+      aspect-ratio: 1;
+      border-radius: 50%;
+      border: 2px dashed var(--border-color);
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: center;
+      font-size: 0.75rem;
+      position: relative;
+      background: #fff8f9;
+      transition: all 0.3s ease;
+    }
+
+    .stamp-type {
+      font-size: 0.55rem;
+      color: var(--subtext);
+      margin-top: 2px;
+      font-weight: 700;
+      text-transform: uppercase;
+    }
+
+    .stamp-slot.active {
+      border: 2px solid var(--primary);
+      background: var(--primary);
+      color: white;
+      box-shadow: 0 4px 10px rgba(230, 57, 116, 0.3);
+      font-weight: bold;
+    }
+
+    .stamp-slot.active .stamp-type {
+      color: #fff;
+    }
+
+    .stamp-slot.reward {
+      border-color: #d97706;
+      background: #fffbe3;
+      color: #b45309;
+    }
+
+    .stamp-slot.reward.active {
+      background: linear-gradient(135deg, #f59e0b, #d97706);
+      color: #fff;
+      border-color: #f59e0b;
+      box-shadow: 0 4px 12px rgba(245, 158, 11, 0.4);
+    }
+
+    .stamp-slot.reward.active .stamp-type {
+      color: #fff;
+    }
+
+    .rewards-info {
+      font-size: 0.8rem;
+      text-align: left;
+      background: #fff8f9;
+      border: 1px solid var(--border-color);
+      padding: 12px;
+      border-radius: 12px;
+      margin-bottom: 15px;
+      line-height: 1.5;
+    }
+
+    .history-list {
+      font-size: 0.78rem;
+      text-align: left;
+      color: var(--subtext);
+      max-height: 90px;
+      overflow-y: auto;
+      margin-top: 8px;
+      background: #fdf2f5;
+      padding: 8px 12px;
+      border-radius: 10px;
+    }
+
+    .bottom-nav {
+      position: fixed;
+      bottom: 20px;
+      left: 50%;
+      transform: translateX(-50%);
+      width: calc(100% - 30px);
+      max-width: 420px;
+      background: rgba(255, 255, 255, 0.94);
+      backdrop-filter: blur(12px);
+      border-radius: 25px;
+      display: flex;
+      justify-content: space-around;
+      padding: 10px 2px;
+      box-shadow: 0 10px 30px rgba(0, 0, 0, 0.08);
+      border: 1px solid rgba(247, 214, 224, 0.8);
+      z-index: 1000;
+    }
+
+    .nav-item {
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      gap: 3px;
+      background: none;
+      border: none;
+      color: #a08c90;
+      font-size: 0.65rem;
+      font-weight: 700;
+      cursor: pointer;
+      flex: 1;
+      transition: all 0.2s ease;
+    }
+
+    .nav-item .icon {
+      font-size: 1.1rem;
+    }
+
+    .nav-item.active {
+      color: var(--primary);
+    }
+  </style>
 </head>
 <body>
 
-  <div class="container">
-
-    <!-- INICIO -->
-    <div id="tab-inicio" class="tab-content active">
-      <div class="hero-header">
-        <div class="logo-container">
-          <img src="https://i.postimg.cc/9fsRY43k/IMG-0086.jpg" alt="Lash Marii" class="logo-img">
-        </div>
-        <div class="welcome-text">Bienvenida a</div>
-        <h1 class="brand-title">Lash Marii</h1>
-        <p class="brand-desc">Extensiones de pestañas y lifting con atención completamente personalizada. Diseños únicos para resaltar tu mirada.</p>
-        <div class="location-badge">📍 Los Andes, Chile</div>
-
-        <button class="btn-main" onclick="switchTab('reservar')">
-          💖 Agenda tu cita aquí
-        </button>
-        <div class="sub-note">Atención personalizada · Solo con reserva previa</div>
-
-        <button class="btn-secondary" style="margin-bottom: 20px; background: #fff8f9; border-color: var(--primary);" onclick="switchTab('boutique')">
-          👜 Visita Lash Marii Boutique
-        </button>
-
-        <div class="trust-footer">
-          <div class="trust-footer-item">
-            <span>🛡️</span>
-            <div><strong>Insumos Certificados:</strong> Productos 100% profesionales comprados directamente con distribuidores oficiales autorizados.</div>
-          </div>
-          <div class="trust-footer-item">
-            <span>📋</span>
-            <div><strong>Estudio Formal:</strong> Registrados ante el Servicio de Impuestos Internos (SII) con emisión de boleta.</div>
-          </div>
-        </div>
-
-        <a href="https://instagram.com/Lash.marii" target="_blank" class="btn-secondary">
-          📸 Sígueme en Instagram: @Lash.marii
-        </a>
-      </div>
-    </div>
-
-    <!-- RESERVAR -->
-    <div id="tab-reservar" class="tab-content">
-      <div class="card">
-        <div class="card-title">Datos Personales</div>
-
-        <div class="form-group">
-          <label for="nombre">Nombre Completo</label>
-          <input type="text" id="nombre" placeholder="Ej. María González">
-        </div>
-
-        <div class="form-group">
-          <label>Selecciona los Servicios</label>
-          
-          <!-- EXTENSIONES DE PESTAÑAS -->
-          <div class="service-category">Extensiones de Pestañas</div>
-          <div class="service-desc">
-            ℹ️ Aplicación de fibra sintética pelo a pelo sobre tu pestaña natural. <strong>Requieren retoque sí o sí a los 21 días (2 a 3 semanas máximo).</strong>
-          </div>
-
-          <label class="service-option" onclick="toggleCheckbox(this)">
-            <div class="service-info">
-              <input type="checkbox" class="service-checkbox" data-group="extensiones" value="27000" data-name="Pestañas Clásicas" onchange="calcularTotal(this)">
-              <span class="service-name">Clásicas</span>
-            </div>
-            <span class="service-price">$27.000</span>
-          </label>
-
-          <label class="service-option" onclick="toggleCheckbox(this)">
-            <div class="service-info">
-              <input type="checkbox" class="service-checkbox" data-group="extensiones" value="25000" data-name="Pestañas Rímel" onchange="calcularTotal(this)">
-              <span class="service-name">Rímel</span>
-            </div>
-            <span class="service-price">$25.000</span>
-          </label>
-
-          <label class="service-option" onclick="toggleCheckbox(this)">
-            <div class="service-info">
-              <input type="checkbox" class="service-checkbox" data-group="extensiones" value="25000" data-name="Pestañas Hawaianas" onchange="calcularTotal(this)">
-              <span class="service-name">Hawaianas</span>
-            </div>
-            <span class="service-price">$25.000</span>
-          </label>
-
-          <label class="service-option" onclick="toggleCheckbox(this)">
-            <div class="service-info">
-              <input type="checkbox" class="service-checkbox" data-group="extensiones" value="30000" data-name="Pestañas Griego 3D" onchange="calcularTotal(this)">
-              <span class="service-name">Griego 3D</span>
-            </div>
-            <span class="service-price">$30.000</span>
-          </label>
-
-          <label class="service-option" onclick="toggleCheckbox(this)">
-            <div class="service-info">
-              <input type="checkbox" class="service-checkbox" data-group="extensiones" value="35000" data-name="Pestañas 5D" onchange="calcularTotal(this)">
-              <span class="service-name">5D</span>
-            </div>
-            <span class="service-price">$35.000</span>
-          </label>
-
-          <!-- LIFTING -->
-          <div class="service-category">Lifting</div>
-          <div class="service-desc">
-            ℹ️ Tratamiento que eleva y curva tus pestañas naturales desde la raíz, aportando nutrición y color. <strong>Duración: hasta 1 mes.</strong>
-          </div>
-
-          <label class="service-option" onclick="toggleCheckbox(this)">
-            <div class="service-info">
-              <input type="checkbox" class="service-checkbox" data-group="lifting" value="20000" data-name="Lifting (Queratina + Bótox)" onchange="calcularTotal(this)">
-              <span class="service-name">Lifting (Queratina + Bótox)</span>
-            </div>
-            <span class="service-price">$20.000</span>
-          </label>
-
-          <!-- CEJAS -->
-          <div class="service-category">Cejas</div>
-
-          <label class="service-option" onclick="toggleCheckbox(this)">
-            <div class="service-info">
-              <input type="checkbox" class="service-checkbox" data-group="cejas" value="15000" data-name="Laminado de Cejas" onchange="calcularTotal(this)">
-              <span class="service-name">Laminado de Cejas</span>
-            </div>
-            <span class="service-price">$15.000</span>
-          </label>
-          <div class="service-desc-item">
-            Efecto peinado hacia arriba fijo (como si usaras gel de cejas). Ideal para cejas muy chasconas o rebeldes.
-          </div>
-
-          <label class="service-option" onclick="toggleCheckbox(this)">
-            <div class="service-info">
-              <input type="checkbox" class="service-checkbox" data-group="cejas" value="20000" data-name="Henna (Incluye laminado)" onchange="calcularTotal(this)">
-              <span class="service-name">Henna (Incluye laminado)</span>
-            </div>
-            <span class="service-price">$20.000</span>
-          </label>
-          <div class="service-desc-item">
-            Tinte orgánico que sombrea la piel y el pelo. El vestigio de color se va aclarando en un lapso de 6 días a 1.5 - 2 semanas.
-          </div>
-
-          <label class="service-option" onclick="toggleCheckbox(this)">
-            <div class="service-info">
-              <input type="checkbox" class="service-checkbox" data-group="cejas" value="7000" data-name="Depilación de Cejas" onchange="calcularTotal(this)">
-              <span class="service-name">Depilación de Cejas</span>
-            </div>
-            <span class="service-price">$7.000</span>
-          </label>
-          <div class="service-desc-item">
-            Retiro del vello para dar forma a la ceja utilizando cera fría.
-          </div>
-
-          <label class="service-option" onclick="toggleCheckbox(this)">
-            <div class="service-info">
-              <input type="checkbox" class="service-checkbox" data-group="cejas" value="5000" data-name="Perfilado de Cejas" onchange="calcularTotal(this)">
-              <span class="service-name">Perfilado de Cejas</span>
-            </div>
-            <span class="service-price">$5.000</span>
-          </label>
-          <div class="service-desc-item">
-            Limpieza y definición exacta de la ceja utilizando perfilador (navaja especial).
-          </div>
-
-          <!-- TRATAMIENTOS ESPECIALES -->
-          <div class="service-category">Tratamientos Especiales</div>
-
-          <label class="service-option" onclick="toggleCheckbox(this)">
-            <div class="service-info">
-              <input type="checkbox" class="service-checkbox" data-group="otros" value="20000" data-name="Hydra Gloss (Labios)" onchange="calcularTotal(this)">
-              <span class="service-name">Hydra Gloss (Labios)</span>
-            </div>
-            <span class="service-price">$20.000</span>
-          </label>
-          <div class="service-desc-item">
-            <strong>NO es una inyección.</strong> Se aplica ácido hialurónico con Dermapen. Tinte opcional (3 a 4 días); hidratación hasta 1 mes.
-          </div>
-
-        </div>
-
-        <div class="total-box">
-          <div>Total Servicio: <span class="total-amount" id="precio-total">$0</span></div>
-          <div>Abono para reservar: <span class="abono-amount" id="precio-abono">$0</span></div>
-          <div style="margin-top: 6px; padding-top: 6px; border-top: 1px dashed var(--border-color);">
-            Monto a pagar el día de tu cita: <span class="restante-amount" id="precio-restante">$0</span>
-          </div>
-        </div>
-
-        <div class="payment-box">
-          <div class="payment-title">💳 Datos para la Transferencia</div>
-          <div class="bank-details">
-            <div><span><strong>Banco:</strong></span> <span>BancoEstado</span></div>
-            <div><span><strong>Tipo:</strong></span> <span>CuentaRUT</span></div>
-            <div><span><strong>N° Cuenta:</strong></span> <span>24.901.982-8</span></div>
-            <div><span><strong>Titular:</strong></span> <span>Maria Triana Ceballos</span></div>
-          </div>
-          <div class="alert-whatsapp">
-            ⚠️ OBLIGATORIO: Una vez realizado el abono, debes enviar el comprobante a WhatsApp para confirmar tu reserva.
-          </div>
-        </div>
-      </div>
-
-      <div class="card">
-        <div class="card-title">Fecha y Hora</div>
-
-        <div class="form-group">
-          <label for="fecha">Selecciona el Día</label>
-          <input type="date" id="fecha" onchange="actualizarHoras()">
-        </div>
-
-        <div class="form-group" id="contenedor-horas-normales">
-          <label>Horas Disponibles</label>
-          <div id="grid-horas" class="time-grid">
-            <div class="placeholder-text">Selecciona un día primero</div>
-          </div>
-        </div>
-
-        <div id="box-sobrecupo" class="overbook-box">
-          <div class="overbook-title">✨ ¡Cupos Llenos! Pero hay una opción...</div>
-          <div class="overbook-text">
-            Uy, lo siento, están todas las horitas tomadas para este día, pero <strong>siempre hay un sobrecupo para ti 💖</strong>.<br>
-            <small style="color:#d62862; font-weight:bold; display:block; margin-top:5px;">
-              ⚠️ IMPORTANTE: El sobrecupo tiene un valor adicional de $5.000 (se suma automáticamente al total).
-            </small>
-          </div>
-          <label style="text-align:left; font-size:0.85rem; margin-bottom:5px;">Elige el horario de sobrecupo:</label>
-          <select id="select-sobrecupo-hora" class="overbook-select" onchange="seleccionarSobrecupo(this.value)">
-            <option value="">-- Selecciona una opción --</option>
-            <option value="08:00 AM (Sobrecupo)">🌅 08:00 de la mañana</option>
-            <option value="09:30 PM (Sobrecupo)">🌌 09:30 de la noche</option>
-            <option value="A convenir (Sobrecupo)">🤝 Horario a convenir</option>
-          </select>
-        </div>
-
-        <button class="btn-main" style="margin-top: 15px; margin-bottom: 0;" onclick="enviarWhatsApp()">
-          Confirmar Reserva por WhatsApp 📲
-        </button>
-      </div>
-    </div>
-
-    <!-- LASH MARII BOUTIQUE COMPLETA -->
-    <div id="tab-boutique" class="tab-content">
-      <div class="card">
-        <div class="card-title">Lash Marii Boutique 👜</div>
-        <p class="brand-desc" style="margin-bottom: 15px;">
-          Encuentra la cartera perfecta para complementar tu estilo. Modelos exclusivos, elegantes y con excelentes acabados ✨.
-        </p>
-
-        <div class="boutique-grid">
-
-          <!-- PRODUCTO 1 -->
-          <div class="boutique-card">
-            <div class="carousel-container" id="carousel-1">
-              <div class="carousel-track">
-                <div class="carousel-slide"><img src="https://i.postimg.cc/9fsRY43k/IMG-0086.jpg" alt="Cartera Chic Pink Vista 1"></div>
-                <div class="carousel-slide"><img src="https://i.postimg.cc/9fsRY43k/IMG-0086.jpg" alt="Cartera Chic Pink Vista 2"></div>
-                <div class="carousel-slide"><img src="https://i.postimg.cc/9fsRY43k/IMG-0086.jpg" alt="Cartera Chic Pink Detalle"></div>
-              </div>
-              <button class="carousel-btn prev" onclick="moveCarousel('carousel-1', -1)">&#10094;</button>
-              <button class="carousel-btn next" onclick="moveCarousel('carousel-1', 1)">&#10095;</button>
-              <div class="carousel-dots">
-                <span class="dot active" onclick="setCarouselSlide('carousel-1', 0)"></span>
-                <span class="dot" onclick="setCarouselSlide('carousel-1', 1)"></span>
-                <span class="dot" onclick="setCarouselSlide('carousel-1', 2)"></span>
-              </div>
-            </div>
-            <div class="boutique-details">
-              <h3 class="boutique-name">Cartera Chic Pink</h3>
-              <p class="boutique-desc">Diseño elegante en tono rosado con acabados metálicos dorados. Ideal para salidas o eventos especiales.</p>
-              <div class="boutique-price-row">
-                <span class="boutique-price">$18.990</span>
-                <a href="https://wa.me/56900000000?text=Hola!%20Me%20interesa%20comprar%20la%20Cartera%20Chic%20Pink" target="_blank" class="btn-buy">Pedir por WhatsApp 💬</a>
-              </div>
-            </div>
-          </div>
-
-          <!-- PRODUCTO 2 -->
-          <div class="boutique-card">
-            <div class="carousel-container" id="carousel-2">
-              <div class="carousel-track">
-                <div class="carousel-slide"><img src="https://i.postimg.cc/9fsRY43k/IMG-0086.jpg" alt="Mini Bag Classic Black 1"></div>
-                <div class="carousel-slide"><img src="https://i.postimg.cc/9fsRY43k/IMG-0086.jpg" alt="Mini Bag Classic Black 2"></div>
-              </div>
-              <button class="carousel-btn prev" onclick="moveCarousel('carousel-2', -1)">&#10094;</button>
-              <button class="carousel-btn next" onclick="moveCarousel('carousel-2', 1)">&#10095;</button>
-              <div class="carousel-dots">
-                <span class="dot active" onclick="setCarouselSlide('carousel-2', 0)"></span>
-                <span class="dot" onclick="setCarouselSlide('carousel-2', 1)"></span>
-              </div>
-            </div>
-            <div class="boutique-details">
-              <h3 class="boutique-name">Mini Bag Classic Black</h3>
-              <p class="boutique-desc">Un clásico infaltable en tono negro. Incluye correa ajustable con detalle de cadena para mayor comodidad.</p>
-              <div class="boutique-price-row">
-                <span class="boutique-price">$15.990</span>
-                <a href="https://wa.me/56900000000?text=Hola!%20Me%20interesa%20comprar%20la%20Mini%20Bag%20Classic%20Black" target="_blank" class="btn-buy">Pedir por WhatsApp 💬</a>
-              </div>
-            </div>
-          </div>
-
-          <!-- PRODUCTO 3 -->
-          <div class="boutique-card">
-            <div class="carousel-container" id="carousel-3">
-              <div class="carousel-track">
-                <div class="carousel-slide"><img src="https://i.postimg.cc/9fsRY43k/IMG-0086.jpg" alt="Tote Bag Elegant Nude 1"></div>
-                <div class="carousel-slide"><img src="https://i.postimg.cc/9fsRY43k/IMG-0086.jpg" alt="Tote Bag Elegant Nude 2"></div>
-              </div>
-              <button class="carousel-btn prev" onclick="moveCarousel('carousel-3', -1)">&#10094;</button>
-              <button class="carousel-btn next" onclick="moveCarousel('carousel-3', 1)">&#10095;</button>
-              <div class="carousel-dots">
-                <span class="dot active" onclick="setCarouselSlide('carousel-3', 0)"></span>
-                <span class="dot" onclick="setCarouselSlide('carousel-3', 1)"></span>
-              </div>
-            </div>
-            <div class="boutique-details">
-              <h3 class="boutique-name">Tote Bag Elegant Nude</h3>
-              <p class="boutique-desc">Amplia y sofisticada. Perfecta para el día a día sin perder el toque glamuroso. Material resistente al agua.</p>
-              <div class="boutique-price-row">
-                <span class="boutique-price">$21.990</span>
-                <a href="https://wa.me/56900000000?text=Hola!%20Me%20interesa%20comprar%20la%20Tote%20Bag%20Elegant%20Nude" target="_blank" class="btn-buy">Pedir por WhatsApp 💬</a>
-              </div>
-            </div>
-          </div>
-
-        </div>
-      </div>
-    </div>
-
-  </div>
-
-  <!-- NAVEGACIÓN INFERIOR -->
-  <nav class="bottom-nav">
-    <button class="nav-item active" onclick="switchTab('inicio')">
-      <span class="icon">🏠</span>
-      <span>Inicio</span>
-    </button>
-    <button class="nav-item" onclick="switchTab('reservar')">
-      <span class="icon">📅</span>
-      <span>Reservar</span>
-    </button>
-    <button class="nav-item" onclick="switchTab('boutique')">
-      <span class="icon">👜</span>
-      <span>Boutique</span>
-    </button>
-  </nav>
-
-  <script>
-    let horaSeleccionada = "";
-    let esSobrecupo = false;
-
-    function switchTab(tabId) {
-      document.querySelectorAll('.tab-content').forEach(tab => tab.classList.remove('active'));
-      document.querySelectorAll('.nav-item').forEach(btn => btn.classList.remove('active'));
-      
-      document.getElementById('tab-' + tabId).classList.add('active');
-      
-      const navButtons = document.querySelectorAll('.nav-item');
-      if (tabId === 'inicio') navButtons[0].classList.add('active');
-      if (tabId === 'reservar') navButtons[1].classList.add('active');
-      if (tabId === 'boutique') navButtons[2].classList.add('active');
-
-      window.scrollTo(0, 0);
-    }
-
-    function toggleCheckbox(element) {
-      const checkbox = element.querySelector('.service-checkbox');
-      if (event.target !== checkbox) {
-        checkbox.checked = !checkbox.checked;
-        calcularTotal(checkbox);
-      }
-    }
-
-    function calcularTotal(element) {
-      const checkboxes = document.querySelectorAll('.service-checkbox');
-      let total = 0;
-
-      checkboxes.forEach(cb => {
-        const parentOption = cb.closest('.service-option');
-        if (cb.checked) {
-          total += parseInt(cb.value);
-          if (parentOption) parentOption.classList.add('selected');
-        } else {
-          if (parentOption) parentOption.classList.remove('selected');
-        }
-      });
-
-      if (esSobrecupo) {
-        total += 5000;
-      }
-
-      const abono = total > 0 ? 10000 : 0;
-      const restante = Math.max(0, total - abono);
-
-      document.getElementById('precio-total').innerText = '$' + total.toLocaleString('es-CL');
-      document.getElementById('precio-abono').innerText = '$' + abono.toLocaleString('es-CL');
-      document.getElementById('precio-restante').innerText = '$' + restante.toLocaleString('es-CL');
-    }
-
-    function actualizarHoras() {
-      const grid = document.getElementById('grid-horas');
-      const boxSobrecupo = document.getElementById('box-sobrecupo');
-      const fecha = document.getElementById('fecha').value;
-
-      grid.innerHTML = '';
-      horaSeleccionada = '';
-      esSobrecupo = false;
-      boxSobrecupo.style.display = 'none';
-      document.getElementById('select-sobrecupo-hora').value = '';
-
-      if (!fecha) {
-        grid.innerHTML = '<div class="placeholder-text">Selecciona un día primero</div>';
-        return;
-      }
-
-      // Horarios base disponibles
-      const horasDisponibles = ["10:00 AM", "02:30 PM", "05:00 PM"];
-
-      if (horasDisponibles.length === 0) {
-        grid.innerHTML = '<div class="placeholder-text" style="color:#e63974; font-weight:bold;">No hay horarios normales disponibles.</div>';
-        boxSobrecupo.style.display = 'block';
-      } else {
-        horasDisponibles.forEach(hora => {
-          const btn = document.createElement('button');
-          btn.className = 'time-btn';
-          btn.innerText = hora;
-          btn.onclick = () => {
-            document.querySelectorAll('.time-btn').forEach(b => b.classList.remove('selected'));
-            btn.classList.add('selected');
-            horaSeleccionada = hora;
-            esSobrecupo = false;
-            calcularTotal();
-          };
-          grid.appendChild(btn);
-        });
-      }
-    }
-
-    function seleccionarSobrecupo(val) {
-      if (val) {
-        horaSeleccionada = val;
-        esSobrecupo = true;
-      } else {
-        horaSeleccionada = '';
-        esSobrecupo = false;
-      }
-      calcularTotal();
-    }
-
-    function enviarWhatsApp() {
-      const nombre = document.getElementById('nombre').value.trim();
-      const fecha = document.getElementById('fecha').value;
-
-      if (!nombre) {
-        alert('Por favor ingresa tu nombre completo.');
-        return;
-      }
-
-      const servicios = [];
-      document.querySelectorAll('.service-checkbox:checked').forEach(cb => {
-        servicios.push(cb.getAttribute('data-name'));
-      });
-
-      if (servicios.length === 0) {
-        alert('Por favor selecciona al menos un servicio.');
-        return;
-      }
-
-      if (!fecha || !horaSeleccionada) {
-        alert('Por favor selecciona una fecha y hora.');
-        return;
-      }
-
-      const totalText = document.getElementById('precio-total').innerText;
-      const abonoText = document.getElementById('precio-abono').innerText;
-
-      let mensaje = `✨ *NUEVA RESERVA - LASH MARII* ✨\n\n`;
-      mensaje += `👤 *Cliente:* ${nombre}\n`;
-      mensaje += `💅 *Servicio(s):* ${servicios.join(', ')}\n`;
-      mensaje += `📅 *Fecha:* ${fecha}\n`;
-      mensaje += `⏰ *Hora:* ${horaSeleccionada}\n\n`;
-      mensaje += `💰 *Total Servicio:* ${totalText}\n`;
-      mensaje += `💳 *Abono Requerido:* ${abonoText}\n\n`;
-      mensaje += `Adjunto mi comprobante de transferencia para confirmar. 📲`;
-
-      const numTel = "56900000000"; // Reemplazar con el número de WhatsApp oficial
-      const url = `https://wa.me/${numTel}?text=${encodeURIComponent(mensaje)}`;
-      window.open(url, '_blank');
-    }
-
-    // LÓGICA DE CARRUSELES
-    const carouselState = {};
-
-    function moveCarousel(carouselId, direction) {
-      const container = document.getElementById(carouselId);
-      const track = container.querySelector('.carousel-track');
-      const slides = container.querySelectorAll('.carousel-slide');
-      const dots = container.querySelectorAll('.dot');
-
-      if (!(carouselId in carouselState)) {
-        carouselState[carouselId] = 0;
-      }
-
-      let currentIndex = carouselState[carouselId] + direction;
-
-      if (currentIndex < 0) currentIndex = slides.length - 1;
-      if (currentIndex >= slides.length) currentIndex = 0;
-
-      carouselState[carouselId] = currentIndex;
-      track.style.transform = `translateX(-${currentIndex * 100}%)`;
-
-      dots.forEach((dot, idx) => {
-        dot.classList.toggle('active', idx === currentIndex);
-      });
-    }
-
-    function setCarouselSlide(carouselId, index) {
-      const container = document.getElementById(carouselId);
-      const track = container.querySelector('.carousel-track');
-      const dots = container.querySelectorAll('.dot');
-
-      carouselState[carouselId] = index;
-      track.style.transform = `translateX(-${index * 100}%)`;
-
-      dots.forEach((dot, idx) => {
-        dot.classList.toggle('active', idx === index);
-      });
-    }
-  </script>
-</body>
-</html>
+  <div class="container">
+
+    <!-- INICIO -->
+    <div id="tab-inicio" class="tab-content active">
+      <div class="hero-header">
+        <div class="logo-container">
+          <img src="https://i.postimg.cc/9fsRY43k/IMG-0086.jpg" alt="Lash Marii" class="logo-img">
+        </div>
+        <div class="welcome-text">Bienvenida a</div>
+        <h1 class="brand-title">Lash Marii</h1>
+        <p class="brand-desc">Extensiones de pestañas y lifting con atención completamente personalizada. Diseños únicos para resaltar tu mirada.</p>
+        <div class="location-badge">📍 Los Andes, Chile</div>
+
+        <button class="btn-main" onclick="switchTab('reservar')">
+          💖 Agenda tu cita aquí
+        </button>
+        <div class="sub-note">Atención personalizada · Solo con reserva previa</div>
+
+        <button class="btn-secondary" style="margin-bottom: 20px; background: #fff8f9; border-color: var(--primary);" onclick="switchTab('boutique')">
+          👜 Visita Lash Marii Boutique
+        </button>
+
+        <div class="trust-footer">
+          <div class="trust-footer-item">
+            <span>🛡️</span>
+            <div><strong>Insumos Certificados:</strong> Productos 100% profesionales comprados directamente con distribuidores oficiales autorizados.</div>
+          </div>
+          <div class="trust-footer-item">
+            <span>📋</span>
+            <div><strong>Estudio Formal:</strong> Registrados ante el Servicio de Impuestos Internos (SII) con emisión de boleta.</div>
+          </div>
+        </div>
+
+        <a href="https://instagram.com/Lash.marii" target="_blank" class="btn-secondary">
+          📸 Sígueme en Instagram: @Lash.marii
+        </a>
+      </div>
+    </div>
+
+    <!-- RESERVAR -->
+    <div id="tab-reservar" class="tab-content">
+      <div class="card">
+        <div class="card-title">Datos Personales</div>
+
+        <div class="form-group">
+          <label for="nombre">Nombre Completo</label>
+          <input type="text" id="nombre" placeholder="Ej. María González">
+        </div>
+
+        <div class="form-group">
+          <label>Selecciona los Servicios</label>
+          
+          <!-- EXTENSIONES DE PESTAÑAS -->
+          <div class="service-category">Extensiones de Pestañas</div>
+          <div class="service-desc">
+            ℹ️ Aplicación de fibra sintética pelo a pelo sobre tu pestaña natural. <strong>Requieren retoque sí o sí a los 21 días (2 a 3 semanas máximo).</strong>
+          </div>
+
+          <label class="service-option">
+            <div class="service-info">
+              <input type="checkbox" class="service-checkbox" data-group="extensiones" value="27000" data-name="Pestañas Clásicas" onchange="calcularTotal(this)">
+              <span class="service-name">Clásicas</span>
+            </div>
+            <span class="service-price">$27.000</span>
+          </label>
+
+          <label class="service-option">
+            <div class="service-info">
+              <input type="checkbox" class="service-checkbox" data-group="extensiones" value="25000" data-name="Pestañas Rímel" onchange="calcularTotal(this)">
+              <span class="service-name">Rímel</span>
+            </div>
+            <span class="service-price">$25.000</span>
+          </label>
+
+          <label class="service-option">
+            <div class="service-info">
+              <input type="checkbox" class="service-checkbox" data-group="extensiones" value="25000" data-name="Pestañas Hawaianas" onchange="calcularTotal(this)">
+              <span class="service-name">Hawaianas</span>
+            </div>
+            <span class="service-price">$25.000</span>
+          </label>
+
+          <label class="service-option">
+            <div class="service-info">
+              <input type="checkbox" class="service-checkbox" data-group="extensiones" value="30000" data-name="Pestañas Griego 3D" onchange="calcularTotal(this)">
+              <span class="service-name">Griego 3D</span>
+            </div>
+            <span class="service-price">$30.000</span>
+          </label>
+
+          <label class="service-option">
+            <div class="service-info">
+              <input type="checkbox" class="service-checkbox" data-group="extensiones" value="35000" data-name="Pestañas 5D" onchange="calcularTotal(this)">
+              <span class="service-name">5D</span>
+            </div>
+            <span class="service-price">$35.000</span>
+          </label>
+
+          <!-- LIFTING -->
+          <div class="service-category">Lifting</div>
+          <div class="service-desc">
+            ℹ️ Tratamiento que eleva y curva tus pestañas naturales desde la raíz, aportando nutrición y color. <strong>Duración: hasta 1 mes.</strong>
+          </div>
+
+          <label class="service-option">
+            <div class="service-info">
+              <input type="checkbox" class="service-checkbox" data-group="lifting" value="20000" data-name="Lifting (Queratina + Bótox)" onchange="calcularTotal(this)">
+              <span class="service-name">Lifting (Queratina + Bótox)</span>
+            </div>
+            <span class="service-price">$20.000</span>
+          </label>
+
+          <!-- CEJAS -->
+          <div class="service-category">Cejas</div>
+
+          <label class="service-option">
+            <div class="service-info">
+              <input type="checkbox" class="service-checkbox" data-group="cejas" value="15000" data-name="Laminado de Cejas" onchange="calcularTotal(this)">
+              <span class="service-name">Laminado de Cejas</span>
+            </div>
+            <span class="service-price">$15.000</span>
+          </label>
+          <div class="service-desc-item">
+            Efecto peinado hacia arriba fijo (como si usaras gel de cejas). Ideal para cejas muy chasconas o rebeldes.
+          </div>
+
+          <label class="service-option">
+            <div class="service-info">
+              <input type="checkbox" class="service-checkbox" data-group="cejas" value="20000" data-name="Henna (Incluye laminado)" onchange="calcularTotal(this)">
+              <span class="service-name">Henna (Incluye laminado)</span>
+            </div>
+            <span class="service-price">$20.000</span>
+          </label>
+          <div class="service-desc-item">
+            Tinte orgánico que sombrea la piel y el pelo. El vestigio de color se va aclarando en un lapso de 6 días a 1.5 - 2 semanas.
+          </div>
+
+          <label class="service-option">
+            <div class="service-info">
+              <input type="checkbox" class="service-checkbox" data-group="cejas" value="7000" data-name="Depilación de Cejas" onchange="calcularTotal(this)">
+              <span class="service-name">Depilación de Cejas</span>
+            </div>
+            <span class="service-price">$7.000</span>
+          </label>
+          <div class="service-desc-item">
+            Retiro del vello para dar forma a la ceja utilizando cera fría.
+          </div>
+
+          <label class="service-option">
+            <div class="service-info">
+              <input type="checkbox" class="service-checkbox" data-group="cejas" value="5000" data-name="Perfilado de Cejas" onchange="calcularTotal(this)">
+              <span class="service-name">Perfilado de Cejas</span>
+            </div>
+            <span class="service-price">$5.000</span>
+          </label>
+          <div class="service-desc-item">
+            Limpieza y definición exacta de la ceja utilizando perfilador (navaja especial).
+          </div>
+
+          <!-- TRATAMIENTOS ESPECIALES -->
+          <div class="service-category">Tratamientos Especiales</div>
+
+          <label class="service-option">
+            <div class="service-info">
+              <input type="checkbox" class="service-checkbox" data-group="otros" value="20000" data-name="Hydra Gloss (Labios)" onchange="calcularTotal(this)">
+              <span class="service-name">Hydra Gloss (Labios)</span>
+            </div>
+            <span class="service-price">$20.000</span>
+          </label>
+          <div class="service-desc-item">
+            <strong>NO es una inyección.</strong> Se aplica ácido hialurónico con Dermapen (agujas muy chiquititas que eliminan la primera/segunda capa de piel muerta). Se puede agregar tinte (dura 3 a 4 días); la hidratación profunda dura hasta 1 mes.
+          </div>
+
+        </div>
+
+        <div class="total-box">
+          <div>Total Servicio: <span class="total-amount" id="precio-total">$0</span></div>
+          <div>Abono para reservar: <span class="abono-amount" id="precio-abono">$0</span></div>
+          <div style="margin-top: 6px; padding-top: 6px; border-top: 1px dashed var(--border-color);">
+            Monto a pagar el día de tu cita: <span class="restante-amount" id="precio-restante">$0</span>
+          </div>
+        </div>
+
+        <div class="payment-box">
+          <div class="payment-title">💳 Datos para la Transferencia</div>
+
+          <div class="bank-details">
+            <div><span><strong>Banco:</strong></span> <span>BancoEstado</span></div>
+            <div><span><strong>Tipo:</strong></span> <span>CuentaRUT</span></div>
+            <div><span><strong>N° Cuenta:</strong></span> <span>24.901.982-8</span></div>
+            <div><span><strong>Titular:</strong></span> <span>Maria Triana Ceballos</span></div>
+          </div>
+
+          <div class="alert-whatsapp">
+            ⚠️ OBLIGATORIO: Una vez realizado el abono, debes enviar el comprobante sí o sí a WhatsApp para confirmar tu reserva.
+          </div>
+        </div>
+
+      </div>
+
+      <div class="card">
+        <div class="card-title">Fecha y Hora</div>
+
+        <div class="form-group">
+          <label for="fecha">Selecciona el Día</label>
+          <input type="date" id="fecha" onchange="actualizarHoras()">
+        </div>
+
+        <div class="form-group" id="contenedor-horas-normales">
+          <label>Horas Disponibles</label>
+          <div id="grid-horas" class="time-grid">
+            <div class="placeholder-text">Selecciona un día primero</div>
+          </div>
+        </div>
+
+        <div id="box-sobrecupo" class="overbook-box">
+          <div class="overbook-title">✨ ¡Cupos Llenos! Pero hay una opción...</div>
+          <div class="overbook-text">
+            Uy, lo siento, están todas las horitas tomadas para este día, pero <strong>siempre hay un sobrecupo para ti 💖</strong>.<br>
+            <small style="color:#d62862; font-weight:bold; display:block; margin-top:5px;">
+              ⚠️ IMPORTANTE: El sobrecupo tiene un valor adicional de $5.000 (se suma automáticamente al total).
+            </small>
+          </div>
+          <label style="text-align:left; font-size:0.85rem; margin-bottom:5px;">Elige el horario de sobrecupo:</label>
+          <select id="select-sobrecupo-hora" class="overbook-select" onchange="seleccionarSobrecupo(this.value)">
+            <option value="">-- Selecciona una opción --</option>
+            <option value="08:00 AM (Sobrecupo)">🌅 08:00 de la mañana</option>
+            <option value="09:30 PM (Sobrecupo)">🌌 09:30 de la noche</option>
+            <option value="A convenir (Sobrecupo)">🤝 Horario a convenir</option>
+          </select>
+        </div>
+
+        <div id="location-info" class="location-info-box"></div>
+
+        <button class="btn-main" style="margin-top: 15px; margin-bottom: 0;" onclick="enviarWhatsApp()">
+          Confirmar Reserva por WhatsApp 📲
+        </button>
+      </div>
+    </div>
+
+    <!-- LASH MARII BOUTIQUE -->
+    <div id="tab-boutique" class="tab-content">
+      <div class="card">
+        <div class="card-title">Lash Marii Boutique 👜</div>
+        <p class="brand-desc" style="margin-bottom: 12px;">
+          Encuentra la cartera perfecta para complementar tu estilo. Modelos exclusivos, elegantes y con excelentes acabados ✨.
+        </p>
+
+        <div class="boutique-grid">
+          
+          <!-- PRODUCTO 1: BAGUETTE LEOPARDO VINTAGE CON CARRUSEL Y COLORES MARRÓN / BEIGE 
