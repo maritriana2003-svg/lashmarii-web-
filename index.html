@@ -16,7 +16,7 @@
 
   <div class="container">
 
-    <!-- INICIO -->
+    <!-- 1. PESTAÑA: INICIO -->
     <div id="tab-inicio" class="tab-content active">
       <div class="hero-header">
         <div class="logo-container">
@@ -26,20 +26,6 @@
         <h1 class="brand-title">Lash Marii</h1>
         <p class="brand-desc">Extensiones de pestañas y lifting con atención completamente personalizada. Diseños únicos para resaltar tu mirada.</p>
         <div class="location-badge">📍 Los Andes, Chile</div>
-        <nav class="bottom-nav">
-  <button class="nav-item active" onclick="switchTab('inicio')">
-    <span class="icon">🏠</span>
-    <span>Inicio</span>
-  </button>
-  <button class="nav-item" onclick="switchTab('reservar')">
-    <span class="icon">📅</span>
-    <span>Reservar</span>
-  </button>
-  <button class="nav-item" onclick="switchTab('boutique')">
-    <span class="icon">👜</span>
-    <span>Boutique</span>
-  </button>
-</nav>
 
         <button class="btn-main" onclick="switchTab('reservar')">
           💖 Agenda tu cita aquí
@@ -67,7 +53,7 @@
       </div>
     </div>
 
-    <!-- RESERVAR -->
+    <!-- 2. PESTAÑA: RESERVAR -->
     <div id="tab-reservar" class="tab-content">
       <div class="card">
         <div class="card-title">Datos Personales</div>
@@ -151,7 +137,7 @@
             <span class="service-price">$15.000</span>
           </label>
           <div class="service-desc-item">
-            Efecto peinado hacia arriba fijo (como si usaras gel de cejas). Ideal para cejas muy chasconas o rebeldes.
+            Efecto peinado hacia arriba fijo. Ideal para cejas muy rebeldes.
           </div>
 
           <label class="service-option">
@@ -161,9 +147,6 @@
             </div>
             <span class="service-price">$20.000</span>
           </label>
-          <div class="service-desc-item">
-            Tinte orgánico que sombrea la piel y el pelo. El vestigio de color se va aclarando en un lapso de 6 días a 1.5 - 2 semanas.
-          </div>
 
           <label class="service-option">
             <div class="service-info">
@@ -172,9 +155,6 @@
             </div>
             <span class="service-price">$7.000</span>
           </label>
-          <div class="service-desc-item">
-            Retiro del vello para dar forma a la ceja utilizando cera fría.
-          </div>
 
           <label class="service-option">
             <div class="service-info">
@@ -183,9 +163,6 @@
             </div>
             <span class="service-price">$5.000</span>
           </label>
-          <div class="service-desc-item">
-            Limpieza y definición exacta de la ceja utilizando perfilador (navaja especial).
-          </div>
 
           <!-- TRATAMIENTOS ESPECIALES -->
           <div class="service-category">Tratamientos Especiales</div>
@@ -197,10 +174,6 @@
             </div>
             <span class="service-price">$20.000</span>
           </label>
-          <div class="service-desc-item">
-            <strong>NO es una inyección.</strong> Se aplica ácido hialurónico con Dermapen (agujas muy chiquititas que eliminan la primera/segunda capa de piel muerta). Se puede agregar tinte (dura 3 a 4 días); la hidratación profunda dura hasta 1 mes.
-          </div>
-
         </div>
 
         <div class="total-box">
@@ -213,19 +186,16 @@
 
         <div class="payment-box">
           <div class="payment-title">💳 Datos para la Transferencia</div>
-
           <div class="bank-details">
             <div><span><strong>Banco:</strong></span> <span>BancoEstado</span></div>
             <div><span><strong>Tipo:</strong></span> <span>CuentaRUT</span></div>
             <div><span><strong>N° Cuenta:</strong></span> <span>24.901.982-8</span></div>
             <div><span><strong>Titular:</strong></span> <span>Maria Triana Ceballos</span></div>
           </div>
-
           <div class="alert-whatsapp">
-            ⚠️ OBLIGATORIO: Una vez realizado el abono, debes enviar el comprobante sí o sí a WhatsApp para confirmar tu reserva.
+            ⚠️ OBLIGATORIO: Una vez realizado el abono, debes enviar el comprobante a WhatsApp para confirmar tu reserva.
           </div>
         </div>
-
       </div>
 
       <div class="card">
@@ -244,14 +214,10 @@
         </div>
 
         <div id="box-sobrecupo" class="overbook-box">
-          <div class="overbook-title">✨ ¡Cupos Llenos! Pero hay una opción...</div>
+          <div class="overbook-title">✨ ¡Cupos Llenos! Hay opción de sobrecupo...</div>
           <div class="overbook-text">
-            Uy, lo siento, están todas las horitas tomadas para este día, pero <strong>siempre hay un sobrecupo para ti 💖</strong>.<br>
-            <small style="color:#d62862; font-weight:bold; display:block; margin-top:5px;">
-              ⚠️ IMPORTANTE: El sobrecupo tiene un valor adicional de $5.000 (se suma automáticamente al total).
-            </small>
+            Si no hay horas, puedes agendar un sobrecupo por $5.000 adicionales.
           </div>
-          <label style="text-align:left; font-size:0.85rem; margin-bottom:5px;">Elige el horario de sobrecupo:</label>
           <select id="select-sobrecupo-hora" class="overbook-select" onchange="seleccionarSobrecupo(this.value)">
             <option value="">-- Selecciona una opción --</option>
             <option value="08:00 AM (Sobrecupo)">🌅 08:00 de la mañana</option>
@@ -260,29 +226,109 @@
           </select>
         </div>
 
-        <div id="location-info" class="location-info-box"></div>
-
         <button class="btn-main" style="margin-top: 15px; margin-bottom: 0;" onclick="enviarWhatsApp()">
           Confirmar Reserva por WhatsApp 📲
         </button>
       </div>
     </div>
 
-    <!-- LASH MARII BOUTIQUE -->
+    <!-- 3. PESTAÑA: CUIDADOS -->
+    <div id="tab-cuidados" class="tab-content">
+      <div class="card">
+        <div class="card-title">Cuidados Posteriores</div>
+
+        <button class="accordion-header active" onclick="toggleAccordion(this)">
+          ✨ Extensiones de Pestañas <span class="accordion-arrow">▼</span>
+        </button>
+        <div class="accordion-content show">
+          <div class="care-item">
+            <span class="care-icon">💧</span>
+            <div class="care-text"><strong>No mojar por 24 hrs:</strong> Evita vapores, sauna o lavar la cara con agua muy caliente inmediatamente después.</div>
+          </div>
+          <div class="care-item">
+            <span class="care-icon">🧴</span>
+            <div class="care-text"><strong>Evita productos grasos:</strong> No utilices desmaquillantes bifásicos o aceites cerca de los ojos.</div>
+          </div>
+          <div class="care-item">
+            <span class="care-icon">🪮</span>
+            <div class="care-text"><strong>Peina diariamente:</strong> Usa el cepillo limpio entregado en tu cita solo cuando estén secas.</div>
+          </div>
+        </div>
+
+        <button class="accordion-header" onclick="toggleAccordion(this)">
+          🌿 Lifting de Pestañas y Cejas <span class="accordion-arrow">▼</span>
+        </button>
+        <div class="accordion-content">
+          <div class="care-item">
+            <span class="care-icon">🚫</span>
+            <div class="care-text"><strong>No mojar por 24 hrs:</strong> Permite que el tratamiento de queratina se fije correctamente.</div>
+          </div>
+          <div class="care-item">
+            <span class="care-icon">💆‍♀️</span>
+            <div class="care-text"><strong>Hidratación:</strong> Aplica el sérum recomendado para mantener la fibra nutrida.</div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- 4. PESTAÑA: TRABAJOS / GALERÍA -->
+    <div id="tab-trabajos" class="tab-content">
+      <div class="card">
+        <div class="card-title">Galería de Resultados 📸</div>
+        <div class="gallery-grid">
+          <div class="gallery-card featured">
+            <span class="badge-new">POPULAR</span>
+            <img src="https://via.placeholder.com/200x140" alt="Trabajo 1" class="gallery-img">
+            <div class="gallery-info">
+              <div class="gallery-title">Efecto Rímel</div>
+              <div class="gallery-subtitle">Definición limpia</div>
+            </div>
+          </div>
+          <div class="gallery-card">
+            <img src="https://via.placeholder.com/200x140" alt="Trabajo 2" class="gallery-img">
+            <div class="gallery-info">
+              <div class="gallery-title">Lifting + Bótox</div>
+              <div class="gallery-subtitle">Pestaña natural</div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- 5. PESTAÑA: CLUB DE PUNTOS / SELLOS -->
+    <div id="tab-puntos" class="tab-content">
+      <div class="card" style="text-align: center;">
+        <div class="card-title" style="justify-content: center;">Club Lash Marii 💖</div>
+        <p class="brand-desc">¡Acumula sellos en cada visita y obtén descuentos especiales!</p>
+        
+        <div class="stamps-grid">
+          <div class="stamp-slot active">1<span class="stamp-type">Cita</span></div>
+          <div class="stamp-slot">2<span class="stamp-type">Cita</span></div>
+          <div class="stamp-slot">3<span class="stamp-type">Cita</span></div>
+          <div class="stamp-slot">4<span class="stamp-type">Cita</span></div>
+          <div class="stamp-slot reward">🎁<span class="stamp-type">Premio</span></div>
+        </div>
+
+        <div class="rewards-info">
+          🎁 <strong>5ta Visita:</strong> 20% de Descuento en tu servicio favorito.
+        </div>
+      </div>
+    </div>
+
+    <!-- 6. PESTAÑA: BOUTIQUE -->
     <div id="tab-boutique" class="tab-content">
       <div class="card">
         <div class="card-title">Lash Marii Boutique 👜</div>
         <p class="brand-desc" style="margin-bottom: 12px;">
-          Encuentra la cartera perfecta para complementar tu estilo. Modelos exclusivos, elegantes y con excelentes acabados ✨.
+          Encuentra la cartera perfecta para complementar tu estilo ✨.
         </p>
 
         <div class="boutique-grid">
-          <!-- PRODUCTO 1 -->
           <div class="boutique-card">
             <img src="https://via.placeholder.com/400x260" alt="Cartera Elegante" class="boutique-img">
             <div class="boutique-details">
               <div class="boutique-name">Cartera / Bolso de Mano</div>
-              <div class="boutique-desc">Diseño compacto, ideal para ocasiones especiales o uso diario. Incluye correa ajustable.</div>
+              <div class="boutique-desc">Diseño compacto, ideal para ocasiones especiales o uso diario.</div>
               <div class="boutique-price-row">
                 <span class="boutique-price">$18.000</span>
                 <a href="#" class="btn-buy">Consultar por WhatsApp 🛍️</a>
@@ -294,6 +340,35 @@
     </div>
 
   </div>
+
+  <!-- NAVEGACIÓN INFERIOR FIJA -->
+  <nav class="bottom-nav">
+    <button class="nav-item active" onclick="switchTab('inicio')">
+      <span class="icon">🏠</span>
+      <span>Inicio</span>
+    </button>
+    <button class="nav-item" onclick="switchTab('reservar')">
+      <span class="icon">📅</span>
+      <span>Reservar</span>
+    </button>
+    <button class="nav-item" onclick="switchTab('cuidados')">
+      <span class="icon">✨</span>
+      <span>Cuidados</span>
+    </button>
+    <button class="nav-item" onclick="switchTab('trabajos')">
+      <span class="icon">📸</span>
+      <span>Trabajos</span>
+    </button>
+
+    <button class="nav-item" onclick="switchTab('puntos')">
+      <span class="icon">🎁</span>
+      <span>Puntos</span>
+    </button>
+    <button class="nav-item" onclick="switchTab('boutique')">
+      <span class="icon">👜</span>
+      <span>Boutique</span>
+    </button>
+  </nav>
 
   <!-- Vinculación del archivo JS externo -->
   <script src="script.js"></script>
