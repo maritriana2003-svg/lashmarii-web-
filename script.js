@@ -1,146 +1,174 @@
-// Variable para almacenar la hora seleccionada
-let horaSeleccionada = "";
-
-// Función para cambiar de pestañas (Tab System) y sincronizar el menú inferior
+// Navegación por Pestañas
 function switchTab(tabId) {
-  // Ocultar todas las pestañas
-  const tabs = document.querySelectorAll('.tab-content');
-  tabs.forEach(tab => tab.classList.remove('active'));
-
-  // Mostrar la pestaña seleccionada
-  const activeTab = document.getElementById('tab-' + tabId);
-  if (activeTab) {
-    activeTab.classList.add('active');
-  }
-
-  // Actualizar el estado visual de los botones de la barra inferior
-  const navItems = document.querySelectorAll('.nav-item');
-  navItems.forEach(item => {
-    item.classList.remove('active');
-    if (item.getAttribute('onclick') && item.getAttribute('onclick').includes(tabId)) {
-      item.classList.add('active');
-    }
+  document.querySelectorAll('.tab-content').forEach(tab => {
+    tab.classList.remove('active');
+  });
+  document.querySelectorAll('.nav-item').forEach(nav => {
+    nav.classList.remove('active');
   });
 
-  window.scrollTo(0, 0);
+  const targetTab = document.getElementById('tab-' + tabId);
+  if (targetTab) {
+    targetTab.classList.add('active');
+  }
+
+  const navButtons = document.querySelectorAll('.bottom-nav .nav-item');
+  const tabsMap = { 'inicio': 0, 'agenda': 1, 'boutique': 2, 'cuidados': 3, 'fidelidad': 4 };
+  if (tabsMap[tabId] !== undefined && navButtons[tabsMap[tabId]]) {
+    navButtons[tabsMap[tabId]].classList.add('active');
+  }
+
+  window.scrollTo({ top: 0, behavior: 'smooth' });
 }
 
-// Función para el Acordeón de la sección Cuidados
-function toggleAccordion(button) {
-  button.classList.toggle('active');
-  const content = button.nextElementSibling;
+// Selección de Servicios y Totales
+let selectedServices = [];
+let totalPrice = 0;
+
+function toggleService(element, serviceName, price) {
+  const checkbox = element.querySelector('.service-checkbox');
+  const isSelected = !checkbox.checked;
   
-  if (content.classList.contains('show')) {
-    content.classList.remove('show');
+  checkbox.checked = isSelected;
+  element.classList.toggle('selected', isSelected);
+
+  if (isSelected) {
+    selectedServices.push({ name: serviceName, price: price });
   } else {
-    content.classList.add('show');
-  }
-}
-
-// Función para calcular total, abono y saldo pendiente
-function calcularTotal(checkboxModificado) {
-  // Solo un tipo de técnica de pestañas a la vez
-  if (checkboxModificado && checkboxModificado.dataset.group === 'extensiones' && checkboxModificado.checked) {
-    const extensiones = document.querySelectorAll('.service-checkbox[data-group="extensiones"]');
-    extensiones.forEach(cb => {
-      if (cb !== checkboxModificado) cb.checked = false;
-    });
+    selectedServices = selectedServices.filter(s => s.name !== serviceName);
   }
 
-  let total = 0;
-  const checkboxes = document.querySelectorAll('.service-checkbox:checked');
-  
-  checkboxes.forEach(cb => {
-    total += parseInt(cb.value);
-  });
-
-  const abono = total > 0 ? 5000 : 0;
-  const restante = Math.max(0, total - abono);
-
-  // Formatear a pesos chilenos
-  document.getElementById('precio-total').innerText = '$' + total.toLocaleString('es-CL');
-  document.getElementById('precio-abono').innerText = '$' + abono.toLocaleString('es-CL');
-  document.getElementById('precio-restante').innerText = '$' + restante.toLocaleString('es-CL');
-
-  // Actualizar estilos visuales de las opciones seleccionadas
-  document.querySelectorAll('.service-option').forEach(option => {
-    const cb = option.querySelector('.service-checkbox');
-    if (cb && cb.checked) {
-      option.classList.add('selected');
-    } else {
-      option.classList.remove('selected');
-    }
-  });
+  calculateTotals();
 }
 
-// Función para actualizar horas disponibles al seleccionar fecha
-function actualizarHoras() {
-  const fechaInput = document.getElementById('fecha').value;
-  const gridHoras = document.getElementById('grid-horas');
-  const boxSobrecupo = document.getElementById('box-sobrecupo');
+function calculateTotals() {
+  totalPrice = selectedServices.reduce((sum, service) => sum + service.price, 0);
+  const abono = totalPrice * 0.5;
+  const restante = totalPrice - abono;
 
-  if (!fechaInput) return;
+  document.getElementById('total-price').innerText = `$${totalPrice.toLocaleString('es-CL')}`;
+  document.getElementById('abono-price').innerText = `$${abono.toLocaleString('es-CL')}`;
+  document.getElementById('restante-price').innerText = `$${restante.toLocaleString('es-CL')}`;
+}
 
-  gridHoras.innerHTML = '';
+// Horarios y Sobrecupos
+function loadAvailableHours() {
+  const dateInput = document.getElementById('booking-date').value;
+  const timeGrid = document.getElementById('time-grid');
+  const overbookBox = document.getElementById('overbook-box');
+
+  if (!dateInput) return;
+
+  timeGrid.innerHTML = '';
   
-  // Horarios disponibles estándar
-  const horasDisponibles = ["10:00 AM", "12:30 PM", "03:30 PM", "06:00 PM"];
+  const availableTimes = ['10:00 AM', '11:30 AM', '15:00 PM', '16:30 PM'];
 
-  if (horasDisponibles.length > 0) {
-    boxSobrecupo.style.display = 'none';
-    horasDisponibles.forEach(hora => {
+  if (availableTimes.length > 0) {
+    overbookBox.style.display = 'none';
+    availableTimes.forEach(time => {
       const btn = document.createElement('button');
       btn.className = 'time-btn';
-      btn.innerText = hora;
+      btn.innerText = time;
       btn.onclick = function() {
         document.querySelectorAll('.time-btn').forEach(b => b.classList.remove('selected'));
         btn.classList.add('selected');
-        horaSeleccionada = hora;
+        btn.dataset.time = time;
       };
-      gridHoras.appendChild(btn);
+      timeGrid.appendChild(btn);
     });
   } else {
-    boxSobrecupo.style.display = 'block';
+    timeGrid.innerHTML = '<div class="placeholder-text">No hay horas disponibles.</div>';
+    overbookBox.style.display = 'block';
   }
 }
 
-// Selección de hora de sobrecupo
-function seleccionarSobrecupo(valor) {
-  horaSeleccionada = valor;
-}
+// Carruseles de la Boutique
+const carousels = {};
 
-// Enviar mensaje de confirmación por WhatsApp
-function enviarWhatsApp() {
-  const nombre = document.getElementById('nombre').value.trim();
-  const fecha = document.getElementById('fecha').value;
-  const servicios = [];
+function moveCarousel(carouselId, direction) {
+  const carousel = document.getElementById(carouselId);
+  const track = carousel.querySelector('.carousel-track');
+  const slides = carousel.querySelectorAll('.carousel-slide');
+  const dots = carousel.querySelectorAll('.dot');
+  
+  if (!carousels[carouselId]) carousels[carouselId] = 0;
 
-  document.querySelectorAll('.service-checkbox:checked').forEach(cb => {
-    servicios.push(cb.dataset.name);
+  carousels[carouselId] += direction;
+
+  if (carousels[carouselId] < 0) {
+    carousels[carouselId] = slides.length - 1;
+  } else if (carousels[carouselId] >= slides.length) {
+    carousels[carouselId] = 0;
+  }
+
+  const slideWidth = slides[0].clientWidth;
+  track.style.transform = `translateX(-${carousels[carouselId] * slideWidth}px)`;
+
+  dots.forEach((dot, index) => {
+    dot.classList.toggle('active', index === carousels[carouselId]);
   });
+}
 
-  if (!nombre) {
-    alert("Por favor, ingresa tu nombre completo.");
+function setCarouselSlide(carouselId, index) {
+  carousels[carouselId] = index;
+  const carousel = document.getElementById(carouselId);
+  const track = carousel.querySelector('.carousel-track');
+  const slides = carousel.querySelectorAll('.carousel-slide');
+  const dots = carousel.querySelectorAll('.dot');
+
+  const slideWidth = slides[0].clientWidth;
+  track.style.transform = `translateX(-${index * slideWidth}px)`;
+
+  dots.forEach((dot, i) => {
+    dot.classList.toggle('active', i === index);
+  });
+}
+
+// Acordeón de Cuidados
+function toggleAccordion(header) {
+  header.classList.toggle('active');
+  const content = header.nextElementSibling;
+  content.classList.toggle('show');
+}
+
+// Procesar Reserva a WhatsApp
+function processBooking() {
+  const name = document.getElementById('client-name').value.trim();
+  const phone = document.getElementById('client-phone').value.trim();
+  const date = document.getElementById('booking-date').value;
+  const selectedTimeBtn = document.querySelector('.time-btn.selected');
+  const overbookTime = document.getElementById('overbook-time').value;
+
+  let time = selectedTimeBtn ? selectedTimeBtn.dataset.time : overbookTime;
+
+  if (!name || !phone) {
+    alert('Por favor ingresa tu Nombre y Teléfono.');
     return;
   }
 
-  if (servicios.length === 0) {
-    alert("Por favor, selecciona al menos un servicio.");
+  if (selectedServices.length === 0) {
+    alert('Por favor selecciona al menos un servicio.');
     return;
   }
 
-  if (!fecha || !horaSeleccionada) {
-    alert("Por favor, selecciona la fecha y la hora para tu cita.");
+  if (!date || !time) {
+    alert('Por favor selecciona la fecha y la hora para tu cita.');
     return;
   }
 
-  const mensaje = `Hola Lash Marii! 💖 Quisiera agendar una cita:\n\n` +
-    `👤 *Nombre:* ${nombre}\n` +
-    `💅 *Servicios:* ${servicios.join(', ')}\n` +
-    `📅 *Fecha:* ${fecha}\n` +
-    `⏰ *Hora:* ${horaSeleccionada}\n\n` +
-    `Ya tengo listos los datos para hacer la transferencia del abono.`;
+  const servicesText = selectedServices.map(s => `• ${s.name} ($${s.price.toLocaleString('es-CL')})`).join('%0A');
+  const abono = totalPrice * 0.5;
 
-  const url = `https://wa.me/56912345678?text=${encodeURIComponent(mensaje)}`; // Reemplaza con tu número de WhatsApp
-  window.open(url, '_blank');
+  let message = `¡Hola Lash Marii! 💖 Quisiera confirmar una reserva:%0A%0A`;
+  message += `👤 *Cliente:* ${encodeURIComponent(name)}%0A`;
+  message += `📞 *Teléfono:* ${encodeURIComponent(phone)}%0A`;
+  message += `📅 *Fecha:* ${date}%0A`;
+  message += `⏰ *Hora:* ${time}%0A%0A`;
+  message += `✨ *Servicios Seleccionados:*%0A${servicesText}%0A%0A`;
+  message += `💳 *Total:* $${totalPrice.toLocaleString('es-CL')}%0A`;
+  message += `📌 *Abono a transferir (50%):* $${abono.toLocaleString('es-CL')}%0A%0A`;
+  message += `Adjunto mi comprobante de transferencia a continuación 👇`;
+
+  const whatsappUrl = `https://wa.me/56912345678?text=${message}`;
+  window.open(whatsappUrl, '_blank');
 }
