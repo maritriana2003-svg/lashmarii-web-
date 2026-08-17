@@ -787,3 +787,306 @@
 </head>
 <body>
   <div class="container">
+    <!-- ==================== PESTAÑA 1: INICIO ==================== -->
+    <div id="tab-inicio" class="tab-content active">
+      <div class="hero-header">
+        <div class="logo-container">
+          <img src="https://i.ibb.co/L519p4f/lashmarii-logo.jpg" alt="Lash Marii Logo" class="logo-img">
+        </div>
+        <div class="welcome-text">Bienvenida a</div>
+        <h1 class="brand-title">Lash Marii</h1>
+        <p class="brand-desc">Especialista en realce de mirada y belleza integral. Diseños personalizados para destacar tu belleza natural.</p>
+        <div class="location-badge">📍 San Felipe, Chile</div>
+        
+        <button class="btn-main" onclick="switchTab('agenda')">
+          <span>📅 Agendar Cita</span>
+        </button>
+        <div class="sub-note">Reserva tu espacio en pocos pasos</div>
+
+        <div class="trust-footer">
+          <div class="trust-footer-item">
+            <span>✨</span>
+            <div><strong>Técnica Pelo a Pelo:</strong> Aplicación clásica y minuciosa para un acabado limpio y natural.</div>
+          </div>
+          <div class="trust-footer-item">
+            <span>💖</span>
+            <div><strong>Insumos Premium:</strong> Productos hipoalergénicos y de alta calidad para cuidar tus ojos.</div>
+          </div>
+        </div>
+
+        <button class="btn-secondary" onclick="switchTab('boutique')">
+          <span>👜 Ver Carteras & Accesorios</span>
+        </button>
+      </div>
+    </div>
+
+    <!-- ==================== PESTAÑA 2: AGENDA ==================== -->
+    <div id="tab-agenda" class="tab-content">
+      <div class="card">
+        <h2 class="card-title">Datos Personales</h2>
+        <div class="form-group">
+          <label for="client-name">Nombre y Apellido *</label>
+          <input type="text" id="client-name" placeholder="Ej: María López">
+        </div>
+        <div class="form-group">
+          <label for="client-phone">Teléfono / WhatsApp *</label>
+          <input type="tel" id="client-phone" placeholder="Ej: +56912345678">
+        </div>
+      </div>
+
+      <div class="card">
+        <h2 class="card-title">Selecciona tus Servicios</h2>
+        
+        <!-- PESTAÑAS -->
+        <div class="service-category">✨ Extensiones de Pestañas (Pelo a Pelo)</div>
+        <div class="service-desc">Técnica clásica individual para máxima naturalidad y elegancia.</div>
+        
+        <div class="service-option" onclick="toggleService(this, 'Efecto Rímel', 18000)">
+          <div class="service-info">
+            <input type="checkbox" class="service-checkbox">
+            <span class="service-name">Efecto Rímel</span>
+          </div>
+          <span class="service-price">$18.000</span>
+        </div>
+
+        <div class="service-option" onclick="toggleService(this, 'Efecto Mojado', 20000)">
+          <div class="service-info">
+            <input type="checkbox" class="service-checkbox">
+            <span class="service-name">Efecto Mojado (Wet Look)</span>
+          </div>
+          <span class="service-price">$20.000</span>
+        </div>
+
+        <div class="service-option" onclick="toggleService(this, 'Lifting de Pestañas', 15000)">
+          <div class="service-info">
+            <input type="checkbox" class="service-checkbox">
+            <span class="service-name">Lifting de Pestañas + Tinte</span>
+          </div>
+          <span class="service-price">$15.000</span>
+        </div>
+
+        <!-- CEJAS Y LABIOS -->
+        <div class="service-category" style="margin-top:20px;">🎨 Cejas & Labios</div>
+        
+        <div class="service-option" onclick="toggleService(this, 'Laminado de Cejas', 12000)">
+          <div class="service-info">
+            <input type="checkbox" class="service-checkbox">
+            <span class="service-name">Laminado de Cejas</span>
+          </div>
+          <span class="service-price">$12.000</span>
+        </div>
+
+        <div class="service-option" onclick="toggleService(this, 'Perfilado + Henna', 10000)">
+          <div class="service-info">
+            <input type="checkbox" class="service-checkbox">
+            <span class="service-name">Perfilado + Henna / Tinte</span>
+          </div>
+          <span class="service-price">$10.000</span>
+        </div>
+
+        <div class="service-option" onclick="toggleService(this, 'Hydra Lips', 15000)">
+          <div class="service-info">
+            <input type="checkbox" class="service-checkbox">
+            <span class="service-name">Hydra Lips (Hidratación Profunda)</span>
+          </div>
+          <span class="service-price">$15.000</span>
+        </div>
+
+        <!-- TOTAL Y ABONO -->
+        <div class="total-box">
+          <div>Total Servicios: <span id="total-price" class="total-amount">$0</span></div>
+          <div style="margin-top: 5px;">Abono para reservar (50%): <span id="abono-price" class="abono-amount">$0</span></div>
+          <div>Restante a pagar en cita: <span id="restante-price" class="restante-amount">$0</span></div>
+        </div>
+      </div>
+
+      <!-- SELECCIÓN DE FECHA Y HORA -->
+      <div class="card">
+        <h2 class="card-title">Fecha y Hora</h2>
+        <div class="form-group">
+          <label for="booking-date">Selecciona la Fecha *</label>
+          <input type="date" id="booking-date" onchange="loadAvailableHours()">
+        </div>
+
+        <label>Horarios Disponibles *</label>
+        <div id="time-grid" class="time-grid">
+          <div class="placeholder-text">Selecciona una fecha primero</div>
+        </div>
+
+        <!-- BLOQUE SOBRECUPOS -->
+        <div id="overbook-box" class="overbook-box">
+          <div class="overbook-title">⚡ Solicitud de Sobrecupo</div>
+          <div class="overbook-text">No hay horas regulares disponibles para esta fecha. Puedes solicitar un sobrecupo por un valor adicional de <strong>$5.000</strong>.</div>
+          <select id="overbook-time" class="overbook-select">
+            <option value="">Selecciona horario deseado...</option>
+            <option value="08:00 AM">08:00 AM (Sobrecupo)</option>
+            <option value="13:00 PM">13:00 PM (Sobrecupo)</option>
+            <option value="19:00 PM">19:00 PM (Sobrecupo)</option>
+          </select>
+        </div>
+      </div>
+
+      <!-- DATOS DE TRANSFERENCIA Y BOTÓN -->
+      <div class="card">
+        <h2 class="card-title">Confirmación de Reserva</h2>
+        <div class="payment-box">
+          <div class="payment-title">💳 Datos para Transferencia del Abono</div>
+          <div class="bank-details">
+            <div><span>Banco:</span> <strong>Banco Estado / Rut</strong></div>
+            <div><span>Rut:</span> <strong>12.345.678-K</strong></div>
+            <div><span>Nombre:</span> <strong>María Del Mar Triana</strong></div>
+            <div><span>Correo:</span> <strong>contacto@lashmarii.cl</strong></div>
+          </div>
+          <div class="alert-whatsapp">
+            ⚠️ Al hacer clic en reservar, serás redirigida a WhatsApp para enviar el comprobante de transferencia y finalizar tu agendamiento.
+          </div>
+        </div>
+
+        <button class="btn-main" style="margin-top:18px;" onclick="processBooking()">
+          📲 Enviar Reserva por WhatsApp
+        </button>
+      </div>
+    </div>
+
+    <!-- ==================== PESTAÑA 3: BOUTIQUE ==================== -->
+    <div id="tab-boutique" class="tab-content">
+      <div class="card">
+        <h2 class="card-title">Lash Marii Boutique</h2>
+        <p class="brand-desc" style="margin-bottom:10px;">Colección exclusiva de carteras y accesorios. Consulta stock o encarga directamente por WhatsApp.</p>
+
+        <div class="boutique-grid">
+          <!-- CARTERA 1 -->
+          <div class="boutique-card">
+            <div class="carousel-container" id="carousel-1">
+              <div class="carousel-track">
+                <div class="carousel-slide"><img src="https://i.ibb.co/M9K4P4z/cartera1-1.jpg" class="boutique-img" alt="Cartera 1"></div>
+                <div class="carousel-slide"><img src="https://i.ibb.co/2N8W1Zk/cartera1-2.jpg" class="boutique-img" alt="Cartera 1 Detalle"></div>
+              </div>
+              <button class="carousel-btn prev" onclick="moveCarousel('carousel-1', -1)">❮</button>
+              <button class="carousel-btn next" onclick="moveCarousel('carousel-1', 1)">❯</button>
+              <div class="carousel-dots">
+                <span class="dot active" onclick="setCarouselSlide('carousel-1', 0)"></span>
+                <span class="dot" onclick="setCarouselSlide('carousel-1', 1)"></span>
+              </div>
+            </div>
+            <div class="boutique-details">
+              <div class="boutique-name">Cartera Quilted Crossbody</div>
+              <div class="boutique-desc">Diseño acolchado elegante con correa de cadena ajustable. Ideal para toda ocasión.</div>
+              <div class="boutique-price-row">
+                <span class="boutique-price">$24.990</span>
+                <a href="https://wa.me/56912345678?text=Hola!%20Me%20interesa%20la%20Cartera%20Quilted%20Crossbody" class="btn-buy" target="_blank">Pedir 💬</a>
+              </div>
+            </div>
+          </div>
+
+          <!-- CARTERA 2 -->
+          <div class="boutique-card">
+            <div class="carousel-container" id="carousel-2">
+              <div class="carousel-track">
+                <div class="carousel-slide"><img src="https://i.ibb.co/xS8m5y1/cartera2-1.jpg" class="boutique-img" alt="Cartera 2"></div>
+                <div class="carousel-slide"><img src="https://i.ibb.co/q1z6fT1/cartera2-2.jpg" class="boutique-img" alt="Cartera 2 Detalle"></div>
+              </div>
+              <button class="carousel-btn prev" onclick="moveCarousel('carousel-2', -1)">❮</button>
+              <button class="carousel-btn next" onclick="moveCarousel('carousel-2', 1)">❯</button>
+              <div class="carousel-dots">
+                <span class="dot active" onclick="setCarouselSlide('carousel-2', 0)"></span>
+                <span class="dot" onclick="setCarouselSlide('carousel-2', 1)"></span>
+              </div>
+            </div>
+            <div class="boutique-details">
+              <div class="boutique-name">Bolso Tote Minimalist</div>
+              <div class="boutique-desc">Amplio, cómodo y con acabados de alta durabilidad. Perfecto para el día a día.</div>
+              <div class="boutique-price-row">
+                <span class="boutique-price">$28.990</span>
+                <a href="https://wa.me/56912345678?text=Hola!%20Me%20interesa%20el%20Bolso%20Tote%20Minimalist" class="btn-buy" target="_blank">Pedir 💬</a>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- ==================== PESTAÑA 4: CUIDADOS ==================== -->
+    <div id="tab-cuidados" class="tab-content">
+      <div class="card">
+        <h2 class="card-title">Cuidados de tus Pestañas</h2>
+        <p class="brand-desc" style="margin-bottom:15px;">Sigue estos consejos para mantener tus pestañas perfectas durante más tiempo.</p>
+
+        <button class="accordion-header" onclick="toggleAccordion(this)">
+          <span>💧 Primeras 24 horas</span>
+          <span class="accordion-arrow">▼</span>
+        </button>
+        <div class="accordion-content">
+          <div class="care-item">
+            <span class="care-icon">🚫</span>
+            <div class="care-text"><strong>Evita el agua:</strong> No mojes las pestañas ni expongas tus ojos a vapores calientes o sauna en las primeras 24 horas.</div>
+          </div>
+        </div>
+
+        <button class="accordion-header" onclick="toggleAccordion(this)">
+          <span>✨ Mantenimiento Diario</span>
+          <span class="accordion-arrow">▼</span>
+        </button>
+        <div class="accordion-content">
+          <div class="care-item">
+            <span class="care-icon">🪮</span>
+            <div class="care-text"><strong>Cepillado:</strong> Peina tus pestañas diariamente con el cepillito entregado, siempre secas y con movimientos suaves.</div>
+          </div>
+          <div class="care-item">
+            <span class="care-icon">🧴</span>
+            <div class="care-text"><strong>Productos Oleosos:</strong> No utilices desmaquillantes a base de aceite cerca de la zona ocular.</div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- ==================== PESTAÑA 5: FIDELIDAD ==================== -->
+    <div id="tab-fidelidad" class="tab-content">
+      <div class="card">
+        <h2 class="card-title">Club de Fidelidad</h2>
+        <p class="brand-desc" style="margin-bottom:12px;">¡Acumula timbres en cada visita y obtén descuentos exclusivos!</p>
+
+        <div class="rewards-info">
+          🎁 <strong>Premios:</strong><br>
+          • Visita 5: <strong>20% OFF</strong> en tu mantenimiento.<br>
+          • Visita 10: <strong>Servicio Gratis / Regalo Especial</strong>.
+        </div>
+
+        <div class="stamps-grid">
+          <div class="stamp-slot active">1<span class="stamp-type">Listo</span></div>
+          <div class="stamp-slot active">2<span class="stamp-type">Listo</span></div>
+          <div class="stamp-slot">3<span class="stamp-type">Visita</span></div>
+          <div class="stamp-slot">4<span class="stamp-type">Visita</span></div>
+          <div class="stamp-slot reward">5<span class="stamp-type">20% OFF</span></div>
+          <div class="stamp-slot">6<span class="stamp-type">Visita</span></div>
+          <div class="stamp-slot">7<span class="stamp-type">Visita</span></div>
+          <div class="stamp-slot">8<span class="stamp-type">Visita</span></div>
+          <div class="stamp-slot">9<span class="stamp-type">Visita</span></div>
+          <div class="stamp-slot reward">10<span class="stamp-type">FREE</span></div>
+        </div>
+      </div>
+    </div>
+
+    <!-- BARRA DE NAVEGACIÓN INFERIOR -->
+    <nav class="bottom-nav">
+      <button class="nav-item active" onclick="switchTab('inicio')">
+        <span class="icon">🏠</span>
+        <span>Inicio</span>
+      </button>
+      <button class="nav-item" onclick="switchTab('agenda')">
+        <span class="icon">📅</span>
+        <span>Agendar</span>
+      </button>
+      <button class="nav-item" onclick="switchTab('boutique')">
+        <span class="icon">👜</span>
+        <span>Boutique</span>
+      </button>
+      <button class="nav-item" onclick="switchTab('cuidados')">
+        <span class="icon">✨</span>
+        <span>Cuidados</span>
+      </button>
+      <button class="nav-item" onclick="switchTab('fidelidad')">
+        <span class="icon">🎁</span>
+        <span>Club</span>
+      </button>
+    </nav>
