@@ -246,15 +246,6 @@ input[type="text"], input[type="tel"], input[type="date"], input[type="password"
   border-left: 3px solid var(--primary);
 }
 
-.service-desc-item {
-  font-size: 0.78rem;
-  color: var(--subtext);
-  line-height: 1.3;
-  margin: -4px 0 10px 6px;
-  padding-left: 8px;
-  border-left: 2px solid var(--border-color);
-}
-
 .service-option {
   display: flex;
   align-items: center;
@@ -272,13 +263,6 @@ input[type="text"], input[type="tel"], input[type="date"], input[type="password"
 .service-option.selected {
   border-color: var(--primary);
   background-color: #fff8f9;
-}
-
-.service-option.disabled {
-  opacity: 0.4;
-  background-color: #f7f7f7;
-  cursor: not-allowed;
-  border-color: #e2e8f0;
 }
 
 .service-info {
@@ -389,27 +373,6 @@ input[type="text"], input[type="tel"], input[type="date"], input[type="password"
   font-weight: 700;
   text-align: center;
   line-height: 1.4;
-  margin-bottom: 0;
-}
-
-.location-info-box {
-  background-color: #eef2ff;
-  border-left: 4px solid #3b82f6;
-  border-radius: 8px;
-  padding: 12px;
-  font-size: 0.85rem;
-  color: #1e3a8a;
-  font-weight: 700;
-  text-align: center;
-  line-height: 1.4;
-  margin-top: 15px;
-  margin-bottom: 15px;
-  display: none;
-}
-
-.location-info-box a {
-  color: #2563eb;
-  text-decoration: underline;
 }
 
 .overbook-box {
@@ -475,30 +438,6 @@ input[type="text"], input[type="tel"], input[type="date"], input[type="password"
   border-color: var(--primary);
 }
 
-.time-btn.occupied {
-  background-color: #e2e8f0;
-  color: #a0aec0;
-  border-color: #cbd5e0;
-  cursor: not-allowed;
-  text-decoration: line-through;
-}
-
-.admin-time-btn {
-  background-color: #fff;
-  border: 1.5px solid var(--border-color);
-  border-radius: 12px;
-  padding: 12px 5px;
-  font-size: 0.85rem;
-  font-weight: 700;
-  cursor: pointer;
-}
-
-.admin-time-btn.is-blocked {
-  background-color: #e63974;
-  color: white;
-  border-color: #e63974;
-}
-
 .placeholder-text {
   color: var(--subtext);
   font-size: 0.9rem;
@@ -507,68 +446,7 @@ input[type="text"], input[type="tel"], input[type="date"], input[type="password"
   grid-column: span 3;
 }
 
-.gallery-grid {
-  display: grid;
-  grid-template-columns: repeat(2, 1fr);
-  gap: 12px;
-  margin-top: 15px;
-}
-
-.gallery-card {
-  background: #ffffff;
-  border-radius: 16px;
-  overflow: hidden;
-  border: 1px solid var(--border-color);
-  box-shadow: 0 4px 10px rgba(0,0,0,0.03);
-  display: flex;
-  flex-direction: column;
-  position: relative;
-}
-
-.gallery-card.featured {
-  border: 2px solid var(--primary);
-  box-shadow: 0 6px 16px rgba(230, 57, 116, 0.18);
-}
-
-.badge-new {
-  position: absolute;
-  top: 8px;
-  right: 8px;
-  background: linear-gradient(135deg, #e63974, #ff5e91);
-  color: white;
-  font-size: 0.68rem;
-  font-weight: 800;
-  padding: 4px 8px;
-  border-radius: 10px;
-  box-shadow: 0 2px 8px rgba(230, 57, 116, 0.4);
-  letter-spacing: 0.5px;
-  z-index: 2;
-}
-
-.gallery-img {
-  width: 100%;
-  height: 140px;
-  object-fit: cover;
-  display: block;
-}
-
-.gallery-info {
-  padding: 10px;
-  text-align: center;
-}
-
-.gallery-title {
-  font-size: 0.85rem;
-  font-weight: 800;
-  color: var(--text-dark);
-}
-
-.gallery-subtitle {
-  font-size: 0.72rem;
-  color: var(--subtext);
-  margin-top: 2px;
-}
-
+/* BOUTIQUE Y CARRUSELES DE FOTOS */
 .boutique-grid {
   display: grid;
   grid-template-columns: repeat(1, 1fr);
@@ -700,6 +578,7 @@ input[type="text"], input[type="tel"], input[type="date"], input[type="password"
   border-radius: 4px;
 }
 
+/* ACORDEÓN DE CUIDADOS */
 .accordion-header {
   width: 100%;
   background: #ffffff;
@@ -716,10 +595,6 @@ input[type="text"], input[type="tel"], input[type="date"], input[type="password"
   align-items: center;
   margin-bottom: 8px;
   transition: all 0.2s ease;
-}
-
-.accordion-header:hover {
-  background-color: #fff8f9;
 }
 
 .accordion-header.active {
@@ -788,6 +663,7 @@ input[type="text"], input[type="tel"], input[type="date"], input[type="password"
   color: var(--text-dark);
 }
 
+/* FIDELIDAD */
 .stamps-grid {
   display: grid;
   grid-template-columns: repeat(5, 1fr);
@@ -835,17 +711,6 @@ input[type="text"], input[type="tel"], input[type="date"], input[type="password"
   color: #b45309;
 }
 
-.stamp-slot.reward.active {
-  background: linear-gradient(135deg, #f59e0b, #d97706);
-  color: #fff;
-  border-color: #f59e0b;
-  box-shadow: 0 4px 12px rgba(245, 158, 11, 0.4);
-}
-
-.stamp-slot.reward.active .stamp-type {
-  color: #fff;
-}
-
 .rewards-info {
   font-size: 0.8rem;
   text-align: left;
@@ -855,18 +720,6 @@ input[type="text"], input[type="tel"], input[type="date"], input[type="password"
   border-radius: 12px;
   margin-bottom: 15px;
   line-height: 1.5;
-}
-
-.history-list {
-  font-size: 0.78rem;
-  text-align: left;
-  color: var(--subtext);
-  max-height: 90px;
-  overflow-y: auto;
-  margin-top: 8px;
-  background: #fdf2f5;
-  padding: 8px 12px;
-  border-radius: 10px;
 }
 
 .bottom-nav {
